@@ -19,7 +19,7 @@ export default function Login() {
 
   function handleSubmit(e: any) {
     e.preventDefault();
-    const { email, password } = e.target.value;
+    const { email, password } = e.target.elements;
     handleLogin({ email: email.value, password: password.value }, "login");
     fetchCustomer();
     history.push("/");
@@ -39,12 +39,12 @@ export default function Login() {
               <FormLabel>Password</FormLabel>
               <Input type="password" />
             </FormControl>
+            <Stack spacing={6}>
+              <Button colorScheme={"blue"} variant={"solid"} type="submit">
+                Sign in
+              </Button>
+            </Stack>
           </form>
-          <Stack spacing={6}>
-            <Button colorScheme={"blue"} variant={"solid"}>
-              Sign in
-            </Button>
-          </Stack>
         </Stack>
       </Flex>
       <Flex flex={1}>
