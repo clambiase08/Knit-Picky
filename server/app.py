@@ -104,5 +104,14 @@ class Customers(Resource):
 
 api.add_resource(Customers, "/customers")
 
+
+class OrderItems(Resource):
+    def get(self):
+        order_items = [o_i.to_dict() for o_i in OrderItem.query.all()]
+        return make_response(order_items, 200)
+
+
+api.add_resource(OrderItems, "/order_items")
+
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

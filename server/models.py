@@ -127,4 +127,4 @@ class Color(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     color = db.Column(db.String, nullable=False)
 
-    skus = db.relationship("Sku", backref="color", cascade="delete")
+    # skus = db.relationship("Sku", backref="color", cascade="delete")
