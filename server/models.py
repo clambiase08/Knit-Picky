@@ -1,6 +1,122 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from config import db
+# from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import validates
+from sqlalchemy.ext.hybrid import hybrid_property
 
-# Models go here!
+from config import db, bcrypt
+
+
+class TimestampMixin:
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+
+class Customer(db.Model, SerializerMixin):
+    __tablename__ = "customers"
+    serialize_rules = (
+        "-orders.customer",
+        "-orders.orderitem",
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, nullable=False)
+    first_name = db.Column(db.String)
+    last_name = db.Column(db.String)
+    email = db.Column(db.String, nullable=False)
+    _password_hash = db.Column(db.String, nullable=False)
+    shipping_address = db.Column(db.Text)
+    billing_address = db.Column(db.Text)
+
+    def __repr__(self):
+        return f"User {self.username}, ID {self.id}"
+
+    @hybrid_property
+    def password_hash(self):
+        raise AttributeError("password hashes may not be viewed")
+
+    @password_hash.setter
+    def password_hash(self, password):
+        password_hash = bcrypt.generate_password_hash(password.encode("utf-8"))
+        self._password_hash = password_hash.decode("utf-8")
+
+    def authenticate(self, password):
+        return bcrypt.check_password_hash(self._password_hash, password.encode("utf-8"))
+
+    @validates(username, email)
+    def validate_signup(self, key, value):
+        if not len(value) > 0:
+            raise ValueError("Must provide at least one character to sign up")
+        return value
+
+    orders = db.relationship("Order", backref="customer", cascade="delete")
+    orderitems = association_proxy("orders", "orderitem")
+
+
+class Orders(db.Model, SerializerMixin, TimestampMixin):
+    __tablename__ = "orders"
+    serialize_rules = ("-orderitems.order",)
+
+    id = db.Column(db.Integer, primary_key=True)
+    status = db.Column(db.String, nullable=False)
+    customer_id = db.Column(db.Integer, db.ForeignKey("customers.id"))
+
+    orderitems = db.relationship("OrderItem", backref="order", cascade="delete")
+
+
+class OrderItems(db.Model, SerializerMixin):
+    __tablename__ = "orderitems"
+
+    id = db.Column(db.Integer, primary_key=True)
+    quantity = db.Column(db.Integer)
+    subtotal = db.Column(db.Float)
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
+    style_id = db.Column(db.Integer, db.ForeignKey("styles.id"))
+
+
+class Styles(db.Model, SerializerMixin):
+    __tablename__ = "styles"
+    serialize_rules = (
+        "-orderitems.style",
+        "-skus.style",
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    style_name = db.Column(db.String, nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    stock_quantity = db.Column(db.Integer)
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
+
+    orderitems = db.relationship("OrderItem", backref="style", cascade="delete")
+    skus = db.relationship("Sku", backref="style", cascade="delete")
+
+
+class Categories(db.Model, SerializerMixin):
+    __tablename__ = "categories"
+    serialize_rules = ("-styles.category",)
+
+    id = db.Column(db.Integer, primary_key=True)
+    category_name = db.Column(db.String, nullable=False)
+
+    styles = db.relationship("Style", backref="category", cascade="delete")
+
+
+class Skus(db.Model, SerializerMixin):
+    __tablename__ = "skus"
+
+    id = db.Column(db.Integer, primary_key=True)
+    sku = db.Column(db.String, nullable=False)
+    color_id = db.Column(db.Integer, db.ForeignKey("colors.id"))
+    style_id = db.Column(db.Integer, db.ForeignKey("styles.id"))
+
+
+class Colors(db.Model, SerializerMixin):
+    __tablename__ = "colors"
+    serialize_rules = ("-skus.color",)
+
+    id = db.Column(db.Integer, primary_key=True)
+    color = db.Column(db.String, nullable=False)
+
+    skus = db.relationship("Sku", backref="color", cascade="delete")
