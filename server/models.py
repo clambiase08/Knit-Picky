@@ -54,9 +54,12 @@ class Customer(db.Model, SerializerMixin):
     orderitems = association_proxy("orders", "orderitem")
 
 
-class Orders(db.Model, SerializerMixin, TimestampMixin):
+class Order(db.Model, SerializerMixin, TimestampMixin):
     __tablename__ = "orders"
-    serialize_rules = ("-orderitems.order",)
+    serialize_rules = (
+        "-orderitems.order",
+        "-orderitems.style",
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String, nullable=False)
@@ -65,8 +68,12 @@ class Orders(db.Model, SerializerMixin, TimestampMixin):
     orderitems = db.relationship("OrderItem", backref="order", cascade="delete")
 
 
-class OrderItems(db.Model, SerializerMixin):
+class OrderItem(db.Model, SerializerMixin):
     __tablename__ = "orderitems"
+    serialize_rules = (
+        "-order.customer",
+        "-style.orderitems",
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer)
@@ -75,10 +82,11 @@ class OrderItems(db.Model, SerializerMixin):
     style_id = db.Column(db.Integer, db.ForeignKey("styles.id"))
 
 
-class Styles(db.Model, SerializerMixin):
+class Style(db.Model, SerializerMixin):
     __tablename__ = "styles"
     serialize_rules = (
         "-orderitems.style",
+        "-orderitems.order",
         "-skus.style",
     )
 
@@ -93,7 +101,7 @@ class Styles(db.Model, SerializerMixin):
     skus = db.relationship("Sku", backref="style", cascade="delete")
 
 
-class Categories(db.Model, SerializerMixin):
+class Category(db.Model, SerializerMixin):
     __tablename__ = "categories"
     serialize_rules = ("-styles.category",)
 
@@ -103,7 +111,7 @@ class Categories(db.Model, SerializerMixin):
     styles = db.relationship("Style", backref="category", cascade="delete")
 
 
-class Skus(db.Model, SerializerMixin):
+class Sku(db.Model, SerializerMixin):
     __tablename__ = "skus"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -112,7 +120,7 @@ class Skus(db.Model, SerializerMixin):
     style_id = db.Column(db.Integer, db.ForeignKey("styles.id"))
 
 
-class Colors(db.Model, SerializerMixin):
+class Color(db.Model, SerializerMixin):
     __tablename__ = "colors"
     serialize_rules = ("-skus.color",)
 
