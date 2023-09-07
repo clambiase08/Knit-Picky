@@ -49,15 +49,15 @@ api.add_resource(Signup, "/signup")
 
 class Login(Resource):
     def post(self):
-        username = request.get_json()["username"]
-        customer = Customer.query.filter(Customer.username == username).first()
+        email = request.get_json()["email"]
+        customer = Customer.query.filter(Customer.email == email).first()
 
         password = request.get_json()["password"]
         if customer.authenticate(password):
             session["customer_id"] = customer.id
             return customer.to_dict(rules=("-_password_hash",))
 
-        return {"error": "Invalid username or password"}, 401
+        return {"error": "Invalid email or password"}, 401
 
 
 api.add_resource(Login, "/login")

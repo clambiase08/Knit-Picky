@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import { useCustomer } from "../context/CustomerProvider";
+import { ChakraProvider } from "@chakra-ui/react";
 import Main from "./App/Main";
 import NavBar from "./App/NavBar";
 import Login from "./App/Login";
@@ -17,21 +18,23 @@ function App() {
   }, []);
 
   return (
-    <Switch>
+    <ChakraProvider>
       <Main />
       <NavBar />
-      <Route path="/login">
-        <Login />
-      </Route>
-      <Route path="/logout">
-        <Logout />
-      </Route>
-      <Route path="/signup">
-        <Signup />
-      </Route>
+      <Switch>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/logout">
+          <Logout />
+        </Route>
+        <Route path="/signup">
+          <Signup />
+        </Route>
+      </Switch>
       <Contact />
       <AboutUs />
-    </Switch>
+    </ChakraProvider>
   );
 }
 
