@@ -10,8 +10,9 @@ export default function ShopAll() {
   const styleCards = styles.map((style) => {
     const colorIds = style.skus.map((sku) => sku.color_id);
     const images = style.skus.map((sku) => sku.image);
-    console.log(colorIds);
-    console.log(images);
+    // console.log(colorIds);
+    // console.log(images);
+
     return (
       <ProductCard
         key={style.id}

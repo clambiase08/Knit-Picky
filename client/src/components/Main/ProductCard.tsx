@@ -61,7 +61,7 @@ export default function ProductCard({
             pos: "absolute",
             top: 5,
             left: 0,
-            // backgroundImage: `url(${IMAGE})`,
+            backgroundImage: `url(${selectedImage})`,
             filter: "blur(15px)",
             zIndex: -1,
           }}
@@ -73,7 +73,7 @@ export default function ProductCard({
         >
           <Image
             rounded={"lg"}
-            height={230}
+            height={260}
             width={282}
             objectFit={"fill"}
             src={selectedImage}
@@ -81,7 +81,7 @@ export default function ProductCard({
           />
         </Box>
         <Stack mt={10}>
-          <Flex display="flex" gap={1}>
+          <Flex display="flex" gap={1} mt={2}>
             {color_ids.map((colorId, index) => {
               const color = colorDetail.find((c) => c.id === colorId);
               if (!color) return null;
@@ -89,22 +89,16 @@ export default function ProductCard({
               return (
                 <Circle
                   key={colorId}
-                  // value={100}
                   bg={color.color}
                   size="20px"
-                  // thickness="8px"
-                  // trackColor={trackColor}
-                  // capIsRound
                   borderColor={"black"}
                   borderWidth={"1px"}
                   onClick={() => setSelectedImage(images[index])}
-                >
-                  {/* <CircularProgressLabel /> */}
-                </Circle>
+                ></Circle>
               );
             })}
           </Flex>
-          <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
+          <Heading mt={1} fontSize={"xl"} fontFamily={"body"} fontWeight={500}>
             {style_name}
           </Heading>
           <Stack direction={"row"} align={"center"}>

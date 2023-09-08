@@ -9,7 +9,6 @@ import Logout from "./App/Logout";
 import Signup from "./App/Signup";
 import Contact from "./App/Contact";
 import AboutUs from "./App/AboutUs";
-import ShopAll from "./Main/Categories/ShopAll";
 
 function App() {
   const { fetchCustomer } = useCustomer();
@@ -31,9 +30,6 @@ function App() {
         </Route>
         <Route path="/signup">
           <Signup />
-        </Route>
-        <Route path="/shop-all">
-          <ShopAll />
         </Route>
         <Route path="/contact">
           <Contact />

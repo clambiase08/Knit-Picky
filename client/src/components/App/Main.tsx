@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import Home from "../Main/Home";
-// import ShopAll from "../Main/Categories/ShopAll";
+import ShopAll from "../Main/Categories/ShopAll";
 import BestSellers from "../Main/Categories/BestSellers";
 import Yarns from "../Main/Categories/Yarns";
 import Accessories from "../Main/Categories/Accessories";
@@ -17,9 +17,9 @@ export default function Main() {
       <Route exact path="/">
         <Home />
       </Route>
-      {/* <Route path="/shop-all">
+      <Route path="/shop-all">
         <ShopAll />
-      </Route> */}
+      </Route>
       <Route path="/bestsellers">
         <BestSellers />
       </Route>

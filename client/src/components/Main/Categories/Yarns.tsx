@@ -1,5 +1,32 @@
-import React from "react";
+import React, { useContext } from "react";
+import { StyleContext } from "../../../context/StyleProvider";
+import ProductCard from "../ProductCard";
+import { SimpleGrid, Box } from "@chakra-ui/react";
 
 export default function Yarns() {
-  return <div>Yarns</div>;
+  const { styles } = useContext(StyleContext);
+
+  const yarnStyles = styles.filter((style) => style.category_id === 1);
+
+  const styleCards = yarnStyles.map((style) => {
+    const colorIds = style.skus.map((sku) => sku.color_id);
+    const images = style.skus.map((sku) => sku.image);
+    return (
+      <ProductCard
+        key={style.id}
+        style_name={style.style_name}
+        price={style.price}
+        color_ids={colorIds}
+        images={images}
+      />
+    );
+  });
+
+  return (
+    <Box as="main" mt="20">
+      <SimpleGrid px={"40"} columns={4} spacing={3}>
+        {styleCards}
+      </SimpleGrid>
+    </Box>
+  );
 }
