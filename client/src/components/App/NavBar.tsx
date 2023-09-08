@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useCustomer } from "../../context/CustomerProvider";
 import {
   Box,
   Flex,
@@ -67,6 +68,7 @@ const NAV_ITEMS: Array<NavItem> = [
 
 export default function NavBar() {
   const { isOpen, onToggle } = useDisclosure();
+  const { handleLogout, customer } = useCustomer();
 
   return (
     <Box as="header" position="fixed" top={0} w="100%" zIndex={2}>
@@ -117,17 +119,7 @@ export default function NavBar() {
           direction={"row"}
           spacing={6}
         >
-          <NavLink to="/login">
-            <Button
-              fontSize={"sm"}
-              fontWeight={400}
-              variant={"link"}
-              verticalAlign={"bottom"}
-            >
-              Sign In
-            </Button>
-          </NavLink>
-          <NavLink to="/signup">
+          {customer ? (
             <Button
               display={{ base: "none", md: "inline-flex" }}
               fontSize={"sm"}
@@ -137,10 +129,38 @@ export default function NavBar() {
               _hover={{
                 bg: "pink.300",
               }}
+              onClick={handleLogout}
             >
-              Sign Up
+              Logout
             </Button>
-          </NavLink>
+          ) : (
+            <>
+              <NavLink to="/login">
+                <Button
+                  fontSize={"sm"}
+                  fontWeight={400}
+                  variant={"link"}
+                  verticalAlign={"bottom"}
+                >
+                  Sign In
+                </Button>
+              </NavLink>
+              <NavLink to="/signup">
+                <Button
+                  display={{ base: "none", md: "inline-flex" }}
+                  fontSize={"sm"}
+                  fontWeight={600}
+                  color={"white"}
+                  bg={"pink.400"}
+                  _hover={{
+                    bg: "pink.300",
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </NavLink>
+            </>
+          )}
         </Stack>
       </Flex>
 

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { useHistory } from "react-router-dom";
 
 interface Customer {
   username?: string;
@@ -15,6 +16,7 @@ interface CustomerContextType {
   setCustomer: (customer: Customer) => void;
   fetchCustomer: () => void;
   handleLogin: (values: Customer, authType: string) => void;
+  handleLogout: () => void;
 }
 
 interface CustomerProviderProps {
@@ -67,11 +69,25 @@ const CustomerProvider = ({ children }: CustomerProviderProps) => {
     }
   };
 
+  const history = useHistory();
+
+  const handleLogout = () => {
+    fetch("/logout", {
+      method: "DELETE",
+    }).then((r) => {
+      if (r.ok) {
+        setCustomer(null);
+        history.push("/");
+      }
+    });
+  };
+
   const contextValue = {
     customer,
     setCustomer,
     fetchCustomer,
     handleLogin,
+    handleLogout,
   };
 
   return (
