@@ -8,8 +8,10 @@ import {
   Text,
   Stack,
   Image,
+  Circle,
+  Flex,
 } from "@chakra-ui/react";
-import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
+// import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 
 interface ProductCardProps {
   style_name: string;
@@ -30,7 +32,7 @@ export default function ProductCard({
     color: color.color,
     id: color.id,
   }));
-  const trackColor = useColorModeValue("gray.200", "gray.700");
+  // const trackColor = useColorModeValue("gray.200", "gray.700");
 
   return (
     <Center py={12}>
@@ -77,25 +79,29 @@ export default function ProductCard({
             alt="#"
           />
         </Box>
-        <Stack pt={10} align={"center"}>
-          {color_ids.map((colorId) => {
-            const color = colorDetail.find((c) => c.id === colorId);
-            if (!color) return null;
+        <Stack mt={10}>
+          <Flex display="flex" gap={1}>
+            {color_ids.map((colorId) => {
+              const color = colorDetail.find((c) => c.id === colorId);
+              if (!color) return null;
 
-            return (
-              <CircularProgress
-                key={colorId}
-                value={100}
-                color={color.color}
-                size="40px"
-                thickness="8px"
-                trackColor={trackColor}
-                capIsRound
-              >
-                <CircularProgressLabel />
-              </CircularProgress>
-            );
-          })}
+              return (
+                <Circle
+                  key={colorId}
+                  // value={100}
+                  bg={color.color}
+                  size="20px"
+                  // thickness="8px"
+                  // trackColor={trackColor}
+                  // capIsRound
+                  borderColor={"black"}
+                  borderWidth={"1px"}
+                >
+                  {/* <CircularProgressLabel /> */}
+                </Circle>
+              );
+            })}
+          </Flex>
           <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
             {style_name}
           </Heading>
