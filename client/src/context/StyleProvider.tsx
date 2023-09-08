@@ -13,6 +13,7 @@ interface Style {
 interface Skus {
   color_id: number;
   id: number;
+  image: string;
   sku: string;
   style_id: number;
 }

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ColorContext } from "../../context/ColorProvider";
 import {
   Box,
@@ -11,28 +11,29 @@ import {
   Circle,
   Flex,
 } from "@chakra-ui/react";
-// import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 
 interface ProductCardProps {
   style_name: string;
   price: number;
   color_ids: number[];
+  images: string[];
 }
 
-const IMAGE =
-  "https://images.unsplash.com/photo-1518051870910-a46e30d9db16?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80";
+// const IMAGE = "http://localhost:3000/assets/khaki-alpaca.png";
 
 export default function ProductCard({
   style_name,
   price,
   color_ids,
+  images,
 }: ProductCardProps) {
   const { colors } = useContext(ColorContext);
+  const [selectedImage, setSelectedImage] = useState(images[0]);
+
   const colorDetail = colors.map((color) => ({
     color: color.color,
     id: color.id,
   }));
-  // const trackColor = useColorModeValue("gray.200", "gray.700");
 
   return (
     <Center py={12}>
@@ -60,7 +61,7 @@ export default function ProductCard({
             pos: "absolute",
             top: 5,
             left: 0,
-            backgroundImage: `url(${IMAGE})`,
+            // backgroundImage: `url(${IMAGE})`,
             filter: "blur(15px)",
             zIndex: -1,
           }}
@@ -74,14 +75,14 @@ export default function ProductCard({
             rounded={"lg"}
             height={230}
             width={282}
-            objectFit={"cover"}
-            src={IMAGE}
+            objectFit={"fill"}
+            src={selectedImage}
             alt="#"
           />
         </Box>
         <Stack mt={10}>
           <Flex display="flex" gap={1}>
-            {color_ids.map((colorId) => {
+            {color_ids.map((colorId, index) => {
               const color = colorDetail.find((c) => c.id === colorId);
               if (!color) return null;
 
@@ -96,6 +97,7 @@ export default function ProductCard({
                   // capIsRound
                   borderColor={"black"}
                   borderWidth={"1px"}
+                  onClick={() => setSelectedImage(images[index])}
                 >
                   {/* <CircularProgressLabel /> */}
                 </Circle>
