@@ -18,13 +18,44 @@ from models import *
 # Views go here!
 
 
+# class Signup(Resource):
+#     def post(self):
+#         username = request.get_json()["username"]
+#         email = request.get_json()["email"]
+#         new_customer = Customer(
+#             username=username,
+#             email=email,
+#         )
+
+#         password = request.get_json()["password"]
+#         new_customer.password_hash = password
+#         db.session.add(new_customer)
+#         db.session.commit()
+#         session["customer_id"] = new_customer.id
+
+#         order = Order(
+#             status="created",
+#             customer_id=new_customer.id,
+#         )
+
+#         db.session.add(order)
+#         db.session.commit()
+
+#         return new_customer.to_dict()
+
+
+# api.add_resource(Signup, "/signup")
+
+
 class Signup(Resource):
     def post(self):
-        username = request.get_json()["username"]
+        first_name = request.get_json()["first_name"]
+        last_name = request.get_json()["last_name"]
         email = request.get_json()["email"]
         new_customer = Customer(
-            username=username,
             email=email,
+            first_name=first_name,
+            last_name=last_name,
         )
 
         password = request.get_json()["password"]

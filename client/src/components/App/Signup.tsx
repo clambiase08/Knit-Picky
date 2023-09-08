@@ -57,7 +57,7 @@ export default function Signup() {
             </FormControl>
             <Stack spacing={6}>
               <Button colorScheme={"blue"} variant={"solid"} type="submit">
-                Sign in
+                Sign up
               </Button>
             </Stack>
           </form>

@@ -21,7 +21,7 @@ class Customer(db.Model, SerializerMixin):
     )
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, nullable=False)
+    # username = db.Column(db.String, nullable=False)
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)
     email = db.Column(db.String, nullable=False)
@@ -44,7 +44,7 @@ class Customer(db.Model, SerializerMixin):
     def authenticate(self, password):
         return bcrypt.check_password_hash(self._password_hash, password.encode("utf-8"))
 
-    @validates(username, email)
+    @validates(email)
     def validate_signup(self, key, value):
         if not len(value) > 0:
             raise ValueError("Must provide at least one character to sign up")

@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
         print("Seeding customers...")
         christina = Customer(
-            username="xtina08",
+            # username="xtina08",
             first_name="Christina",
             last_name="Lambiase",
             email="christina.lambiase@gmail.com",
@@ -39,7 +39,7 @@ if __name__ == "__main__":
         christina.password_hash = "cubby123"
 
         gina = Customer(
-            username="ginalamb",
+            # username="ginalamb",
             first_name="Gina",
             last_name="Dammann",
             email="gnlambiase@gmail.com",
@@ -49,7 +49,7 @@ if __name__ == "__main__":
         gina.password_hash = "chico123"
 
         sean = Customer(
-            username="seancali18",
+            # username="seancali18",
             first_name="Sean",
             last_name="Callaghan",
             email="seancallaghan18@gmail.com",
