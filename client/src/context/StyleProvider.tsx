@@ -1,18 +1,38 @@
 import React, { useState, ReactNode, useEffect } from "react";
 
-interface Styles {
-  styles: Styles[];
-  setStyles: React.Dispatch<React.SetStateAction<Styles[]>>;
+interface Style {
+  id: number;
+  style_name: string;
+  description?: string;
+  price: number;
+  stock_quantity?: number;
+  category_id?: number;
+  skus?: Skus[];
 }
 
-export const StyleContext = React.createContext<Styles[]>([]);
+interface Skus {
+  color_id: number;
+  id: number;
+  sku: string;
+  style_id: number;
+}
+
+interface StylesContextProps {
+  styles: Style[];
+  setStyles: React.Dispatch<React.SetStateAction<Style[]>>;
+}
+
+export const StyleContext = React.createContext<StylesContextProps>({
+  styles: [],
+  setStyles: () => {},
+});
 
 interface StyleProviderProps {
   children: ReactNode;
 }
 
 export default function StyleProvider({ children }: StyleProviderProps) {
-  const [styles, setStyles] = useState<Styles[]>([]);
+  const [styles, setStyles] = useState<Style[]>([]);
 
   useEffect(() => {
     fetch("/styles")
@@ -20,12 +40,13 @@ export default function StyleProvider({ children }: StyleProviderProps) {
         if (res.ok) {
           return res.json();
         }
-        throw res;
+        throw new Error("Response not OK");
       })
-      .then((styles) => setStyles(styles));
+      .then((styles) => {
+        setStyles(styles);
+        console.log(styles);
+      });
   }, []);
-
-  console.log(styles);
 
   const contextValue = {
     styles,
@@ -33,7 +54,7 @@ export default function StyleProvider({ children }: StyleProviderProps) {
   };
 
   return (
-    <StyleContext.Provider value={[contextValue]}>
+    <StyleContext.Provider value={contextValue}>
       {children}
     </StyleContext.Provider>
   );
