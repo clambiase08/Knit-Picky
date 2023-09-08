@@ -8,11 +8,14 @@ export default function ShopAll() {
   console.log(styles);
 
   const styleCards = styles.map((style) => {
+    const colorIds = style.skus?.map((sku) => sku.color_id);
+    console.log(colorIds);
     return (
       <ProductCard
         key={style.id}
         style_name={style.style_name}
         price={style.price}
+        color_ids={colorIds}
       />
     );
   });

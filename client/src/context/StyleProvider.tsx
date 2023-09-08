@@ -7,7 +7,7 @@ interface Style {
   price: number;
   stock_quantity?: number;
   category_id?: number;
-  skus?: Skus[];
+  skus: Skus[];
 }
 
 interface Skus {

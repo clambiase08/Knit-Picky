@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ColorContext } from "../../context/ColorProvider";
 import {
   Box,
   Center,
@@ -8,15 +9,29 @@ import {
   Stack,
   Image,
 } from "@chakra-ui/react";
+import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 
 interface ProductCardProps {
   style_name: string;
   price: number;
+  color_ids: number[];
 }
+
 const IMAGE =
   "https://images.unsplash.com/photo-1518051870910-a46e30d9db16?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80";
 
-export default function ProductCard({ style_name, price }: ProductCardProps) {
+export default function ProductCard({
+  style_name,
+  price,
+  color_ids,
+}: ProductCardProps) {
+  const { colors } = useContext(ColorContext);
+  const colorDetail = colors.map((color) => ({
+    color: color.color,
+    id: color.id,
+  }));
+  const trackColor = useColorModeValue("gray.200", "gray.700");
+
   return (
     <Center py={12}>
       <Box
@@ -63,16 +78,28 @@ export default function ProductCard({ style_name, price }: ProductCardProps) {
           />
         </Box>
         <Stack pt={10} align={"center"}>
-          {/* <Text color={"gray.500"} fontSize={"sm"} textTransform={"uppercase"}>
-            Brand
-          </Text> */}
+          {color_ids.map((colorId) => {
+            const color = colorDetail.find((c) => c.id === colorId);
+            if (!color) return null;
+
+            return (
+              <CircularProgress
+                key={colorId}
+                value={100}
+                color={color.color}
+                size="40px"
+                thickness="8px"
+                trackColor={trackColor}
+                capIsRound
+              >
+                <CircularProgressLabel />
+              </CircularProgress>
+            );
+          })}
           <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
             {style_name}
           </Heading>
           <Stack direction={"row"} align={"center"}>
-            {/* <Text fontWeight={800} fontSize={'xl'}>
-              $57
-            </Text> */}
             <Text color={"gray.600"}>${price.toFixed(2)}</Text>
           </Stack>
         </Stack>

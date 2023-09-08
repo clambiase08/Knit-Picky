@@ -136,6 +136,15 @@ class Customers(Resource):
 api.add_resource(Customers, "/customers")
 
 
+class Colors(Resource):
+    def get(self):
+        colors = [color.to_dict() for color in Color.query.all()]
+        return make_response(colors, 200)
+
+
+api.add_resource(Colors, "/colors")
+
+
 class OrderItems(Resource):
     def get(self):
         order_items = [o_i.to_dict() for o_i in OrderItem.query.all()]
@@ -143,6 +152,17 @@ class OrderItems(Resource):
 
 
 api.add_resource(OrderItems, "/order_items")
+
+
+class ColorNames(Resource):
+    def get(self):
+        color_ids = request.args.getlist("color_ids[]")
+        colors = Color.query.filter(Color.id.in_(color_ids)).all()
+        color_names = [color.color for color in colors]
+        return {"color_names": color_names}
+
+
+api.add_resource(ColorNames, "/color-names")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
