@@ -116,6 +116,7 @@ class Sku(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     sku = db.Column(db.String, nullable=False)
+    image = db.Column(db.String)
     color_id = db.Column(db.Integer, db.ForeignKey("colors.id"))
     style_id = db.Column(db.Integer, db.ForeignKey("styles.id"))
 
