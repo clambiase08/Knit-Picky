@@ -22,58 +22,31 @@ type RouteParams = {
   id: string;
 };
 
-// export default function ProductDetailPage() {
-//   const { id } = useParams<RouteParams>();
-//   const { styles } = useContext(StyleContext);
-//   const { colors } = useContext(ColorContext);
-
-//   const style = styles.find((style) => style.id === parseInt(id));
-
-//   const images = style.skus.map((sku) => sku.image);
-//   const colorIds = style.skus.map((sku) => sku.color_id);
-
-//   const [selectedImage, setSelectedImage] = useState(images[0]);
-
-//   if (!style) {
-//     return <div>Style not found</div>;
-//   }
-
-//   const colorDetail = colors.map((color) => ({
-//     color: color.color,
-//     id: color.id,
-//   }));
 export default function ProductDetailPage() {
   const { id } = useParams<RouteParams>();
   const { styles } = useContext(StyleContext);
   const { colors } = useContext(ColorContext);
 
   const style = styles.find((style) => style.id === parseInt(id));
-
-  const [selectedImage, setSelectedImage] = useState<string | undefined>();
+  const defaultImage = style?.skus[0]?.image || "";
+  // console.log(defaultImage);
+  const [selectedImage, setSelectedImage] = useState<string | undefined>(
+    defaultImage
+  );
 
   useEffect(() => {
-    if (!style) {
-      console.log("Style not found");
-    } else if (style.skus.length > 0) {
-      const correctedPath = style.skus[0].image.replace("product/", "");
-      setSelectedImage(correctedPath);
-    }
-  }, [style]);
+    // Update selectedImage after the component mounts
+    setSelectedImage(defaultImage);
+  }, [defaultImage]);
 
   if (!style) {
     return <div>Style not found</div>;
   }
 
   const images = style.skus.map((sku) => sku.image);
+
   const colorIds = style.skus.map((sku) => sku.color_id);
-
-  // useEffect(() => {
-  //   if (style && images.length > 0) {
-  //     setSelectedImage(images[0]);
-  //   }
-  // }, [style, images]);
-
-  // setSelectedImage(images[0]);
+  // console.log(images);
 
   const colorDetail = colors.map((color) => ({
     color: color.color,
@@ -91,7 +64,7 @@ export default function ProductDetailPage() {
           <Image
             rounded={"md"}
             alt={"product image"}
-            src={selectedImage}
+            src={`http://localhost:3000/${selectedImage}`}
             fit={"cover"}
             align={"center"}
             w={"100%"}
@@ -147,13 +120,7 @@ export default function ProductDetailPage() {
                       size="30px"
                       borderColor={"black"}
                       borderWidth={"1px"}
-                      onClick={() => {
-                        const correctedPath = images[index].replace(
-                          "product/",
-                          ""
-                        );
-                        setSelectedImage(correctedPath);
-                      }}
+                      onClick={() => setSelectedImage(images[index])}
                     ></Circle>
                   );
                 })}

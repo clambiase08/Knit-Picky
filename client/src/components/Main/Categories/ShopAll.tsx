@@ -5,7 +5,7 @@ import { SimpleGrid, Box } from "@chakra-ui/react";
 
 export default function ShopAll() {
   const { styles } = useContext(StyleContext);
-  console.log(styles);
+  // console.log(styles);
 
   const styleCards = styles.map((style) => {
     const colorIds = style.skus.map((sku) => sku.color_id);
