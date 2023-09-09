@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useCustomer } from "../../context/CustomerProvider";
 import {
   Box,
@@ -18,6 +18,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 
 interface NavItem {
   label: string;
@@ -69,6 +70,7 @@ const NAV_ITEMS: Array<NavItem> = [
 export default function NavBar() {
   const { isOpen, onToggle } = useDisclosure();
   const { handleLogout, customer } = useCustomer();
+  const history = useHistory();
 
   return (
     <Box as="header" position="fixed" top={0} w="100%" zIndex={2}>
@@ -122,19 +124,35 @@ export default function NavBar() {
           spacing={6}
         >
           {customer ? (
-            <Button
-              display={{ base: "none", md: "inline-flex" }}
-              fontSize={"sm"}
-              fontWeight={600}
-              color={"white"}
-              bg={"green.800"}
-              _hover={{
-                bg: "green.700",
-              }}
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
+            <>
+              <Box mt={"9px"}>
+                <AiOutlineUser
+                  size={"20px"}
+                  onClick={() =>
+                    history.push(`/profile/${customer.first_name}`)
+                  }
+                />
+              </Box>
+              <Box mt={"7px"}>
+                <AiOutlineShoppingCart
+                  size={"25px"}
+                  onClick={() => history.push("/cart")}
+                />
+              </Box>
+              <Button
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize={"sm"}
+                fontWeight={600}
+                color={"white"}
+                bg={"green.800"}
+                _hover={{
+                  bg: "green.700",
+                }}
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </>
           ) : (
             <>
               <NavLink to="/login">
