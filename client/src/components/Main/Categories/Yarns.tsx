@@ -14,6 +14,7 @@ export default function Yarns() {
     return (
       <ProductCard
         key={style.id}
+        id={style.id}
         style_name={style.style_name}
         price={style.price}
         color_ids={colorIds}

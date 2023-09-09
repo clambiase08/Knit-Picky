@@ -14,6 +14,7 @@ export default function Accessories() {
     return (
       <ProductCard
         key={style.id}
+        id={style.id}
         style_name={style.style_name}
         price={style.price}
         color_ids={colorIds}

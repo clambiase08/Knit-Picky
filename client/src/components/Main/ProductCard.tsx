@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { ColorContext } from "../../context/ColorProvider";
+import { useHistory } from "react-router-dom";
 import {
   Box,
   Center,
@@ -13,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 interface ProductCardProps {
+  id: number;
   style_name: string;
   price: number;
   color_ids: number[];
@@ -26,9 +28,11 @@ export default function ProductCard({
   price,
   color_ids,
   images,
+  id,
 }: ProductCardProps) {
   const { colors } = useContext(ColorContext);
   const [selectedImage, setSelectedImage] = useState(images[0]);
+  const history = useHistory();
 
   const colorDetail = colors.map((color) => ({
     color: color.color,
@@ -78,12 +82,13 @@ export default function ProductCard({
             objectFit={"fill"}
             src={selectedImage}
             alt="#"
+            onClick={() => history.push(`/product/${id}`)}
           />
         </Box>
         <Stack mt={10}>
           <Flex display="flex" gap={1} mt={2}>
             {color_ids.map((colorId, index) => {
-              const color = colorDetail.find((c) => c.id === colorId);
+              const color = colorDetail.find((color) => color.id === colorId);
               if (!color) return null;
 
               return (
