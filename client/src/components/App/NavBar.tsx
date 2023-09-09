@@ -102,6 +102,8 @@ export default function NavBar() {
             <Text
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
               fontFamily={"heading"}
+              fontWeight={800}
+              fontSize={"xl"}
               color={useColorModeValue("gray.800", "white")}
             >
               Knit Picky
