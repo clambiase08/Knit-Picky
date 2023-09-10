@@ -7,7 +7,12 @@ import {
   Image,
   Grid,
   GridItem,
-  // Select,
+  Select,
+  HStack,
+  Text,
+  Divider,
+  Button,
+  AspectRatio,
 } from "@chakra-ui/react";
 import { OrderItemContext } from "../../context/OrderItemProvider";
 import { useCustomer } from "../../context/CustomerProvider";
@@ -31,6 +36,14 @@ export default function Cart() {
       orderItem.order.customer_id === customer.id &&
       orderItem.order.status === "created"
   );
+
+  const totalSubtotal = userOrderItems.reduce(
+    (sum, item) => sum + item.subtotal,
+    0
+  );
+  const shippingTotal = 5.95;
+  const taxes = totalSubtotal * 0.11;
+  const totalAmount = totalSubtotal + shippingTotal + taxes;
 
   return (
     <Container maxW="95%" p={0}>
@@ -64,120 +77,86 @@ export default function Cart() {
                     gap={5}
                     key={item.id}
                   >
-                    <GridItem colSpan={1} h="100px">
-                      <Image
-                        boxSize="120px"
-                        objectFit="cover"
-                        borderRadius="lg"
-                        src={sku.image}
-                      ></Image>
+                    <GridItem colSpan={1} h="140px">
+                      <AspectRatio ratio={3 / 4} w={"120px"}>
+                        <Image
+                          boxSize="120px"
+                          objectFit="cover"
+                          borderRadius="lg"
+                          src={sku.image}
+                        ></Image>
+                      </AspectRatio>
                     </GridItem>
-                    <GridItem colStart={2} colEnd={2} h="100px">
+                    <GridItem colStart={2} colEnd={2} h="140px">
                       {orderStyle.style_name} - {colorDetail.color}
                     </GridItem>
-                    <GridItem colStart={3} colEnd={3} h="100px">
-                      Qty: {item.quantity}
+                    <GridItem colStart={3} colEnd={3} h="140px">
+                      Qty:
+                      <Select placeholder={`${item.quantity}`}>
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                        <option value={4}>4</option>
+                        <option value={5}>5</option>
+                      </Select>
                     </GridItem>
-                    <GridItem colStart={4} colEnd={4} h="100px">
-                      Subtotal: ${item.subtotal}
+                    <GridItem colStart={4} colEnd={4} h="140px">
+                      Subtotal: ${item.subtotal.toFixed(2)}
                     </GridItem>
                   </Grid>
                 );
               }
             }
-            return null; // Handle the case when sku or colorDetail is undefined
+            return null;
           })}
         </VStack>
         <VStack
-          w="full"
-          h="full"
+          w="60%"
+          h="60%"
           p={10}
+          mt={10}
           spacing={10}
           alignItems="flex-start"
           bg="gray.50"
-        ></VStack>
+        >
+          <Heading size="xl">Order Summary</Heading>
+          <VStack spacing={4} alignItems="stretch" w="full">
+            <HStack justifyContent="space-between">
+              <Text color="gray.600">Subtotal</Text>
+              <Heading size="sm">${totalSubtotal.toFixed(2)}</Heading>
+            </HStack>
+            <HStack justifyContent="space-between">
+              <Text color="gray.600">Shipping</Text>
+              <Heading size="sm">${shippingTotal.toFixed(2)}</Heading>
+            </HStack>
+            <HStack justifyContent="space-between">
+              <Text color="gray.600">Taxes (estimated)</Text>
+              <Heading size="sm">${taxes.toFixed(2)}</Heading>
+            </HStack>
+            <Divider />
+            <HStack justifyContent="space-between">
+              <Text color="gray.600">Total</Text>
+              <Heading size="lg">${totalAmount.toFixed(2)}</Heading>
+            </HStack>
+          </VStack>
+          <Button
+            w={"full"}
+            mt={6}
+            size={"lg"}
+            py={"7"}
+            bg={"green.800"}
+            color={"white"}
+            textTransform={"uppercase"}
+            _hover={{
+              transform: "translateY(2px)",
+              boxShadow: "lg",
+              bg: "green.700",
+            }}
+          >
+            Checkout
+          </Button>
+        </VStack>
       </Flex>
     </Container>
   );
 }
-
-//   return (
-//     <Container maxW="95%" p={0}>
-//       <Flex h="100vh" py={"60px"}>
-//         <VStack
-//           w="full"
-//           h="full"
-//           p={0}
-//           mt={10}
-//           spacing={10}
-//           alignItems="flex-start"
-//         >
-//           <Heading size="xl">
-//             Shopping Cart ({userOrderItems.length} items)
-//           </Heading>
-//           {userOrderItems.map((item) => {
-//             const orderStyle = styles.find(
-//               (style) => style.id === item.style_id
-//             );
-
-//             if (orderStyle) {
-//               const filteredOrderItems = userOrderItems.filter(
-//                 (item) => item.order.status === "created"
-//               );
-
-//               return filteredOrderItems.map((item) => {
-//                 const sku = orderStyle.skus.find(
-//                   (sku) => sku.id === item.sku_id
-//                 );
-//                 const colorDetail = colors.find(
-//                   (color) => color.id === sku?.color_id
-//                 );
-
-//                 if (sku && colorDetail) {
-//                   // Check if sku and colorDetail are defined
-//                   return (
-//                     <Grid
-//                       templateColumns="250px repeat(3, 1fr)"
-//                       gap={5}
-//                       key={item.id}
-//                     >
-//                       <GridItem colSpan={1} h="10">
-//                         <Image
-//                           boxSize="120px"
-//                           objectFit="cover"
-//                           borderRadius="lg"
-//                           src={sku.image}
-//                         ></Image>
-//                       </GridItem>
-//                       <GridItem colStart={2} colEnd={2} h="10">
-//                         {orderStyle.style_name} - {colorDetail.color}
-//                       </GridItem>
-//                       <GridItem colStart={3} colEnd={3} h="10">
-//                         Qty: {item.quantity}
-//                       </GridItem>
-//                       <GridItem colStart={4} colEnd={4} h="10">
-//                         Subtotal: ${item.subtotal}
-//                       </GridItem>
-//                     </Grid>
-//                   );
-//                 } else {
-//                   return null; // Handle the case when sku or colorDetail is undefined
-//                 }
-//               });
-//             } else {
-//               return null;
-//             }
-//           })}
-//         </VStack>
-//         <VStack
-//           w="full"
-//           h="full"
-//           p={10}
-//           spacing={10}
-//           alignItems="flex-start"
-//           bg="gray.50"
-//         ></VStack>
-//       </Flex>
-//     </Container>
-//   );
-// }

@@ -139,6 +139,7 @@ export default function ProductDetailPage() {
             _hover={{
               transform: "translateY(2px)",
               boxShadow: "lg",
+              bg: "green.700",
             }}
           >
             Add to cart
