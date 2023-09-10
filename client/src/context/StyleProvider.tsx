@@ -45,7 +45,7 @@ export default function StyleProvider({ children }: StyleProviderProps) {
       })
       .then((styles) => {
         setStyles(styles);
-        console.log(styles);
+        // console.log(styles);
       });
   }, []);
 

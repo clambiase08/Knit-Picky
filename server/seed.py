@@ -82,25 +82,7 @@ if __name__ == "__main__":
             db.session.commit()
         print("Orders seeded...")
 
-        print("Seeding order items...")
-        for _ in range(25):
-            quantity = randint(1, 4)
-            subtotal = random.uniform(10.00, 50.00)
-            order_id = randint(1, 10)
-            style_id = randint(1, 20)
-
-            order_item = OrderItem(
-                quantity=quantity,
-                subtotal=subtotal,
-                order_id=order_id,
-                style_id=style_id,
-            )
-            db.session.add(order_item)
-            db.session.commit()
-        print("Order items seeded...")
-
         print("Seeding styles...")
-
         styles = [
             {
                 "style_name": "Alpaca",
@@ -172,6 +154,26 @@ if __name__ == "__main__":
             db.session.add(style)
             db.session.commit()
         print("Styles seeded...")
+
+        print("Seeding order items...")
+        for _ in range(25):
+            quantity = randint(1, 4)
+            style_id = randint(1, 7)
+            # subtotal = random.uniform(10.00, 50.00)
+
+            style = Style.query.get(style_id)
+            subtotal = style.price * quantity
+
+            order_id = randint(1, 10)
+            order_item = OrderItem(
+                quantity=quantity,
+                subtotal=subtotal,
+                order_id=order_id,
+                style_id=style_id,
+            )
+            db.session.add(order_item)
+            db.session.commit()
+        print("Order items seeded...")
 
         print("Seeding categories...")
         yarns = Category(category_name="yarns")

@@ -7,6 +7,7 @@ import {
   Image,
   Grid,
   GridItem,
+  Select,
 } from "@chakra-ui/react";
 
 export default function Cart() {
@@ -22,7 +23,7 @@ export default function Cart() {
           alignItems="flex-start"
         >
           <Heading size="xl">Shopping Cart (x items)</Heading>
-          <Grid templateColumns="repeat(2, 1fr)" gap={10}>
+          <Grid templateColumns="250px repeat(3, 1fr)" gap={5}>
             <GridItem colSpan={1} h="10">
               <Image
                 boxSize="120px"
@@ -31,8 +32,14 @@ export default function Cart() {
                 src={"http://localhost:3000/assets/blue-plush.png"}
               ></Image>
             </GridItem>
-            <GridItem colStart={2} colEnd={3} h="10">
+            <GridItem colStart={2} colEnd={2} h="10">
               Testing
+            </GridItem>
+            <GridItem colStart={3} colEnd={3} h="10">
+              Qty
+            </GridItem>
+            <GridItem colStart={4} colEnd={4} h="10">
+              <Select placeholder="3"></Select>
             </GridItem>
           </Grid>
         </VStack>

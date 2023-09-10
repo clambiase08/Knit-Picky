@@ -147,7 +147,16 @@ api.add_resource(Colors, "/colors")
 
 class OrderItems(Resource):
     def get(self):
-        order_items = [o_i.to_dict() for o_i in OrderItem.query.all()]
+        order_items = [
+            o_i.to_dict(
+                rules=(
+                    "-order.orderitems",
+                    # "-style.category.styles.orderitems",
+                    "-style",
+                )
+            )
+            for o_i in OrderItem.query.all()
+        ]
         return make_response(order_items, 200)
 
 

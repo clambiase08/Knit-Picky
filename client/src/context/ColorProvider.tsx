@@ -32,7 +32,7 @@ export default function ColorProvider({ children }: ColorProviderProps) {
       })
       .then((colors) => {
         setColors(colors);
-        console.log(colors);
+        // console.log(colors);
       });
   }, []);
 
