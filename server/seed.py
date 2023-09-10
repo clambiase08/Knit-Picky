@@ -64,15 +64,18 @@ if __name__ == "__main__":
         print("Customers seeded...")
 
         print("Seeding orders...")
-        order_list = []
-        status_list = [
-            "created",
-            "paid",
-            "shipped",
-        ]
+        status_list = ["paid", "shipped"]
         for _ in range(10):
-            status = random.choice(status_list)
             customer_id = randint(1, 3)
+
+            existing_order = Order.query.filter_by(
+                customer_id=customer_id, status="created"
+            ).first()
+
+            if existing_order:
+                status = random.choice(status_list)
+            else:
+                status = "created"
 
             order = Order(
                 status=status,
