@@ -2,10 +2,23 @@ import React, { useState, ReactNode, useEffect } from "react";
 
 interface OrderItem {
   id: number;
-  quantity: number;
-  subtotal: number;
+  order: {
+    customer_id: number;
+    status: string;
+  };
   order_id: number;
+  quantity: number;
+  sku_id: number;
   style_id: number;
+  subtotal: number;
+  style: {
+    category_id: number;
+    description: string;
+    id: number;
+    price: number;
+    stock_quantity: number;
+    style_name: string;
+  };
 }
 
 interface OrderItemsContextProps {
@@ -22,7 +35,9 @@ interface OrderItemProviderProps {
   children: ReactNode;
 }
 
-export default function OrderProvider({ children }: OrderItemProviderProps) {
+export default function OrderItemProvider({
+  children,
+}: OrderItemProviderProps) {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
   useEffect(() => {
@@ -35,7 +50,7 @@ export default function OrderProvider({ children }: OrderItemProviderProps) {
       })
       .then((orderItems) => {
         setOrderItems(orderItems);
-        console.log(orderItems);
+        // console.log(orderItems);
       });
   }, []);
 

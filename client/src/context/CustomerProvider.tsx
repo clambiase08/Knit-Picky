@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import { useHistory } from "react-router-dom";
 
 interface Customer {
+  id?: number;
   username?: string;
   first_name?: string;
   last_name?: string;
@@ -47,7 +48,7 @@ const CustomerProvider = ({ children }: CustomerProviderProps) => {
       })
       .then((customer) => {
         setCustomer(customer);
-        console.log(customer);
+        // console.log(customer);
       })
       .catch((error) => {
         console.error(error);

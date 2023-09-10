@@ -120,7 +120,15 @@ api.add_resource(Logout, "/logout")
 
 class Styles(Resource):
     def get(self):
-        styles = [style.to_dict(rules=("-orderitems",)) for style in Style.query.all()]
+        styles = [
+            style.to_dict(
+                rules=(
+                    "-orderitems",
+                    "-category.styles.orderitems",
+                )
+            )
+            for style in Style.query.all()
+        ]
         return make_response(styles, 200)
 
 

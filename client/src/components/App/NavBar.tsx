@@ -71,6 +71,7 @@ export default function NavBar() {
   const { isOpen, onToggle } = useDisclosure();
   const { handleLogout, customer } = useCustomer();
   const history = useHistory();
+  const iconHoverColor = useColorModeValue("gray.800", "white");
 
   return (
     <Box as="header" position="fixed" top={0} w="100%" zIndex={2}>
@@ -125,7 +126,13 @@ export default function NavBar() {
         >
           {customer ? (
             <>
-              <Box mt={"9px"}>
+              <Box
+                mt={"9px"}
+                _hover={{
+                  textDecoration: "none",
+                  color: iconHoverColor,
+                }}
+              >
                 <AiOutlineUser
                   size={"20px"}
                   onClick={() =>
@@ -133,7 +140,13 @@ export default function NavBar() {
                   }
                 />
               </Box>
-              <Box mt={"7px"}>
+              <Box
+                mt={"7px"}
+                _hover={{
+                  textDecoration: "none",
+                  color: iconHoverColor,
+                }}
+              >
                 <AiOutlineShoppingCart
                   size={"25px"}
                   onClick={() => history.push("/cart")}
