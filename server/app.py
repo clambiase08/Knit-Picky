@@ -151,8 +151,8 @@ class OrderItems(Resource):
             o_i.to_dict(
                 rules=(
                     "-order.orderitems",
-                    # "-style.category.styles.orderitems",
-                    "-style",
+                    "-style.category",
+                    "-style.skus",
                 )
             )
             for o_i in OrderItem.query.all()

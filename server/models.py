@@ -80,6 +80,7 @@ class OrderItem(db.Model, SerializerMixin):
     subtotal = db.Column(db.Float)
     order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
     style_id = db.Column(db.Integer, db.ForeignKey("styles.id"))
+    sku_id = db.Column(db.Integer, db.ForeignKey("skus.id"))
 
 
 class Style(db.Model, SerializerMixin):

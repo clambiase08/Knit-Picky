@@ -15,7 +15,6 @@ if __name__ == "__main__":
     fake = Faker()
     with app.app_context():
         print("Starting seed...")
-        # Seed code goes here!
 
         print("Deleting table data...")
         Customer.query.delete()
@@ -131,21 +130,6 @@ if __name__ == "__main__":
             },
         ]
 
-        # for _ in range(20):
-        #     style_name = fake.text(max_nb_chars=10)
-        #     description = fake.text(max_nb_chars=100)
-        #     price = random.uniform(10.00, 25.00)
-        #     stock_quantity = randint(1, 100)
-        #     category_id = randint(1, 2)
-
-        #     style = Style(
-        #         style_name=style_name,
-        #         description=description,
-        #         price=price,
-        #         stock_quantity=stock_quantity,
-        #         category_id=category_id,
-        #     )
-
         for style in styles:
             style = Style(
                 style_name=style["style_name"],
@@ -157,26 +141,6 @@ if __name__ == "__main__":
             db.session.add(style)
             db.session.commit()
         print("Styles seeded...")
-
-        print("Seeding order items...")
-        for _ in range(25):
-            quantity = randint(1, 4)
-            style_id = randint(1, 7)
-            # subtotal = random.uniform(10.00, 50.00)
-
-            style = Style.query.get(style_id)
-            subtotal = style.price * quantity
-
-            order_id = randint(1, 10)
-            order_item = OrderItem(
-                quantity=quantity,
-                subtotal=subtotal,
-                order_id=order_id,
-                style_id=style_id,
-            )
-            db.session.add(order_item)
-            db.session.commit()
-        print("Order items seeded...")
 
         print("Seeding categories...")
         yarns = Category(category_name="yarns")
@@ -289,16 +253,6 @@ if __name__ == "__main__":
                 "style_id": 7,
             },
         ]
-        # for _ in range(60):
-        #     sku = fake.bothify(text="????-########")
-        #     color_id = randint(1, 6)
-        #     style_id = randint(1, 20)
-
-        #     sku = Sku(
-        #         sku=sku,
-        #         color_id=color_id,
-        #         style_id=style_id,
-        #     )
 
         for sku in sku_list:
             sku = Sku(
@@ -322,11 +276,31 @@ if __name__ == "__main__":
         ]
         for color in colors:
             color = Color(color=color)
-            # for _ in range(6):
-            #     color = fake.color_name()
-
-            #     color = Color(color=color)
             db.session.add(color)
             db.session.commit()
         print("Colors seeded...")
+
+        print("Seeding order items...")
+        for _ in range(25):
+            quantity = randint(1, 4)
+            style_id = randint(1, 7)
+
+            style = Style.query.get(style_id)
+            subtotal = style.price * quantity
+
+            skus = Sku.query.filter_by(style_id=style_id).all()
+            sku = random.choice(skus)
+
+            order_id = randint(1, 10)
+            order_item = OrderItem(
+                quantity=quantity,
+                subtotal=subtotal,
+                order_id=order_id,
+                style_id=style_id,
+                sku_id=sku.id,
+            )
+            db.session.add(order_item)
+            db.session.commit()
+        print("Order items seeded...")
+
         print("Seeding complete. Let's boogie")
