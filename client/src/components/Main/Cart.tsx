@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Container,
   Flex,
@@ -24,6 +25,7 @@ export default function Cart() {
   const { customer } = useCustomer();
   const { styles } = useContext(StyleContext);
   const { colors } = useContext(ColorContext);
+  const history = useHistory();
   // console.log(orderItems);
   // console.log(customer);
 
@@ -36,7 +38,7 @@ export default function Cart() {
       orderItem.order.customer_id === customer.id &&
       orderItem.order.status === "created"
   );
-  console.log(userOrderItems);
+  // console.log(userOrderItems);
 
   const totalItemCount = userOrderItems.reduce(
     (sum, item) => sum + item.quantity,
@@ -172,7 +174,10 @@ export default function Cart() {
               boxShadow: "lg",
               bg: "green.700",
             }}
-            onClick={handleCheckout}
+            onClick={() => {
+              handleCheckout();
+              history.push("/order-confirmed");
+            }}
           >
             Checkout
           </Button>

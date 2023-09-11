@@ -41,7 +41,7 @@ export default function Main() {
       <Route path="/cart/checkout">
         <Checkout />
       </Route>
-      <Route path="/confirmation">
+      <Route path="/order-confirmed">
         <OrderConfirmation />
       </Route>
     </Switch>
