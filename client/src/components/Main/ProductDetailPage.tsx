@@ -48,6 +48,8 @@ export default function ProductDetailPage() {
   const { customer } = useCustomer() as Customer;
   const history = useHistory();
 
+  console.log(orders);
+
   const order = orders.find(
     (order) => order.customer_id === customer.id && order.status === "created"
   );

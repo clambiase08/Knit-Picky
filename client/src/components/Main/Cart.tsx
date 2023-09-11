@@ -19,6 +19,7 @@ import { OrderItemContext } from "../../context/OrderItemProvider";
 import { useCustomer } from "../../context/CustomerProvider";
 import { StyleContext } from "../../context/StyleProvider";
 import { ColorContext } from "../../context/ColorProvider";
+import { OrderContext } from "../../context/OrderProvider";
 
 interface Customer {
   customer: {
@@ -34,10 +35,11 @@ interface Customer {
 }
 
 export default function Cart() {
-  const { orderItems } = useContext(OrderItemContext);
+  const { orderItems, setOrderItems } = useContext(OrderItemContext);
   const { customer } = useCustomer() as Customer;
   const { styles } = useContext(StyleContext);
   const { colors } = useContext(ColorContext);
+  const { orders, setOrders } = useContext(OrderContext);
   const history = useHistory();
   // console.log(orderItems);
   // console.log(customer);
@@ -77,6 +79,13 @@ export default function Cart() {
       body: JSON.stringify({ status: "paid" }),
     })
       .then((res) => res.json())
+      .then(() => {
+        // Remove items associated with the completed order from orderItems
+        const updatedOrderItems = orderItems.filter(
+          (orderItem) => orderItem.order_id !== orderId
+        );
+        setOrderItems(updatedOrderItems);
+      })
       .catch((error) => {
         console.error("Error updating order status:", error);
       })
@@ -89,6 +98,7 @@ export default function Cart() {
           body: JSON.stringify({ status: "created", customer_id: customer.id }),
         })
           .then((res) => res.json())
+          .then((data) => setOrders([...orders, data]))
           .catch((error) => {
             console.error("Error creating new order:", error);
           });
