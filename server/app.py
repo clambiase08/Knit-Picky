@@ -245,38 +245,39 @@ class Bestsellers(Resource):
     def get(self):
         styles = Style.query.all()
 
-        style_quantities = {}
+        style_info = []
 
         for style in styles:
-            total_qty = 0
+            total_quantity = 0
+
             skus = Sku.query.filter_by(style_id=style.id).all()
+
             for order_item in OrderItem.query.filter_by(style_id=style.id).all():
-                total_qty += order_item.quantity
+                total_quantity += order_item.quantity
 
-            style_quantities[style.id] = total_qty
-
-        sorted_styles = sorted(
-            styles, key=lambda style: style_quantities.get(style.id), reverse=True
-        )
-
-        # return sorted_styles
-
-        sorted_style_data = [
-            {
-                "id:": style.id,
-                "style_name:": style.style_name,
+            style_data = {
+                "id": style.id,
+                "style_name": style.style_name,
                 "description": style.description,
                 "price": style.price,
                 "stock_quantity": style.stock_quantity,
                 "category_id": style.category_id,
+                "total_quantity": total_quantity,
                 "skus": [
                     {"id": sku.id, "color_id": sku.color_id, "image": sku.image}
                     for sku in skus
                 ],
             }
-            for style in sorted_styles
-        ]
-        return sorted_style_data
+
+            style_info.append(style_data)
+
+        sorted_styles = sorted(
+            style_info,
+            key=lambda style_data: style_data["total_quantity"],
+            reverse=True,
+        )
+
+        return sorted_styles
 
 
 api.add_resource(Bestsellers, "/bestsellers")

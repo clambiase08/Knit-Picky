@@ -42,7 +42,7 @@ const NAV_ITEMS: Array<NavItem> = [
       {
         label: "Best Sellers",
         subLabel: "See our top selling styles",
-        route: "/best-sellers",
+        route: "/bestsellers",
       },
       {
         label: "Yarns",

@@ -8,6 +8,7 @@ import StyleProvider from "./context/StyleProvider";
 import ColorProvider from "./context/ColorProvider";
 import OrderItemProvider from "./context/OrderItemProvider";
 import OrderProvider from "./context/OrderProvider";
+import BestSellerProvider from "./context/BestSellerProvider";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -17,11 +18,13 @@ root.render(
       <CustomerProvider>
         <OrderProvider>
           <StyleProvider>
-            <ColorProvider>
-              <OrderItemProvider>
-                <App />
-              </OrderItemProvider>
-            </ColorProvider>
+            <BestSellerProvider>
+              <ColorProvider>
+                <OrderItemProvider>
+                  <App />
+                </OrderItemProvider>
+              </ColorProvider>
+            </BestSellerProvider>
           </StyleProvider>
         </OrderProvider>
       </CustomerProvider>
