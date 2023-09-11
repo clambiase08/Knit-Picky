@@ -202,6 +202,19 @@ api.add_resource(OrderById, "/orders/<int:id>")
 # api.add_resource(CollectionById, "/collections/<int:id>")
 
 
+class OrderItemById(Resource):
+    def delete(self, id):
+        order_item = OrderItem.query.filter_by(id=id).first()
+        if not order_item:
+            return make_response({"error": "Order item not found"}, 404)
+        db.session.delete(order_item)
+        db.session.commit()
+        return make_response({}, 204)
+
+
+api.add_resource(OrderItemById, "/order_items/<int:id>")
+
+
 class OrderItems(Resource):
     def get(self):
         order_items = [

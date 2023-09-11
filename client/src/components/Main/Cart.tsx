@@ -14,12 +14,14 @@ import {
   Divider,
   Button,
   AspectRatio,
+  IconButton,
 } from "@chakra-ui/react";
 import { OrderItemContext } from "../../context/OrderItemProvider";
 import { useCustomer } from "../../context/CustomerProvider";
 import { StyleContext } from "../../context/StyleProvider";
 import { ColorContext } from "../../context/ColorProvider";
 import { OrderContext } from "../../context/OrderProvider";
+import { SmallCloseIcon } from "@chakra-ui/icons";
 
 interface Customer {
   customer: {
@@ -31,6 +33,27 @@ interface Customer {
     password: string;
     shipping_address?: string;
     billing_address?: string;
+  };
+}
+
+interface OrderItem {
+  id: number;
+  order: {
+    customer_id: number;
+    status: string;
+  };
+  order_id: number;
+  quantity: number;
+  sku_id: number;
+  style_id: number;
+  subtotal: number;
+  style: {
+    category_id: number;
+    description: string;
+    id: number;
+    price: number;
+    stock_quantity: number;
+    style_name: string;
   };
 }
 
@@ -66,6 +89,16 @@ export default function Cart() {
   const shippingTotal = 5.95;
   const taxes = totalSubtotal * 0.11;
   const totalAmount = totalSubtotal + shippingTotal + taxes;
+
+  function handleDeleteItem(deletedItem: OrderItem): void {
+    setOrderItems(orderItems.filter((item) => item.id !== deletedItem.id));
+  }
+
+  function handleDeleteClick(item: OrderItem): void {
+    fetch(`/order_items/${item.id}`, {
+      method: "DELETE",
+    }).then(() => handleDeleteItem(item));
+  }
 
   function handleCheckout() {
     // Assuming userOrderItems contains a single order with all items
@@ -163,6 +196,21 @@ export default function Cart() {
                     </GridItem>
                     <GridItem colStart={4} colEnd={4} h="140px">
                       Subtotal: ${item.subtotal.toFixed(2)}
+                    </GridItem>
+                    <GridItem colStart={5} colEnd={5}>
+                      <IconButton
+                        variant="outline"
+                        aria-label="delete item"
+                        icon={<SmallCloseIcon />}
+                        border="2px solid"
+                        borderColor="green.800"
+                        _hover={{
+                          transform: "translateY(2px)",
+                          boxShadow: "lg",
+                          border: "green.700",
+                        }}
+                        onClick={() => handleDeleteClick(item)}
+                      />
                     </GridItem>
                   </Grid>
                 );
