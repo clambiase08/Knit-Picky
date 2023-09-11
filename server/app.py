@@ -249,6 +249,7 @@ class Bestsellers(Resource):
 
         for style in styles:
             total_qty = 0
+            skus = Sku.query.filter_by(style_id=style.id).all()
             for order_item in OrderItem.query.filter_by(style_id=style.id).all():
                 total_qty += order_item.quantity
 
@@ -258,6 +259,8 @@ class Bestsellers(Resource):
             styles, key=lambda style: style_quantities.get(style.id), reverse=True
         )
 
+        # return sorted_styles
+
         sorted_style_data = [
             {
                 "id:": style.id,
@@ -266,6 +269,10 @@ class Bestsellers(Resource):
                 "price": style.price,
                 "stock_quantity": style.stock_quantity,
                 "category_id": style.category_id,
+                "skus": [
+                    {"id": sku.id, "color_id": sku.color_id, "image": sku.image}
+                    for sku in skus
+                ],
             }
             for style in sorted_styles
         ]
