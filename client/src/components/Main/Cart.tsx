@@ -20,9 +20,22 @@ import { useCustomer } from "../../context/CustomerProvider";
 import { StyleContext } from "../../context/StyleProvider";
 import { ColorContext } from "../../context/ColorProvider";
 
+interface Customer {
+  customer: {
+    id?: number;
+    // username?: string;
+    first_name?: string;
+    last_name?: string;
+    email: string;
+    password: string;
+    shipping_address?: string;
+    billing_address?: string;
+  };
+}
+
 export default function Cart() {
   const { orderItems } = useContext(OrderItemContext);
-  const { customer } = useCustomer();
+  const { customer } = useCustomer() as Customer;
   const { styles } = useContext(StyleContext);
   const { colors } = useContext(ColorContext);
   const history = useHistory();
@@ -66,6 +79,19 @@ export default function Cart() {
       .then((res) => res.json())
       .catch((error) => {
         console.error("Error updating order status:", error);
+      })
+      .then(() => {
+        fetch("/orders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: "created", customer_id: customer.id }),
+        })
+          .then((res) => res.json())
+          .catch((error) => {
+            console.error("Error creating new order:", error);
+          });
       });
   }
 
