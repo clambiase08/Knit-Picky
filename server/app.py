@@ -153,6 +153,45 @@ class Colors(Resource):
 api.add_resource(Colors, "/colors")
 
 
+class Orders(Resource):
+    def get(self):
+        orders = [
+            order.to_dict(rules=("-customer.orders",)) for order in Order.query.all()
+        ]
+        return make_response(orders, 200)
+
+
+api.add_resource(Orders, "/orders")
+
+
+class OrderById(Resource):
+    def patch(self, id):
+        data = request.get_json()
+        order = Order.query.filter_by(id=id).first()
+        if not order:
+            abort(404, "Order not found")
+        for key in data:
+            setattr(order, key, data[key])
+        db.session.add(order)
+        db.session.commit()
+        return make_response(order.to_dict(), 202)
+
+
+api.add_resource(OrderById, "/orders/<int:id>")
+
+# class CollectionById(Resource):
+#     def delete(self, id):
+#         collection = Collection.query.filter_by(id=id).first()
+#         if not collection:
+#             return make_response({"error": "Collection not found"}, 404)
+#         db.session.delete(collection)
+#         db.session.commit()
+#         return make_response({}, 204)
+
+
+# api.add_resource(CollectionById, "/collections/<int:id>")
+
+
 class OrderItems(Resource):
     def get(self):
         order_items = [

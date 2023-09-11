@@ -36,7 +36,12 @@ export default function Cart() {
       orderItem.order.customer_id === customer.id &&
       orderItem.order.status === "created"
   );
+  console.log(userOrderItems);
 
+  const totalItemCount = userOrderItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
   const totalSubtotal = userOrderItems.reduce(
     (sum, item) => sum + item.subtotal,
     0
@@ -44,6 +49,23 @@ export default function Cart() {
   const shippingTotal = 5.95;
   const taxes = totalSubtotal * 0.11;
   const totalAmount = totalSubtotal + shippingTotal + taxes;
+
+  function handleCheckout() {
+    // Assuming userOrderItems contains a single order with all items
+    const orderId = userOrderItems[0].order_id;
+
+    fetch(`/orders/${orderId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: "paid" }),
+    })
+      .then((res) => res.json())
+      .catch((error) => {
+        console.error("Error updating order status:", error);
+      });
+  }
 
   return (
     <Container maxW="95%" p={0}>
@@ -56,9 +78,7 @@ export default function Cart() {
           spacing={10}
           alignItems="flex-start"
         >
-          <Heading size="xl">
-            Shopping Cart ({userOrderItems.length} items)
-          </Heading>
+          <Heading size="xl">Shopping Cart ({totalItemCount} items)</Heading>
           {userOrderItems.map((item) => {
             const orderStyle = styles.find(
               (style) => style.id === item.style_id
@@ -152,6 +172,7 @@ export default function Cart() {
               boxShadow: "lg",
               bg: "green.700",
             }}
+            onClick={handleCheckout}
           >
             Checkout
           </Button>
