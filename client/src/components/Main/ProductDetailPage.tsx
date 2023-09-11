@@ -2,6 +2,10 @@ import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { StyleContext } from "../../context/StyleProvider";
 import { ColorContext } from "../../context/ColorProvider";
+import { OrderContext } from "../../context/OrderProvider";
+import { useCustomer } from "../../context/CustomerProvider";
+import { OrderItemContext } from "../../context/OrderItemProvider";
+import { useHistory } from "react-router-dom";
 import {
   Box,
   Container,
@@ -22,10 +26,31 @@ type RouteParams = {
   id: string;
 };
 
+interface Customer {
+  customer: {
+    id?: number;
+    // username?: string;
+    first_name?: string;
+    last_name?: string;
+    email: string;
+    password: string;
+    shipping_address?: string;
+    billing_address?: string;
+  };
+}
+
 export default function ProductDetailPage() {
   const { id } = useParams<RouteParams>();
   const { styles } = useContext(StyleContext);
   const { colors } = useContext(ColorContext);
+  const { orders } = useContext(OrderContext);
+  const { setOrderItems } = useContext(OrderItemContext);
+  const { customer } = useCustomer() as Customer;
+  const history = useHistory();
+
+  const order = orders.find(
+    (order) => order.customer_id === customer.id && order.status === "created"
+  );
 
   const style = styles.find((style) => style.id === parseInt(id));
   const defaultImage = style?.skus[0]?.image || "";
@@ -33,15 +58,19 @@ export default function ProductDetailPage() {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     defaultImage
   );
+  const [selectedSkuId, setSelectedSkuId] = useState<number | null>(null);
 
   useEffect(() => {
     // Update selectedImage after the component mounts
     setSelectedImage(defaultImage);
   }, [defaultImage]);
 
-  if (!style) {
+  if (!style || !order) {
     return <div>Style not found</div>;
   }
+
+  const styleValue = style ?? null;
+  const orderValue = order ?? null;
 
   const images = style.skus.map((sku) => sku.image);
 
@@ -52,6 +81,35 @@ export default function ProductDetailPage() {
     color: color.color,
     id: color.id,
   }));
+
+  function handleAddToCart() {
+    if (selectedSkuId === null) {
+      console.error("No SKU selected");
+      return;
+    } else {
+      const itemToAdd = {
+        quantity: 1,
+        subtotal: styleValue.price,
+        order_id: orderValue.id,
+        style_id: styleValue.id,
+        sku_id: selectedSkuId,
+      };
+      fetch("/order_items", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(itemToAdd),
+      })
+        .then((res) => res.json())
+        .then((addedItem) => {
+          setOrderItems((prevOrderItems) => [...prevOrderItems, addedItem]);
+        })
+        .catch((err) => {
+          console.error("Error adding item to cart", err);
+        });
+    }
+  }
 
   return (
     <Container maxW={"7xl"}>
@@ -120,7 +178,10 @@ export default function ProductDetailPage() {
                       size="30px"
                       borderColor={"black"}
                       borderWidth={"1px"}
-                      onClick={() => setSelectedImage(images[index])}
+                      onClick={() => {
+                        setSelectedImage(images[index]);
+                        setSelectedSkuId(style.skus[index].id);
+                      }}
                     ></Circle>
                   );
                 })}
@@ -140,6 +201,10 @@ export default function ProductDetailPage() {
               transform: "translateY(2px)",
               boxShadow: "lg",
               bg: "green.700",
+            }}
+            onClick={() => {
+              handleAddToCart();
+              history.push("/cart");
             }}
           >
             Add to cart

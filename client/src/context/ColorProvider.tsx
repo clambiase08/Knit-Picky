@@ -30,8 +30,8 @@ export default function ColorProvider({ children }: ColorProviderProps) {
         }
         throw new Error("Response not OK");
       })
-      .then((colors) => {
-        setColors(colors);
+      .then((color) => {
+        setColors(color);
         // console.log(colors);
       });
   }, []);

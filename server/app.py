@@ -216,6 +216,16 @@ class OrderItems(Resource):
         ]
         return make_response(order_items, 200)
 
+    def post(self):
+        data = request.get_json()
+        try:
+            new_item = OrderItem(**data)
+        except:
+            abort(422, errors=["Invalid Item"])
+        db.session.add(new_item)
+        db.session.commit()
+        return make_response(new_item.to_dict(), 201)
+
 
 api.add_resource(OrderItems, "/order_items")
 
