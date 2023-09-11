@@ -15,15 +15,15 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <CustomerProvider>
-        <StyleProvider>
-          <ColorProvider>
-            <OrderItemProvider>
-              <OrderProvider>
+        <OrderProvider>
+          <StyleProvider>
+            <ColorProvider>
+              <OrderItemProvider>
                 <App />
-              </OrderProvider>
-            </OrderItemProvider>
-          </ColorProvider>
-        </StyleProvider>
+              </OrderItemProvider>
+            </ColorProvider>
+          </StyleProvider>
+        </OrderProvider>
       </CustomerProvider>
     </BrowserRouter>
   </React.StrictMode>

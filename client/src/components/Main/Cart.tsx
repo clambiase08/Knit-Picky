@@ -79,6 +79,9 @@ export default function Cart() {
       body: JSON.stringify({ status: "paid" }),
     })
       .then((res) => res.json())
+      .then((data) =>
+        setOrders(orders.map((order) => (order.id === orderId ? data : order)))
+      )
       .catch((error) => {
         console.error("Error updating order status:", error);
       })
@@ -102,19 +105,19 @@ export default function Cart() {
           .catch((error) => {
             console.error("Error creating new order:", error);
           });
-      })
-      .then(() => {
-        fetch("/orders")
-          .then((res) => res.json())
-          .then((data) => {
-            console.log("Updated Orders:", data);
-            setOrders([...orders, data]);
-            console.log(orders);
-          })
-          .catch((error) => {
-            console.error("Error fetching orders:", error);
-          });
       });
+    // .then(() => {
+    //   fetch("/orders")
+    //     .then((res) => res.json())
+    //     .then((data) => {
+    //       console.log("Updated Orders:", data);
+    //       setOrders([...orders, data]);
+    //       console.log(orders);
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error fetching orders:", error);
+    //     });
+    // });
   }
 
   return (
