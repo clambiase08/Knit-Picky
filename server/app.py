@@ -240,5 +240,39 @@ class ColorNames(Resource):
 
 api.add_resource(ColorNames, "/color-names")
 
+
+class StylesByQuantity(Resource):
+    def get(self):
+        styles = Style.query.all()
+
+        style_quantities = {}
+
+        for style in styles:
+            total_qty = 0
+            for order_item in OrderItem.query.filter_by(style_id=style.id).all():
+                total_qty += order_item.quantity
+
+            style_quantities[style.id] = total_qty
+
+        sorted_styles = sorted(
+            styles, key=lambda style: style_quantities.get(style.id), reverse=True
+        )
+
+        sorted_style_data = [
+            {
+                "id:": style.id,
+                "style_name:": style.style_name,
+                "description": style.description,
+                "price": style.price,
+                "stock_quantity": style.stock_quantity,
+                "category_id": style.category_id,
+            }
+            for style in sorted_styles
+        ]
+        return sorted_style_data
+
+
+api.add_resource(StylesByQuantity, "/styles_by_quantity")
+
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

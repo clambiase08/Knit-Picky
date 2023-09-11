@@ -106,18 +106,6 @@ export default function Cart() {
             console.error("Error creating new order:", error);
           });
       });
-    // .then(() => {
-    //   fetch("/orders")
-    //     .then((res) => res.json())
-    //     .then((data) => {
-    //       console.log("Updated Orders:", data);
-    //       setOrders([...orders, data]);
-    //       console.log(orders);
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error fetching orders:", error);
-    //     });
-    // });
   }
 
   return (
