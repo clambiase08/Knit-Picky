@@ -241,7 +241,7 @@ class ColorNames(Resource):
 api.add_resource(ColorNames, "/color-names")
 
 
-class StylesByQuantity(Resource):
+class Bestsellers(Resource):
     def get(self):
         styles = Style.query.all()
 
@@ -272,7 +272,7 @@ class StylesByQuantity(Resource):
         return sorted_style_data
 
 
-api.add_resource(StylesByQuantity, "/styles_by_quantity")
+api.add_resource(Bestsellers, "/bestsellers")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
