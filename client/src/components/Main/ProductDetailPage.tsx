@@ -48,11 +48,12 @@ export default function ProductDetailPage() {
   const { customer } = useCustomer() as Customer;
   const history = useHistory();
 
-  console.log(orders);
+  // console.log(styles);
 
   const order = orders.find(
     (order) => order.customer_id === customer.id && order.status === "created"
   );
+  console.log(order);
 
   const style = styles.find((style) => style.id === parseInt(id));
   const defaultImage = style?.skus[0]?.image || "";

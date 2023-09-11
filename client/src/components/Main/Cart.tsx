@@ -79,13 +79,6 @@ export default function Cart() {
       body: JSON.stringify({ status: "paid" }),
     })
       .then((res) => res.json())
-      .then(() => {
-        // Remove items associated with the completed order from orderItems
-        const updatedOrderItems = orderItems.filter(
-          (orderItem) => orderItem.order_id !== orderId
-        );
-        setOrderItems(updatedOrderItems);
-      })
       .catch((error) => {
         console.error("Error updating order status:", error);
       })
@@ -98,9 +91,28 @@ export default function Cart() {
           body: JSON.stringify({ status: "created", customer_id: customer.id }),
         })
           .then((res) => res.json())
-          .then((data) => setOrders([...orders, data]))
+          .then((data) => {
+            console.log(data);
+            const updatedOrderItems = orderItems.filter(
+              (orderItem) => orderItem.order_id !== orderId
+            );
+            setOrderItems(updatedOrderItems);
+            setOrders((prevOrders) => [...prevOrders, data]);
+          })
           .catch((error) => {
             console.error("Error creating new order:", error);
+          });
+      })
+      .then(() => {
+        fetch("/orders")
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("Updated Orders:", data);
+            setOrders([...orders, data]);
+            console.log(orders);
+          })
+          .catch((error) => {
+            console.error("Error fetching orders:", error);
           });
       });
   }
