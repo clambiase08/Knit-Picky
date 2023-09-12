@@ -93,7 +93,8 @@ class Styles(Resource):
             style.to_dict(
                 rules=(
                     "-orderitems",
-                    "-category.styles.orderitems",
+                    "-category.styles",
+                    # "-category.styles.orderitems",
                 )
             )
             for style in Style.query.all()

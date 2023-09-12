@@ -9,12 +9,25 @@ import {
 } from "@chakra-ui/react";
 import { ColorContext } from "../../../context/ColorProvider";
 
+// interface Style {
+//   id: number;
+//   style_name: string;
+//   description?: string;
+//   price: number;
+//   stock_quantity?: number;
+//   category_id?: number;
+// }
+
 export default function FilterSidebar({
   setSelectedColorIds,
   selectedColorIds,
+  setSelectedPriceRanges,
+  selectedPriceRanges,
 }: {
   setSelectedColorIds: (colorIds: number[]) => void;
   selectedColorIds: number[];
+  setSelectedPriceRanges: (priceRanges: string[]) => void;
+  selectedPriceRanges: string[];
 }) {
   const { colors } = useContext(ColorContext);
   return (
@@ -52,6 +65,30 @@ export default function FilterSidebar({
                 }}
               >
                 {color.color}
+              </Checkbox>
+            );
+          })}
+        </Stack>
+        <Text>Price</Text>
+        <Stack spacing={2} ml={10} direction="column">
+          {["Under $10", "$10 - $20", "Over $20"].map((priceRange) => {
+            return (
+              <Checkbox
+                key={priceRange}
+                colorScheme="gray"
+                onChange={(e) => {
+                  let newSelectedPriceRanges = [...selectedPriceRanges];
+                  if (e.target.checked) {
+                    newSelectedPriceRanges.push(priceRange);
+                  } else {
+                    newSelectedPriceRanges = newSelectedPriceRanges.filter(
+                      (range) => range !== priceRange
+                    );
+                  }
+                  setSelectedPriceRanges(newSelectedPriceRanges);
+                }}
+              >
+                {priceRange}
               </Checkbox>
             );
           })}
