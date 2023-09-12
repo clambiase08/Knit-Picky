@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import {
   Container,
@@ -71,9 +71,9 @@ export default function Cart() {
   // console.log(orderItems);
   // console.log(customer);
 
-  if (!customer) {
-    return <div>Add items to cart</div>;
-  }
+  // if (!customer) {
+  //   return <div>Add items to cart</div>;
+  // }
 
   const userOrderItems = orderItems.filter(
     (orderItem) =>
@@ -82,14 +82,28 @@ export default function Cart() {
   );
   // console.log(userOrderItems);
 
+  useEffect(() => {
+    const updatedTotalSubtotal = userOrderItems.reduce(
+      (sum, item) => sum + item.subtotal,
+      0
+    );
+    setTotalSubtotal(updatedTotalSubtotal);
+  }, [userOrderItems]);
+
+  const initialTotalSubtotal = userOrderItems.reduce(
+    (sum, item) => sum + item.subtotal,
+    0
+  );
+  const [totalSubtotal, setTotalSubtotal] = useState(initialTotalSubtotal);
+
   const totalItemCount = userOrderItems.reduce(
     (sum, item) => sum + item.quantity,
     0
   );
-  const totalSubtotal = userOrderItems.reduce(
-    (sum, item) => sum + item.subtotal,
-    0
-  );
+  // const totalSubtotal = userOrderItems.reduce(
+  //   (sum, item) => sum + item.subtotal,
+  //   0
+  // );
   const shippingTotal = 5.95;
   const taxes = totalSubtotal * 0.11;
   const totalAmount = totalSubtotal + shippingTotal + taxes;
@@ -103,14 +117,17 @@ export default function Cart() {
       method: "DELETE",
     }).then(() => handleDeleteItem(item));
   }
-
   const handleQtyChange = (itemToUpdate: OrderItem, newQuantity: number) => {
+    const updatedItem = {
+      quantity: newQuantity,
+      subtotal: newQuantity * itemToUpdate.style.price,
+    };
     fetch(`/order_items/${itemToUpdate.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ quantity: newQuantity }),
+      body: JSON.stringify(updatedItem),
     })
       .then((res) => res.json())
       .then((updatedItem) => {
@@ -119,6 +136,14 @@ export default function Cart() {
             item.id === updatedItem.id ? updatedItem : item
           )
         );
+      })
+      .then(() => {
+        // Recalculate the total subtotals and update the state
+        const updatedTotalSubtotal = userOrderItems.reduce(
+          (sum, item) => sum + item.subtotal,
+          0
+        );
+        setTotalSubtotal(updatedTotalSubtotal);
       });
   };
 

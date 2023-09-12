@@ -22,7 +22,7 @@ export default function FilterSidebar({
 }) {
   const { colors } = useContext(ColorContext);
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")} mt={10}>
       <Box
         bg={useColorModeValue("white", "gray.900")}
         borderRight="1px"
@@ -85,7 +85,7 @@ export default function FilterSidebar({
           })}
         </Stack>
       </Box>
-      <Box ml={{ base: 0, md: 60 }} p="4"></Box>
+      <Box ml={{ base: 0, md: 60 }} p="0"></Box>
     </Box>
   );
 }
