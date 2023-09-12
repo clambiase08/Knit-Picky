@@ -6,6 +6,7 @@ import {
   Image,
   useColorModeValue,
   Stack,
+  useColorMode,
 } from "@chakra-ui/react";
 import { ColorContext } from "../../context/ColorProvider";
 import { useHistory } from "react-router-dom";
@@ -37,7 +38,12 @@ export default function AltProductCard({
 }: ProductCardProps) {
   const { colors } = useContext(ColorContext);
   const [selectedImage, setSelectedImage] = useState(images[0]);
+  const [selectedColorId, setSelectedColorId] = useState<number | undefined>(
+    undefined
+  );
+
   const history = useHistory();
+  const { colorMode } = useColorMode();
 
   const colorDetail = colors.map((color) => ({
     color: color.color,
@@ -88,10 +94,24 @@ export default function AltProductCard({
                       key={colorId}
                       bg={color.color}
                       size="20px"
-                      borderColor={"black"}
-                      borderWidth={"1px"}
+                      //   borderColor={"black"}
+                      borderColor={
+                        colorId === selectedColorId ? "gray.500" : "black"
+                      }
+                      borderWidth={colorId === selectedColorId ? "3px" : "1px"}
+                      //   borderWidth={"1px"}
                       mx={"2px"}
-                      onClick={() => setSelectedImage(images[index])}
+                      boxShadow={
+                        colorId === selectedColorId
+                          ? `0 0 0 5px ${
+                              colorMode === "light" ? "black.100" : "black.800"
+                            }`
+                          : "none"
+                      }
+                      onClick={() => {
+                        setSelectedImage(images[index]);
+                        setSelectedColorId(colorId);
+                      }}
                     ></Circle>
                   );
                 })}
