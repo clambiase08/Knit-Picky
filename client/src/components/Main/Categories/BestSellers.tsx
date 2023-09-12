@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { BestSellerContext } from "../../../context/BestSellerProvider";
-import ProductCard from "../ProductCard";
+// import ProductCard from "../ProductCard";
+import AltProductCard from "../AltProductCard";
 import { SimpleGrid, Box } from "@chakra-ui/react";
 
 export default function BestSellers() {
@@ -14,7 +15,7 @@ export default function BestSellers() {
     // console.log(images);
 
     return (
-      <ProductCard
+      <AltProductCard
         key={style.id}
         id={style.id}
         style_name={style.style_name}

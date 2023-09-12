@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
 import { StyleContext } from "../../../context/StyleProvider";
-import ProductCard from "../ProductCard";
+// import ProductCard from "../ProductCard";
 import { Flex, SimpleGrid, HStack } from "@chakra-ui/react";
 import FilterSidebar from "./FilterSidebar";
 import { ColorContext } from "../../../context/ColorProvider";
+import AltProductCard from "../AltProductCard";
 
 export default function ShopAll() {
   const { styles } = useContext(StyleContext);
@@ -34,7 +35,7 @@ export default function ShopAll() {
       const images = style.skus.map((sku) => sku.image);
 
       return (
-        <ProductCard
+        <AltProductCard
           key={style.id}
           id={style.id}
           style_name={style.style_name}

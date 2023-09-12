@@ -21,8 +21,6 @@ interface ProductCardProps {
   images: string[];
 }
 
-// const IMAGE = "http://localhost:3000/assets/khaki-alpaca.png";
-
 export default function ProductCard({
   style_name,
   price,
