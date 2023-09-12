@@ -209,84 +209,127 @@ const DesktopNav = () => {
 
   return (
     <Stack direction={"row"} spacing={4}>
-      {NAV_ITEMS.map((navItem) => (
-        <NavLink key={navItem.label} to={navItem.route ?? "/"}>
-          <Box>
-            <Popover trigger={"hover"} placement={"bottom-start"}>
-              <PopoverTrigger>
-                <Box
-                  as="a"
-                  p={2}
-                  fontSize={"sm"}
-                  fontWeight={500}
-                  color={linkColor}
-                  _hover={{
-                    textDecoration: "none",
-                    color: linkHoverColor,
-                  }}
-                >
-                  {navItem.label}
-                </Box>
-              </PopoverTrigger>
+      {NAV_ITEMS.map((navItem) => {
+        if (navItem.label === "Categories") {
+          return (
+            <Box key={navItem.label}>
+              <Popover trigger={"hover"} placement={"bottom-start"}>
+                <PopoverTrigger>
+                  <Box
+                    p={2}
+                    fontSize={"sm"}
+                    fontWeight={500}
+                    color={linkColor}
+                    _hover={{
+                      textDecoration: "none",
+                      color: linkHoverColor,
+                    }}
+                  >
+                    {navItem.label}
+                  </Box>
+                </PopoverTrigger>
 
-              {navItem.children && (
-                <PopoverContent
-                  border={0}
-                  boxShadow={"xl"}
-                  bg={popoverContentBgColor}
-                  p={4}
-                  rounded={"xl"}
-                  minW={"sm"}
-                >
-                  <Stack>
-                    {navItem.children.map((child) => (
-                      <DesktopSubNav key={child.label} {...child} />
-                    ))}
-                  </Stack>
-                </PopoverContent>
-              )}
-            </Popover>
-          </Box>
-        </NavLink>
-      ))}
+                {navItem.children && (
+                  <PopoverContent
+                    border={0}
+                    boxShadow={"xl"}
+                    bg={popoverContentBgColor}
+                    p={4}
+                    rounded={"xl"}
+                    minW={"sm"}
+                  >
+                    <Stack>
+                      {navItem.children.map((child) => (
+                        <DesktopSubNav key={child.label} {...child} />
+                      ))}
+                    </Stack>
+                  </PopoverContent>
+                )}
+              </Popover>
+            </Box>
+          );
+        } else {
+          return (
+            <NavLink key={navItem.label} to={navItem.route ?? "/"}>
+              <Box>
+                <Popover trigger={"hover"} placement={"bottom-start"}>
+                  <PopoverTrigger>
+                    <Box
+                      p={2}
+                      fontSize={"sm"}
+                      fontWeight={500}
+                      color={linkColor}
+                      _hover={{
+                        textDecoration: "none",
+                        color: linkHoverColor,
+                      }}
+                    >
+                      {navItem.label}
+                    </Box>
+                  </PopoverTrigger>
+
+                  {navItem.children && (
+                    <PopoverContent
+                      border={0}
+                      boxShadow={"xl"}
+                      bg={popoverContentBgColor}
+                      p={4}
+                      rounded={"xl"}
+                      minW={"sm"}
+                    >
+                      <Stack>
+                        {navItem.children.map((child) => (
+                          <DesktopSubNav key={child.label} {...child} />
+                        ))}
+                      </Stack>
+                    </PopoverContent>
+                  )}
+                </Popover>
+              </Box>
+            </NavLink>
+          );
+        }
+      })}
     </Stack>
   );
 };
 
 const DesktopSubNav = ({ route, label, subLabel }: NavItem) => {
   return (
-    <NavLink to={route ?? "/"}>
-      <Box
-        role={"group"}
-        display={"block"}
-        p={2}
-        rounded={"md"}
-        _hover={{ bg: useColorModeValue("green.100", "gray.900") }}
-      >
-        <Stack direction={"row"} align={"center"}>
-          <Box>
-            <Text
+    <Box>
+      <NavLink to={route ?? "/"}>
+        <Box
+          role={"group"}
+          display={"block"}
+          p={2}
+          rounded={"md"}
+          _hover={{ bg: useColorModeValue("green.100", "gray.900") }}
+        >
+          <Stack direction={"row"} align={"center"}>
+            <Box>
+              <Text
+                transition={"all .3s ease"}
+                _groupHover={{ color: "green.700" }}
+                fontWeight={500}
+              >
+                {label}
+              </Text>
+              <Text fontSize={"sm"}>{subLabel}</Text>
+            </Box>
+            <Flex
               transition={"all .3s ease"}
-              _groupHover={{ color: "green.700" }}
-              fontWeight={500}
+              transform={"translateX(-10px)"}
+              opacity={0}
+              _groupHover={{ opacity: "100%", transform: "translateX(0)" }}
+              justify={"flex-end"}
+              align={"center"}
+              flex={1}
             >
-              {label}
-            </Text>
-            <Text fontSize={"sm"}>{subLabel}</Text>
-          </Box>
-          <Flex
-            transition={"all .3s ease"}
-            transform={"translateX(-10px)"}
-            opacity={0}
-            _groupHover={{ opacity: "100%", transform: "translateX(0)" }}
-            justify={"flex-end"}
-            align={"center"}
-            flex={1}
-          >
-            <Icon color={"green.400"} w={5} h={5} as={ChevronRightIcon} />
-          </Flex>
-        </Stack>
-      </Box>
-    </NavLink>
+              <Icon color={"green.400"} w={5} h={5} as={ChevronRightIcon} />
+            </Flex>
+          </Stack>
+        </Box>
+      </NavLink>
+    </Box>
   );
 };

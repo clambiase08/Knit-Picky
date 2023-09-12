@@ -10,8 +10,8 @@ export default function BestSellers() {
   const styleCards = bestsellers.map((style) => {
     const colorIds = style.skus.map((sku) => sku.color_id);
     const images = style.skus.map((sku) => sku.image);
-    console.log(colorIds);
-    console.log(images);
+    // console.log(colorIds);
+    // console.log(images);
 
     return (
       <ProductCard
