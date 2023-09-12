@@ -19,7 +19,6 @@ export default function ShopAll() {
       const colorIds = style.skus.map((sku) => sku.color_id);
       const price = style.price;
 
-      // Check if the style's color and price match the selected filters
       const colorFilterPassed =
         selectedColorIds.length === 0 ||
         colorIds.some((id) => selectedColorIds.includes(id));
@@ -55,30 +54,6 @@ export default function ShopAll() {
       return "Over $20";
     }
   }
-
-  // const styleCards = styles
-  //   .filter((style) => {
-  //     const colorIds = style.skus.map((sku) => sku.color_id);
-  //     return (
-  //       selectedColorIds.length === 0 ||
-  //       colorIds.some((id) => selectedColorIds.includes(id))
-  //     );
-  //   })
-  //   .map((style) => {
-  //     const colorIds = style.skus.map((sku) => sku.color_id);
-  //     const images = style.skus.map((sku) => sku.image);
-
-  //     return (
-  //       <ProductCard
-  //         key={style.id}
-  //         id={style.id}
-  //         style_name={style.style_name}
-  //         price={style.price}
-  //         color_ids={colorIds}
-  //         images={images}
-  //       />
-  //     );
-  //   });
 
   return (
     <HStack justifyContent="flex-start">

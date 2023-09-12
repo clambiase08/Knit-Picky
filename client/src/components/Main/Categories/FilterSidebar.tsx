@@ -9,15 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { ColorContext } from "../../../context/ColorProvider";
 
-// interface Style {
-//   id: number;
-//   style_name: string;
-//   description?: string;
-//   price: number;
-//   stock_quantity?: number;
-//   category_id?: number;
-// }
-
 export default function FilterSidebar({
   setSelectedColorIds,
   selectedColorIds,
@@ -50,7 +41,7 @@ export default function FilterSidebar({
           {colors.map((color) => {
             return (
               <Checkbox
-                key={color.id} // Add a unique key
+                key={color.id}
                 colorScheme="gray"
                 onChange={(e) => {
                   let newSelectedColorIds = [...selectedColorIds];
