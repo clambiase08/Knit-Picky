@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { StyleContext } from "../../../context/StyleProvider";
 import ProductCard from "../ProductCard";
-import { SimpleGrid, Box } from "@chakra-ui/react";
+import { Flex, SimpleGrid, HStack } from "@chakra-ui/react";
+import FilterSidebar from "./FilterSidebar";
 
 export default function ShopAll() {
   const { styles } = useContext(StyleContext);
@@ -26,10 +27,13 @@ export default function ShopAll() {
   });
 
   return (
-    <Box as="main" mt="20">
-      <SimpleGrid px={"40"} columns={4} spacing={3}>
-        {styleCards}
-      </SimpleGrid>
-    </Box>
+    <HStack justifyContent="flex-start">
+      <Flex>
+        <FilterSidebar />
+        <SimpleGrid pr={"40"} columns={4} spacing={3} mt={20}>
+          {styleCards}
+        </SimpleGrid>
+      </Flex>
+    </HStack>
   );
 }
