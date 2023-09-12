@@ -15,37 +15,6 @@ from config import app, db, api
 # Add your model imports
 from models import *
 
-# Views go here!
-
-
-# class Signup(Resource):
-#     def post(self):
-#         username = request.get_json()["username"]
-#         email = request.get_json()["email"]
-#         new_customer = Customer(
-#             username=username,
-#             email=email,
-#         )
-
-#         password = request.get_json()["password"]
-#         new_customer.password_hash = password
-#         db.session.add(new_customer)
-#         db.session.commit()
-#         session["customer_id"] = new_customer.id
-
-#         order = Order(
-#             status="created",
-#             customer_id=new_customer.id,
-#         )
-
-#         db.session.add(order)
-#         db.session.commit()
-
-#         return new_customer.to_dict()
-
-
-# api.add_resource(Signup, "/signup")
-
 
 class Signup(Resource):
     def post(self):
@@ -189,18 +158,6 @@ class OrderById(Resource):
 
 api.add_resource(OrderById, "/orders/<int:id>")
 
-# class CollectionById(Resource):
-#     def delete(self, id):
-#         collection = Collection.query.filter_by(id=id).first()
-#         if not collection:
-#             return make_response({"error": "Collection not found"}, 404)
-#         db.session.delete(collection)
-#         db.session.commit()
-#         return make_response({}, 204)
-
-
-# api.add_resource(CollectionById, "/collections/<int:id>")
-
 
 class OrderItemById(Resource):
     def delete(self, id):
@@ -210,6 +167,17 @@ class OrderItemById(Resource):
         db.session.delete(order_item)
         db.session.commit()
         return make_response({}, 204)
+
+    def patch(self, id):
+        data = request.get_json()
+        order_item = OrderItem.query.filter_by(id=id).first()
+        if not order_item:
+            return make_response({"error": "Order item not found"}, 404)
+        for key in data:
+            setattr(order_item, key, data[key])
+        db.session.add(order_item)
+        db.session.commit()
+        return make_response(order_item.to_dict(), 202)
 
 
 api.add_resource(OrderItemById, "/order_items/<int:id>")

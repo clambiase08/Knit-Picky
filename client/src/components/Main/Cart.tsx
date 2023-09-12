@@ -8,13 +8,17 @@ import {
   Image,
   Grid,
   GridItem,
-  Select,
   HStack,
   Text,
   Divider,
   Button,
   AspectRatio,
   IconButton,
+  NumberInputField,
+  NumberInput,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInputStepper,
 } from "@chakra-ui/react";
 import { OrderItemContext } from "../../context/OrderItemProvider";
 import { useCustomer } from "../../context/CustomerProvider";
@@ -99,6 +103,24 @@ export default function Cart() {
       method: "DELETE",
     }).then(() => handleDeleteItem(item));
   }
+
+  const handleQtyChange = (itemToUpdate: OrderItem, newQuantity: number) => {
+    fetch(`/order_items/${itemToUpdate.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ quantity: newQuantity }),
+    })
+      .then((res) => res.json())
+      .then((updatedItem) => {
+        setOrderItems((prevOrderItems) =>
+          prevOrderItems.map((item) =>
+            item.id === updatedItem.id ? updatedItem : item
+          )
+        );
+      });
+  };
 
   function handleCheckout() {
     // Assuming userOrderItems contains a single order with all items
@@ -186,13 +208,23 @@ export default function Cart() {
                     </GridItem>
                     <GridItem colStart={3} colEnd={3} h="140px">
                       Qty:
-                      <Select placeholder={`${item.quantity}`}>
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
-                      </Select>
+                      <NumberInput
+                        size="sm"
+                        maxW={20}
+                        defaultValue={item.quantity}
+                        min={1}
+                        max={5}
+                        onChange={(value) => {
+                          const newQuantity = parseInt(value);
+                          handleQtyChange(item, newQuantity);
+                        }}
+                      >
+                        <NumberInputField />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
                     </GridItem>
                     <GridItem colStart={4} colEnd={4} h="140px">
                       Subtotal: ${item.subtotal.toFixed(2)}
