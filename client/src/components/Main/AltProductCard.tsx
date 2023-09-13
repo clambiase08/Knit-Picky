@@ -61,7 +61,7 @@ export default function AltProductCard({
         >
           <Image
             src={selectedImage}
-            alt={"#"}
+            alt={"product image"}
             roundedTop="lg"
             onClick={() => history.push(`/product/${id}`)}
           />
