@@ -54,6 +54,9 @@ export default function ProductDetailPage() {
   const { setOrderItems } = useContext(OrderItemContext);
   const { customer } = useCustomer() as Customer;
   const history = useHistory();
+  const [selectedColorId, setSelectedColorId] = useState<number | undefined>(
+    undefined
+  );
 
   // console.log(styles);
 
@@ -197,9 +200,15 @@ export default function ProductDetailPage() {
                       size="30px"
                       borderColor={"black"}
                       borderWidth={"1px"}
+                      boxShadow={
+                        colorId === selectedColorId
+                          ? `0 0 0 3px ${"black"}`
+                          : "none"
+                      }
                       onClick={() => {
                         setSelectedImage(images[index]);
                         setSelectedSkuId(style.skus[index].id);
+                        setSelectedColorId(colorId);
                       }}
                     ></Circle>
                   );
