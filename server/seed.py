@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Standard library imports
-from random import randint, choice as rc
+from random import randint, shuffle
 import random
 
 # Remote library imports
@@ -281,6 +281,12 @@ if __name__ == "__main__":
         print("Colors seeded...")
 
         print("Seeding order items...")
+
+        order_ids = list(range(1, 11))
+        shuffle(order_ids)
+
+        order_id_index = 0
+
         for _ in range(25):
             quantity = randint(1, 4)
             style_id = randint(1, 7)
@@ -291,7 +297,10 @@ if __name__ == "__main__":
             skus = Sku.query.filter_by(style_id=style_id).all()
             sku = random.choice(skus)
 
-            order_id = randint(1, 10)
+            order_id = order_ids[order_id_index]
+
+            order_id_index = (order_id_index + 1) % len(order_ids)
+
             order_item = OrderItem(
                 quantity=quantity,
                 subtotal=subtotal,

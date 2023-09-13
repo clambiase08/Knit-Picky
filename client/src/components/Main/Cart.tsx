@@ -317,26 +317,43 @@ export default function Cart() {
               <Heading size="lg">${totalAmount.toFixed(2)}</Heading>
             </HStack>
           </VStack>
-          <Button
-            w={"full"}
-            mt={6}
-            size={"lg"}
-            py={"7"}
-            bg={"green.800"}
-            color={"white"}
-            textTransform={"uppercase"}
-            _hover={{
-              transform: "translateY(2px)",
-              boxShadow: "lg",
-              bg: "green.700",
-            }}
-            onClick={() => {
-              handleCheckout();
-              history.push("/order-confirmed");
-            }}
-          >
-            Checkout
-          </Button>
+          {totalAmount > 0 ? (
+            <Button
+              w={"full"}
+              mt={6}
+              size={"lg"}
+              py={"7"}
+              bg={"green.800"}
+              color={"white"}
+              textTransform={"uppercase"}
+              _hover={{
+                transform: "translateY(2px)",
+                boxShadow: "lg",
+                bg: "green.700",
+              }}
+              onClick={() => {
+                handleCheckout();
+                history.push("/order-confirmed");
+              }}
+            >
+              Checkout
+            </Button>
+          ) : (
+            <Button
+              isLoading
+              w={"full"}
+              mt={6}
+              size={"lg"}
+              py={"7"}
+              loadingText="Add Items to Cart"
+              bg={"green.800"}
+              color={"white"}
+              textTransform={"uppercase"}
+              variant="solid"
+            >
+              Submit
+            </Button>
+          )}
         </VStack>
       </Flex>
     </Container>
