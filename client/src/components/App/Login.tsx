@@ -40,7 +40,14 @@ export default function Login() {
               <Input type="password" />
             </FormControl>
             <Stack spacing={6}>
-              <Button colorScheme={"blue"} variant={"solid"} type="submit">
+              <Button
+                bg={"green.800"}
+                color={"white"}
+                variant={"solid"}
+                mt={4}
+                py={"6"}
+                type="submit"
+              >
                 Sign in
               </Button>
             </Stack>
@@ -51,9 +58,7 @@ export default function Login() {
         <Image
           alt={"Login Image"}
           objectFit={"cover"}
-          src={
-            "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80"
-          }
+          src={"http://localhost:3000/assets/login.JPG"}
         />
       </Flex>
     </Stack>
