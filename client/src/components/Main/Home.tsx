@@ -80,7 +80,7 @@ export default function Home() {
               <Image
                 src="/assets/best-sellers.png"
                 maxHeight={"400px"}
-                onClick={() => history.push("/best-sellers")}
+                onClick={() => history.push("/bestsellers")}
               />
               <Text textAlign={"center"} fontWeight={"bold"} mt={"10px"}>
                 BEST SELLERS
