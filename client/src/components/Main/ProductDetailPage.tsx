@@ -60,9 +60,12 @@ export default function ProductDetailPage() {
 
   // console.log(styles);
 
-  const order = orders.find(
-    (order) => order.customer_id === customer.id && order.status === "created"
-  );
+  const order = customer
+    ? orders.find(
+        (order) =>
+          order.customer_id === customer.id && order.status === "created"
+      )
+    : null;
   console.log(order);
 
   const style = styles.find((style) => style.id === parseInt(id));
@@ -78,7 +81,7 @@ export default function ProductDetailPage() {
     setSelectedImage(defaultImage);
   }, [defaultImage]);
 
-  if (!style || !order) {
+  if (!style) {
     return <div>Style not found</div>;
   }
 
@@ -103,7 +106,7 @@ export default function ProductDetailPage() {
       const itemToAdd = {
         quantity: 1,
         subtotal: styleValue.price,
-        order_id: orderValue.id,
+        order_id: orderValue?.id,
         style_id: styleValue.id,
         sku_id: selectedSkuId,
       };
@@ -216,7 +219,7 @@ export default function ProductDetailPage() {
               </Flex>
             </Box>
           </Stack>
-
+          {/* 
           <Button
             w={"full"}
             mt={6}
@@ -231,12 +234,38 @@ export default function ProductDetailPage() {
               bg: "green.700",
             }}
             onClick={() => {
-              handleAddToCart();
-              history.push("/cart");
+              if (customer) {
+                handleAddToCart();
+                history.push("/cart");
+              } else {
+                history.push("/signup");
+              }
             }}
           >
             Add to cart
-          </Button>
+          </Button> */}
+          {customer && (
+            <Button
+              w={"full"}
+              mt={6}
+              size={"lg"}
+              py={"7"}
+              bg={"green.800"}
+              color={"white"}
+              textTransform={"uppercase"}
+              _hover={{
+                transform: "translateY(2px)",
+                boxShadow: "lg",
+                bg: "green.700",
+              }}
+              onClick={() => {
+                handleAddToCart();
+                history.push("/cart");
+              }}
+            >
+              Add to cart
+            </Button>
+          )}
 
           <Stack direction="row" alignItems="center" justifyContent={"center"}>
             <MdLocalShipping />
