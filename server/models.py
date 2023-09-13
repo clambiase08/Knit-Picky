@@ -58,7 +58,7 @@ class Order(db.Model, SerializerMixin, TimestampMixin):
     __tablename__ = "orders"
     serialize_rules = (
         "-orderitems.order",
-        "-orderitems.style",
+        # "-orderitems.style",
     )
 
     id = db.Column(db.Integer, primary_key=True)

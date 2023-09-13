@@ -39,11 +39,18 @@ interface Customer {
   };
 }
 
+interface Order {
+  id: number;
+  customer_id: number;
+  status: string;
+  orderitems: [];
+}
+
 export default function ProductDetailPage() {
   const { id } = useParams<RouteParams>();
   const { styles } = useContext(StyleContext);
   const { colors } = useContext(ColorContext);
-  const { orders } = useContext(OrderContext);
+  const { orders, setOrders } = useContext(OrderContext);
   const { setOrderItems } = useContext(OrderItemContext);
   const { customer } = useCustomer() as Customer;
   const history = useHistory();
@@ -106,7 +113,16 @@ export default function ProductDetailPage() {
       })
         .then((res) => res.json())
         .then((addedItem) => {
+          console.log(addedItem);
           setOrderItems((prevOrderItems) => [...prevOrderItems, addedItem]);
+          setOrders(
+            (prevOrders) =>
+              prevOrders.map((o) =>
+                o.id === order?.id
+                  ? { ...o, orderitems: [...o.orderitems, addedItem] }
+                  : o
+              ) as Order[]
+          );
         })
         .catch((err) => {
           console.error("Error adding item to cart", err);

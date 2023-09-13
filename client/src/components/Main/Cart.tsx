@@ -75,12 +75,23 @@ export default function Cart() {
   //   return <div>Add items to cart</div>;
   // }
 
+  useEffect(() => {
+    fetch("/order_items")
+      .then((res) => res.json())
+      .then((data) => {
+        setOrderItems(data);
+      })
+      .catch((err) => {
+        console.error("Error fetching order items", err);
+      });
+  }, [setOrderItems]);
+
   const userOrderItems = orderItems.filter(
     (orderItem) =>
       orderItem.order.customer_id === customer.id &&
       orderItem.order.status === "created"
   );
-  // console.log(userOrderItems);
+  console.log(userOrderItems);
 
   useEffect(() => {
     const updatedTotalSubtotal = userOrderItems.reduce(
@@ -159,9 +170,10 @@ export default function Cart() {
       body: JSON.stringify({ status: "paid" }),
     })
       .then((res) => res.json())
-      .then((data) =>
-        setOrders(orders.map((order) => (order.id === orderId ? data : order)))
-      )
+      .then((data) => {
+        console.log(data);
+        setOrders(orders.map((order) => (order.id === orderId ? data : order)));
+      })
       .catch((error) => {
         console.error("Error updating order status:", error);
       })
@@ -176,10 +188,10 @@ export default function Cart() {
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
-            const updatedOrderItems = orderItems.filter(
-              (orderItem) => orderItem.order_id !== orderId
-            );
-            setOrderItems(updatedOrderItems);
+            // const updatedOrderItems = orderItems.filter(
+            //   (orderItem) => orderItem.order_id !== orderId
+            // );
+            // setOrderItems(updatedOrderItems);
             setOrders((prevOrders) => [...prevOrders, data]);
           })
           .catch((error) => {
