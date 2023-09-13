@@ -66,7 +66,7 @@ export default function ProductDetailPage() {
           order.customer_id === customer.id && order.status === "created"
       )
     : null;
-  console.log(order);
+  // console.log(order);
 
   const style = styles.find((style) => style.id === parseInt(id));
   const defaultImage = style?.skus[0]?.image || "";
@@ -119,7 +119,7 @@ export default function ProductDetailPage() {
       })
         .then((res) => res.json())
         .then((addedItem) => {
-          console.log(addedItem);
+          // console.log(addedItem);
           setOrderItems((prevOrderItems) => [...prevOrderItems, addedItem]);
           setOrders(
             (prevOrders) =>

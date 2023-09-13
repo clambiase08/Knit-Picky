@@ -36,12 +36,12 @@ export default function CustomerProfile() {
   const { customer } = useCustomer() as Customer;
   const { orderItems } = useContext(OrderItemContext);
   const { orders } = useContext(OrderContext);
-  console.log(orderItems);
+  // console.log(orderItems);
 
   const userOrders = orders.filter(
     (order) => order.customer_id === customer.id && order.status !== "created"
   );
-  console.log(userOrders);
+  // console.log(userOrders);
 
   const orderAccordians = userOrders.map((order) => {
     const currentOrderItems = orderItems.filter(
@@ -52,7 +52,7 @@ export default function CustomerProfile() {
       0
     );
     return (
-      <AccordionItem>
+      <AccordionItem key={order.id}>
         <h2>
           <AccordionButton>
             <Box as="span" flex="1" textAlign="left">
@@ -70,7 +70,7 @@ export default function CustomerProfile() {
         <AccordionPanel pb={4}>
           {currentOrderItems.map((orderItem) => {
             return (
-              <Box as="span" flex="flex-start">
+              <Box as="span" flex="flex-start" key={orderItem.id}>
                 <HStack justifyContent="flex-start">
                   {/* <AspectRatio ratio={3 / 4} w={"120px"}>
                         <Image

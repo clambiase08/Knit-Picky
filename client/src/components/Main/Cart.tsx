@@ -71,10 +71,6 @@ export default function Cart() {
   // console.log(orderItems);
   // console.log(customer);
 
-  // if (!customer) {
-  //   return <div>Add items to cart</div>;
-  // }
-
   useEffect(() => {
     fetch("/order_items")
       .then((res) => res.json())
@@ -91,7 +87,7 @@ export default function Cart() {
       orderItem.order.customer_id === customer.id &&
       orderItem.order.status === "created"
   );
-  console.log(userOrderItems);
+  // console.log(userOrderItems);
 
   useEffect(() => {
     const updatedTotalSubtotal = userOrderItems.reduce(
@@ -111,10 +107,6 @@ export default function Cart() {
     (sum, item) => sum + item.quantity,
     0
   );
-  // const totalSubtotal = userOrderItems.reduce(
-  //   (sum, item) => sum + item.subtotal,
-  //   0
-  // );
   const shippingTotal = totalItemCount ? 5.95 : 0;
   const taxes = totalSubtotal * 0.11;
   const totalAmount = totalSubtotal + shippingTotal + taxes;
@@ -171,7 +163,7 @@ export default function Cart() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setOrders(orders.map((order) => (order.id === orderId ? data : order)));
       })
       .catch((error) => {
@@ -187,11 +179,7 @@ export default function Cart() {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
-            // const updatedOrderItems = orderItems.filter(
-            //   (orderItem) => orderItem.order_id !== orderId
-            // );
-            // setOrderItems(updatedOrderItems);
+            // console.log(data);
             setOrders((prevOrders) => [...prevOrders, data]);
           })
           .catch((error) => {
@@ -226,60 +214,72 @@ export default function Cart() {
               if (sku && colorDetail) {
                 return (
                   <Grid
-                    templateColumns="250px repeat(3, 1fr)"
+                    templateColumns="120px 1fr 1fr 1fr 1fr 50px"
                     gap={5}
                     key={item.id}
                   >
-                    <GridItem colSpan={1} h="140px">
-                      <AspectRatio ratio={3 / 4} w={"120px"}>
-                        <Image
-                          boxSize="120px"
-                          objectFit="cover"
-                          borderRadius="lg"
-                          src={sku.image}
-                        ></Image>
-                      </AspectRatio>
+                    <GridItem colSpan={1}>
+                      <Flex alignItems="center" h="140px">
+                        <AspectRatio ratio={3 / 4} w={"120px"}>
+                          <Image
+                            boxSize="120px"
+                            objectFit="cover"
+                            borderRadius="lg"
+                            src={sku.image}
+                          ></Image>
+                        </AspectRatio>
+                      </Flex>
                     </GridItem>
-                    <GridItem colStart={2} colEnd={2} h="140px">
-                      {orderStyle.style_name} - {colorDetail.color}
+                    <GridItem colStart={2} colEnd={4} h="140px">
+                      <Flex h="140px" alignItems="center">
+                        {orderStyle.style_name} - {colorDetail.color}
+                      </Flex>
                     </GridItem>
-                    <GridItem colStart={3} colEnd={3} h="140px">
-                      Qty:
-                      <NumberInput
-                        size="sm"
-                        maxW={20}
-                        defaultValue={item.quantity}
-                        min={1}
-                        max={5}
-                        onChange={(value) => {
-                          const newQuantity = parseInt(value);
-                          handleQtyChange(item, newQuantity);
-                        }}
-                      >
-                        <NumberInputField />
-                        <NumberInputStepper>
-                          <NumberIncrementStepper />
-                          <NumberDecrementStepper />
-                        </NumberInputStepper>
-                      </NumberInput>
-                    </GridItem>
-                    <GridItem colStart={4} colEnd={4} h="140px">
-                      Subtotal: ${item.subtotal.toFixed(2)}
+                    <GridItem colStart={4} colEnd={4}>
+                      <Flex h="140px" alignItems="center">
+                        Qty:
+                        <NumberInput
+                          mx={5}
+                          size="sm"
+                          maxW={20}
+                          defaultValue={item.quantity}
+                          min={1}
+                          max={5}
+                          onChange={(value) => {
+                            const newQuantity = parseInt(value);
+                            handleQtyChange(item, newQuantity);
+                          }}
+                        >
+                          <NumberInputField />
+                          <NumberInputStepper>
+                            <NumberIncrementStepper />
+                            <NumberDecrementStepper />
+                          </NumberInputStepper>
+                        </NumberInput>
+                      </Flex>
                     </GridItem>
                     <GridItem colStart={5} colEnd={5}>
-                      <IconButton
-                        variant="outline"
-                        aria-label="delete item"
-                        icon={<SmallCloseIcon />}
-                        border="2px solid"
-                        borderColor="green.800"
-                        _hover={{
-                          transform: "translateY(2px)",
-                          boxShadow: "lg",
-                          border: "green.700",
-                        }}
-                        onClick={() => handleDeleteClick(item)}
-                      />
+                      <Flex h="140px" alignItems="center">
+                        Subtotal: ${item.subtotal.toFixed(2)}
+                      </Flex>
+                    </GridItem>
+                    <GridItem colStart={6} colEnd={6}>
+                      <Flex h="140px" alignItems="center">
+                        <IconButton
+                          variant="outline"
+                          size="sm"
+                          aria-label="delete item"
+                          icon={<SmallCloseIcon />}
+                          border="2px solid"
+                          borderColor="green.800"
+                          _hover={{
+                            transform: "translateY(2px)",
+                            boxShadow: "lg",
+                            border: "green.700",
+                          }}
+                          onClick={() => handleDeleteClick(item)}
+                        />
+                      </Flex>
                     </GridItem>
                   </Grid>
                 );
