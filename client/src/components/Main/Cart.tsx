@@ -104,7 +104,7 @@ export default function Cart() {
   //   (sum, item) => sum + item.subtotal,
   //   0
   // );
-  const shippingTotal = 5.95;
+  const shippingTotal = totalItemCount ? 5.95 : 0;
   const taxes = totalSubtotal * 0.11;
   const totalAmount = totalSubtotal + shippingTotal + taxes;
 

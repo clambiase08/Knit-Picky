@@ -6,7 +6,7 @@ import { SimpleGrid, Box } from "@chakra-ui/react";
 
 export default function BestSellers() {
   const { bestsellers } = useContext(BestSellerContext);
-  console.log(bestsellers);
+  // console.log(bestsellers);
 
   const styleCards = bestsellers.map((style) => {
     const colorIds = style.skus.map((sku) => sku.color_id);
