@@ -3,15 +3,11 @@ import { StyleContext } from "../../../context/StyleProvider";
 // import ProductCard from "../ProductCard";
 import { Flex, SimpleGrid, HStack } from "@chakra-ui/react";
 import FilterSidebar from "./FilterSidebar";
-import { ColorContext } from "../../../context/ColorProvider";
 import AltProductCard from "../AltProductCard";
 
 export default function ShopAll() {
   const { styles } = useContext(StyleContext);
-  const { colors } = useContext(ColorContext);
-  const [selectedColorIds, setSelectedColorIds] = useState<number[]>(
-    colors.map((color) => color.id)
-  );
+  const [selectedColorIds, setSelectedColorIds] = useState<number[]>([]);
 
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([]);
 

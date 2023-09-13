@@ -47,7 +47,7 @@ export default function Home() {
                 rounded={"full"}
                 color={"white"}
                 _hover={{ bg: "whiteAlpha.500" }}
-                onClick={() => history.push("/best-sellers")}
+                onClick={() => history.push("/bestsellers")}
               >
                 Explore best sellers
               </Button>

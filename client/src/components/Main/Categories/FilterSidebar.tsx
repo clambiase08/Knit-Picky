@@ -53,6 +53,7 @@ export default function FilterSidebar({
                     );
                   }
                   setSelectedColorIds(newSelectedColorIds);
+                  console.log(newSelectedColorIds);
                 }}
               >
                 {color.color}
@@ -77,6 +78,7 @@ export default function FilterSidebar({
                     );
                   }
                   setSelectedPriceRanges(newSelectedPriceRanges);
+                  console.log(newSelectedPriceRanges);
                 }}
               >
                 {priceRange}
