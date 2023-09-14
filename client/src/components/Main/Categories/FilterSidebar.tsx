@@ -6,8 +6,13 @@ import {
   Text,
   Stack,
   Checkbox,
+  VStack,
+  Heading,
+  Circle,
+  Icon,
 } from "@chakra-ui/react";
 import { ColorContext } from "../../../context/ColorProvider";
+import { AiOutlineDollar } from "react-icons/ai";
 
 export default function FilterSidebar({
   setSelectedColorIds,
@@ -30,62 +35,93 @@ export default function FilterSidebar({
         w={{ base: "full", md: 60 }}
         pos="fixed"
         h="full"
+        justifyContent="left"
       >
-        <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-          <Text fontSize="xl" fontWeight={600} mt={10}>
-            Filter by:
-          </Text>
+        <Flex
+          h="20"
+          alignItems="center"
+          mx="1"
+          justifyContent="flex-start"
+          mt={"230px"}
+        >
+          <VStack alignContent="flex-start">
+            <Heading fontSize="xl" fontWeight={700} mt={10}>
+              Filter by:
+            </Heading>
+            <Flex align="flex-start" alignItems="center" mt={"5"}>
+              <Circle size="20px" bg="coral" mr={2}></Circle>
+              <Text
+                fontWeight="semibold"
+                fontSize="lg"
+                mt={"15"}
+                mb={"3.5"}
+                textAlign="left"
+              >
+                Color
+              </Text>
+            </Flex>
+            <Stack spacing={2} ml={"7"} align="start">
+              {colors.map((color) => {
+                return (
+                  <Checkbox
+                    key={color.id}
+                    colorScheme="gray"
+                    onChange={(e) => {
+                      let newSelectedColorIds = [...selectedColorIds];
+                      if (e.target.checked) {
+                        newSelectedColorIds.push(color.id);
+                      } else {
+                        newSelectedColorIds = newSelectedColorIds.filter(
+                          (id) => id !== color.id
+                        );
+                      }
+                      setSelectedColorIds(newSelectedColorIds);
+                      // console.log(newSelectedColorIds);
+                    }}
+                  >
+                    {color.color}
+                  </Checkbox>
+                );
+              })}
+            </Stack>
+            <Flex align="flex-start" alignItems="center" mt={"5"}>
+              <Icon as={AiOutlineDollar} boxSize="25px" mr={2} />
+              <Text
+                mt={"15"}
+                mb={"3.5"}
+                textAlign="left"
+                fontWeight="semibold"
+                fontSize="lg"
+              >
+                Price
+              </Text>
+            </Flex>
+            <Stack spacing={2} ml={0} align="start">
+              {["Under $10", "$10 - $20", "Over $20"].map((priceRange) => {
+                return (
+                  <Checkbox
+                    key={priceRange}
+                    colorScheme="gray"
+                    onChange={(e) => {
+                      let newSelectedPriceRanges = [...selectedPriceRanges];
+                      if (e.target.checked) {
+                        newSelectedPriceRanges.push(priceRange);
+                      } else {
+                        newSelectedPriceRanges = newSelectedPriceRanges.filter(
+                          (range) => range !== priceRange
+                        );
+                      }
+                      setSelectedPriceRanges(newSelectedPriceRanges);
+                      // console.log(newSelectedPriceRanges);
+                    }}
+                  >
+                    {priceRange}
+                  </Checkbox>
+                );
+              })}
+            </Stack>
+          </VStack>
         </Flex>
-        <Text>Color</Text>
-        <Stack spacing={2} ml={10} direction="column">
-          {colors.map((color) => {
-            return (
-              <Checkbox
-                key={color.id}
-                colorScheme="gray"
-                onChange={(e) => {
-                  let newSelectedColorIds = [...selectedColorIds];
-                  if (e.target.checked) {
-                    newSelectedColorIds.push(color.id);
-                  } else {
-                    newSelectedColorIds = newSelectedColorIds.filter(
-                      (id) => id !== color.id
-                    );
-                  }
-                  setSelectedColorIds(newSelectedColorIds);
-                  // console.log(newSelectedColorIds);
-                }}
-              >
-                {color.color}
-              </Checkbox>
-            );
-          })}
-        </Stack>
-        <Text>Price</Text>
-        <Stack spacing={2} ml={10} direction="column">
-          {["Under $10", "$10 - $20", "Over $20"].map((priceRange) => {
-            return (
-              <Checkbox
-                key={priceRange}
-                colorScheme="gray"
-                onChange={(e) => {
-                  let newSelectedPriceRanges = [...selectedPriceRanges];
-                  if (e.target.checked) {
-                    newSelectedPriceRanges.push(priceRange);
-                  } else {
-                    newSelectedPriceRanges = newSelectedPriceRanges.filter(
-                      (range) => range !== priceRange
-                    );
-                  }
-                  setSelectedPriceRanges(newSelectedPriceRanges);
-                  // console.log(newSelectedPriceRanges);
-                }}
-              >
-                {priceRange}
-              </Checkbox>
-            );
-          })}
-        </Stack>
       </Box>
       <Box ml={{ base: 0, md: 60 }} p="0"></Box>
     </Box>

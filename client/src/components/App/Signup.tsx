@@ -75,7 +75,6 @@ export default function Signup() {
           alt={"Login Image"}
           objectFit={"cover"}
           src={"http://localhost:3000/assets/login.JPG"}
-          filter="auto"
         />
       </Flex>
     </Stack>

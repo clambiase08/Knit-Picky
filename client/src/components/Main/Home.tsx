@@ -38,8 +38,8 @@ export default function Home() {
               lineHeight={1.2}
               fontSize={useBreakpointValue({ base: "3xl", md: "4xl" })}
             >
-              Lorem ipsum dolor sit amet consectetur adipiscing elit sed do
-              eiusmod tempor
+              Your home for sustainably sourced, hand crafted yarns and notions
+              for your next knitting or crocheting project.
             </Text>
             <Stack direction={"row"}>
               <Button
