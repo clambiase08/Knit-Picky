@@ -63,7 +63,7 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: "Contact",
-    route: "/contact",
+    route: "mailto:christina.lambiase@gmail.com",
   },
 ];
 
@@ -248,6 +248,29 @@ const DesktopNav = () => {
               </Popover>
             </Box>
           );
+        } else if (navItem.route?.startsWith("mailto:")) {
+          return (
+            <a key={navItem.label} href={navItem.route}>
+              <Box>
+                <Popover trigger={"hover"} placement={"bottom-start"}>
+                  <PopoverTrigger>
+                    <Box
+                      p={2}
+                      fontSize={"sm"}
+                      fontWeight={500}
+                      color={linkColor}
+                      _hover={{
+                        textDecoration: "none",
+                        color: linkHoverColor,
+                      }}
+                    >
+                      {navItem.label}
+                    </Box>
+                  </PopoverTrigger>
+                </Popover>
+              </Box>
+            </a>
+          );
         } else {
           return (
             <NavLink key={navItem.label} to={navItem.route ?? "/"}>
@@ -267,23 +290,6 @@ const DesktopNav = () => {
                       {navItem.label}
                     </Box>
                   </PopoverTrigger>
-
-                  {navItem.children && (
-                    <PopoverContent
-                      border={0}
-                      boxShadow={"xl"}
-                      bg={popoverContentBgColor}
-                      p={4}
-                      rounded={"xl"}
-                      minW={"sm"}
-                    >
-                      <Stack>
-                        {navItem.children.map((child) => (
-                          <DesktopSubNav key={child.label} {...child} />
-                        ))}
-                      </Stack>
-                    </PopoverContent>
-                  )}
                 </Popover>
               </Box>
             </NavLink>
