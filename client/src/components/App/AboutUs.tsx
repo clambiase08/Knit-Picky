@@ -11,11 +11,7 @@ import {
   Icon,
   useColorModeValue,
 } from "@chakra-ui/react";
-import {
-  IoAnalyticsSharp,
-  IoLogoBitcoin,
-  IoSearchSharp,
-} from "react-icons/io5";
+import { GiPlantsAndAnimals, GiYarn, GiFarmer } from "react-icons/gi";
 
 interface FeatureProps {
   text: string;
@@ -48,20 +44,25 @@ export default function AboutUs() {
         <Stack spacing={4}>
           <Text
             textTransform={"uppercase"}
-            color={"blue.400"}
+            color={"green.400"}
             fontWeight={600}
             fontSize={"sm"}
-            bg={useColorModeValue("blue.50", "blue.900")}
+            bg={useColorModeValue("green.50", "green.900")}
             p={2}
             alignSelf={"flex-start"}
             rounded={"md"}
           >
             Our Story
           </Text>
-          <Heading>A digital Product design agency</Heading>
-          <Text color={"gray.500"} fontSize={"lg"}>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore
+          <Heading mt={5}>
+            A digitally native ecommerce platform with intention
+          </Heading>
+          <Text color={"gray.500"} fontSize={"lg"} py={10}>
+            Here at Knit Picky, we are committed to providing high quality yarns
+            that have been hand crafted at our circular farms in South America.
+            All our artisans are paid a living wage, and our animals are free to
+            roam the Peruvian hills. We believe that happy animals make better
+            yarns, and better yarns make happy knitters.
           </Text>
           <Stack
             spacing={4}
@@ -73,22 +74,20 @@ export default function AboutUs() {
           >
             <Feature
               icon={
-                <Icon as={IoAnalyticsSharp} color={"yellow.500"} w={5} h={5} />
+                <Icon as={GiPlantsAndAnimals} color={"blue.500"} w={5} h={5} />
               }
-              iconBg={useColorModeValue("yellow.100", "yellow.900")}
-              text={"Business Planning"}
+              iconBg={useColorModeValue("blue.100", "blue.900")}
+              text={"Sustainably Sourced"}
             />
             <Feature
-              icon={<Icon as={IoLogoBitcoin} color={"green.500"} w={5} h={5} />}
+              icon={<Icon as={GiYarn} color={"green.500"} w={5} h={5} />}
               iconBg={useColorModeValue("green.100", "green.900")}
-              text={"Financial Planning"}
+              text={"High Quality Fibres"}
             />
             <Feature
-              icon={
-                <Icon as={IoSearchSharp} color={"purple.500"} w={5} h={5} />
-              }
-              iconBg={useColorModeValue("purple.100", "purple.900")}
-              text={"Market Analysis"}
+              icon={<Icon as={GiFarmer} color={"yellow.800"} w={5} h={5} />}
+              iconBg={useColorModeValue("yellow.500", "yellow.900")}
+              text={"Fair Trade Farming"}
             />
           </Stack>
         </Stack>
@@ -96,9 +95,7 @@ export default function AboutUs() {
           <Image
             rounded={"md"}
             alt={"feature image"}
-            src={
-              "https://images.unsplash.com/photo-1554200876-56c2f25224fa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            }
+            src={"http://localhost:3000/assets/about.JPG"}
             objectFit={"cover"}
           />
         </Flex>
