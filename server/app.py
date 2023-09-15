@@ -38,7 +38,12 @@ class Signup(Resource):
             customer_id=new_customer.id,
         )
 
+        wishlist = Wishlist(
+            customer_id=new_customer.id,
+        )
+
         db.session.add(order)
+        db.session.add(wishlist)
         db.session.commit()
 
         return new_customer.to_dict()
