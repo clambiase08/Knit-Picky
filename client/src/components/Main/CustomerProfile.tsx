@@ -18,6 +18,7 @@ import {
 import { useCustomer } from "../../context/CustomerProvider";
 import { OrderItemContext } from "../../context/OrderItemProvider";
 import { OrderContext } from "../../context/OrderProvider";
+import Wishlist from "./Customer Profile/Wishlist";
 
 interface Customer {
   customer: {
@@ -133,6 +134,7 @@ export default function CustomerProfile() {
       <Accordion defaultIndex={[0]} allowMultiple>
         {orderAccordians}
       </Accordion>
+      <Wishlist />
     </Box>
   );
 }
