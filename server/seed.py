@@ -24,6 +24,7 @@ if __name__ == "__main__":
         Category.query.delete()
         Sku.query.delete()
         Color.query.delete()
+        WishlistItem.query.delete()
         print("Tables empty, starting seed data...")
 
         print("Seeding customers...")
@@ -313,19 +314,29 @@ if __name__ == "__main__":
             db.session.commit()
         print("Order items seeded...")
 
-        # print("Seeding wishlists...")
-        # cust_ids = list(range(1, 4))
-        # shuffle(cust_ids)
+        print("Seeding wishlist items...")
+        cust_ids = list(range(1, 4))
+        shuffle(cust_ids)
 
-        # cust_id_index = 0
-        # for _ in range(3):
-        #     customer_id = cust_ids[cust_id_index]
-        #     cust_id_index = (cust_id_index + 1) % len(cust_ids)
+        style_ids = list(range(1, 8))
+        shuffle(style_ids)
 
-        #     wishlist = Wishlist(customer_id=customer_id)
+        cust_id_index = 0
+        style_id_index = 0
+        for _ in range(10):
+            customer_id = cust_ids[cust_id_index]
+            cust_id_index = (cust_id_index + 1) % len(cust_ids)
 
-        #     db.session.add(wishlist)
-        #     db.session.commit()
-        # print("Wishlist seeded...")
+            style_id = style_ids[style_id_index]
+            style_id_index = (style_id_index + 1) % len(style_ids)
+
+            wishlist_items = WishlistItem(
+                customer_id=customer_id,
+                style_id=style_id,
+            )
+
+            db.session.add(wishlist_items)
+            db.session.commit()
+        print("Wishlist seeded...")
 
         print("Seeding complete. Let's boogie")
