@@ -137,6 +137,7 @@ if __name__ == "__main__":
                 price=style["price"],
                 stock_quantity=randint(1, 100),
                 category_id=style["category_id"],
+                wishlist_id=randint(1, 3),
             )
             db.session.add(style)
             db.session.commit()
@@ -311,5 +312,20 @@ if __name__ == "__main__":
             db.session.add(order_item)
             db.session.commit()
         print("Order items seeded...")
+
+        print("Seeding wishlists...")
+        cust_ids = list(range(1, 4))
+        shuffle(cust_ids)
+
+        cust_id_index = 0
+        for _ in range(3):
+            customer_id = cust_ids[cust_id_index]
+            cust_id_index = (cust_id_index + 1) % len(cust_ids)
+
+            wishlist = Wishlist(customer_id=customer_id)
+
+            db.session.add(wishlist)
+            db.session.commit()
+        print("Wishlist seeded...")
 
         print("Seeding complete. Let's boogie")

@@ -97,6 +97,7 @@ class Style(db.Model, SerializerMixin):
     price = db.Column(db.Float, nullable=False)
     stock_quantity = db.Column(db.Integer)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
+    wishlist_id = db.Column(db.Integer, db.ForeignKey("wishlists.id"))
 
     orderitems = db.relationship("OrderItem", backref="style", cascade="delete")
     skus = db.relationship("Sku", backref="style", cascade="delete")
@@ -130,3 +131,13 @@ class Color(db.Model, SerializerMixin):
     color = db.Column(db.String, nullable=False)
 
     # skus = db.relationship("Sku", backref="color", cascade="delete")
+
+
+class Wishlist(db.Model, SerializerMixin):
+    __tablename__ = "wishlists"
+
+    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey("customers.id"))
+
+    styles = db.relationship("Style", backref="wishlist", cascade="delete")
+    customer = db.relationship("Customer", backref="wishlist", uselist=False)
