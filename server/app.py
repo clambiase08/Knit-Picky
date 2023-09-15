@@ -235,6 +235,15 @@ class ColorNames(Resource):
 api.add_resource(ColorNames, "/color-names")
 
 
+class Wishlists(Resource):
+    def get(self):
+        wishlists = [wishlist.to_dict() for wishlist in Wishlist.query.all()]
+        return make_response(wishlists, 200)
+
+
+api.add_resource(Wishlists, "/wishlists")
+
+
 class Bestsellers(Resource):
     def get(self):
         styles = Style.query.all()
