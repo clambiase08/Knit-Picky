@@ -18,7 +18,7 @@ class Customer(db.Model, SerializerMixin):
     serialize_rules = (
         "-orders.customer",
         "-orders.orderitem",
-        "-wishlist.customer",
+        "-wishlist_items.customer",
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -53,7 +53,9 @@ class Customer(db.Model, SerializerMixin):
 
     orders = db.relationship("Order", backref="customer", cascade="delete")
     orderitems = association_proxy("orders", "orderitem")
-    wishlist = db.relationship("Wishlist", backref="customer", uselist=False)
+    wishlist_items = db.relationship(
+        "WishlistItem", backref="customer", cascade="delete"
+    )
 
 
 class Order(db.Model, SerializerMixin, TimestampMixin):
@@ -91,7 +93,9 @@ class Style(db.Model, SerializerMixin):
         "-orderitems.style",
         "-orderitems.order",
         "-skus.style",
-        "-wishlist",
+        "-wishlist_items.style",
+        "-category.styles",
+        # added to remove nested styles on customer. Check if something isn't rendering
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -100,11 +104,10 @@ class Style(db.Model, SerializerMixin):
     price = db.Column(db.Float, nullable=False)
     stock_quantity = db.Column(db.Integer)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
-    wishlist_id = db.Column(db.Integer, db.ForeignKey("wishlists.id"))
 
     orderitems = db.relationship("OrderItem", backref="style", cascade="delete")
     skus = db.relationship("Sku", backref="style", cascade="delete")
-    # wishlist = db.relationship("Wishlist", backref="styles", cascade="delete")
+    wishlist_items = db.relationship("WishlistItem", backref="style", cascade="delete")
 
 
 class Category(db.Model, SerializerMixin):
@@ -138,8 +141,8 @@ class Color(db.Model, SerializerMixin):
     # skus = db.relationship("Sku", backref="color", cascade="delete")
 
 
-class Wishlist(db.Model, SerializerMixin):
-    __tablename__ = "wishlists"
+class WishlistItem(db.Model, SerializerMixin):
+    __tablename__ = "wishlist_items"
     serialize_rules = (
         "-styles.wishlist",
         "-customer.wishlist",
@@ -148,6 +151,7 @@ class Wishlist(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     customer_id = db.Column(db.Integer, db.ForeignKey("customers.id"))
+    style_id = db.Column(db.Integer, db.ForeignKey("styles.id"))
 
-    styles = db.relationship("Style", backref="wishlist", cascade="delete")
+    # styles = db.relationship("Style", backref="wishlist", cascade="delete")
     # customer = db.relationship("Customer", backref="wishlist", uselist=False)

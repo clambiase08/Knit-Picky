@@ -38,12 +38,12 @@ class Signup(Resource):
             customer_id=new_customer.id,
         )
 
-        wishlist = Wishlist(
-            customer_id=new_customer.id,
-        )
+        # wishlist = Wishlist(
+        #     customer_id=new_customer.id,
+        # )
 
         db.session.add(order)
-        db.session.add(wishlist)
+        # db.session.add(wishlist)
         db.session.commit()
 
         return new_customer.to_dict()
@@ -235,13 +235,13 @@ class ColorNames(Resource):
 api.add_resource(ColorNames, "/color-names")
 
 
-class Wishlists(Resource):
-    def get(self):
-        wishlists = [wishlist.to_dict() for wishlist in Wishlist.query.all()]
-        return make_response(wishlists, 200)
+# class Wishlists(Resource):
+#     def get(self):
+#         wishlists = [wishlist.to_dict() for wishlist in Wishlist.query.all()]
+#         return make_response(wishlists, 200)
 
 
-api.add_resource(Wishlists, "/wishlists")
+# api.add_resource(Wishlists, "/wishlists")
 
 
 class Bestsellers(Resource):

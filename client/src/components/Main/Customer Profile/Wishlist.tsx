@@ -30,12 +30,24 @@ interface Wishlist {
 interface Customer {
   customer: {
     id: number;
-    wishlist?: Wishlist;
+    wishlist: Wishlist;
   };
+  setCustomer: (customer: Customer) => void;
 }
 
 export default function Wishlist() {
-  const { customer } = useCustomer() as Customer;
+  const { customer, setCustomer } = useCustomer() as unknown as Customer;
+
+  function handleDelete(styleId: number) {
+    const newWishlist = customer.wishlist.styles.filter(
+      (style) => style.id === styleId
+    );
+    const updatedCustomer: Customer = {
+      ...customer,
+      wishlist: { ...customer.wishlist, styles: newWishlist },
+    };
+    setCustomer(updatedCustomer);
+  }
 
   const wishlistItems = customer.wishlist?.styles.map((style) => {
     return (
@@ -91,7 +103,7 @@ export default function Wishlist() {
                   boxShadow: "lg",
                   border: "green.700",
                 }}
-                // onClick={() => handleDeleteClick(item)}
+                onClick={() => handleDelete(style.id)}
               />
             </HStack>
           </Flex>
