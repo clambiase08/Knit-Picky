@@ -6,9 +6,13 @@ import {
   Image,
   useColorModeValue,
   Stack,
+  Tooltip,
+  Icon,
+  chakra,
 } from "@chakra-ui/react";
 import { ColorContext } from "../../context/ColorProvider";
 import { useHistory } from "react-router-dom";
+import { HiOutlineHeart, HiHeart } from "react-icons/hi";
 
 interface ProductCardProps {
   id: number;
@@ -30,6 +34,7 @@ export default function AltProductCard({
   const [selectedColorId, setSelectedColorId] = useState<number | undefined>(
     undefined
   );
+  const [heartFill, setHeartFill] = useState(true);
 
   const history = useHistory();
 
@@ -37,6 +42,12 @@ export default function AltProductCard({
     color: color.color,
     id: color.id,
   }));
+
+  function handleHeartClick() {
+    setHeartFill((heartFill) => !heartFill);
+  }
+
+  const heartIcon = heartFill ? <HiOutlineHeart /> : <HiHeart />;
 
   return (
     <Stack direction="column">
@@ -58,7 +69,7 @@ export default function AltProductCard({
 
           <Box p="6">
             <Box display="flex" alignItems="baseline"></Box>
-            <Flex mt="1" justifyContent="space-between" alignContent="center">
+            <Flex mb="2" justifyContent="space-between" alignContent="center">
               <Box
                 fontSize="2xl"
                 fontWeight="semibold"
@@ -68,6 +79,25 @@ export default function AltProductCard({
               >
                 {style_name}
               </Box>
+              <Tooltip
+                label="Add to wishlist"
+                bg="white"
+                placement={"top"}
+                color={"gray.800"}
+                fontSize={"1em"}
+              >
+                <chakra.a href={"#"} display={"flex"}>
+                  <Icon
+                    as={"svg"}
+                    h={7}
+                    w={7}
+                    alignSelf={"center"}
+                    onClick={handleHeartClick}
+                  >
+                    {heartIcon}
+                  </Icon>
+                </chakra.a>
+              </Tooltip>
             </Flex>
             <Flex justifyContent="space-between" alignContent="center">
               <Box display="flex" alignItems="center">
