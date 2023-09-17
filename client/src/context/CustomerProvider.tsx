@@ -6,14 +6,18 @@ interface Customer {
   // username?: string;
   first_name?: string;
   last_name?: string;
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
   shipping_address?: string;
   billing_address?: string;
-  wishlist_items?: [];
+  wishlist_items?: WishlistItem[];
 }
 
-interface CustomerContextType {
+interface WishlistItem {
+  style_id: number;
+}
+
+export interface CustomerContextType {
   customer: Customer | null;
   setCustomer: (customer: Customer) => void;
   fetchCustomer: () => void;

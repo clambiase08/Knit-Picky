@@ -244,6 +244,19 @@ api.add_resource(ColorNames, "/color-names")
 # api.add_resource(Wishlists, "/wishlists")
 
 
+class WishlistItemById(Resource):
+    def delete(self, id):
+        wish_item = WishlistItem.query.filter_by(id=id).first()
+        if not wish_item:
+            return make_response({"error": "Wishlist item not found"}, 404)
+        db.session.delete(wish_item)
+        db.session.commit()
+        return make_response({}, 204)
+
+
+api.add_resource(WishlistItemById, "/wishlist_items/<int:id>")
+
+
 class Bestsellers(Resource):
     def get(self):
         styles = Style.query.all()

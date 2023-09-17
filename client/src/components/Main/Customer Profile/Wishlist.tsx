@@ -1,5 +1,8 @@
 import React, { useContext } from "react";
-import { useCustomer } from "../../../context/CustomerProvider";
+import {
+  useCustomer,
+  CustomerContextType,
+} from "../../../context/CustomerProvider";
 import {
   Flex,
   Image,
@@ -15,17 +18,6 @@ import {
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import { StyleContext } from "../../../context/StyleProvider";
 
-interface Customer {
-  customer: {
-    id: number;
-    wishlist_items: WishlistItem[];
-  };
-}
-
-interface WishlistItem {
-  style_id: number;
-}
-
 interface Style {
   id: number;
   price: number;
@@ -38,7 +30,7 @@ interface Skus {
 }
 
 export default function Wishlist() {
-  const { customer } = useCustomer() as Customer;
+  const { customer, setCustomer } = useCustomer() as CustomerContextType;
   const { styles } = useContext(StyleContext);
 
   function findStyleById(styleId: number): Style {
@@ -51,8 +43,22 @@ export default function Wishlist() {
       }
     );
   }
+  function handleDeleteItem(deletedItemId: number): void {
+    setCustomer({
+      ...customer,
+      wishlist_items: customer?.wishlist_items?.filter(
+        (item) => item.style_id !== deletedItemId
+      ),
+    });
+  }
 
-  const wishlistItems = customer?.wishlist_items.map((item) => {
+  function handleDelete(itemId: number): void {
+    fetch(`/wishlist_items/${itemId}`, {
+      method: "DELETE",
+    }).then(() => handleDeleteItem(itemId));
+  }
+
+  const wishlistItems = (customer?.wishlist_items || []).map((item) => {
     const style: Style = findStyleById(item.style_id);
 
     if (style.id === -1) {
@@ -112,7 +118,7 @@ export default function Wishlist() {
                   boxShadow: "lg",
                   border: "green.700",
                 }}
-                // onClick={() => handleDelete(style.id)}
+                onClick={() => handleDelete(style.id)}
               />
             </HStack>
           </Flex>
