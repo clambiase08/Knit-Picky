@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import {
   useCustomer,
   CustomerContextType,
@@ -32,6 +33,7 @@ interface Skus {
 export default function Wishlist() {
   const { customer, setCustomer } = useCustomer() as CustomerContextType;
   const { styles } = useContext(StyleContext);
+  const history = useHistory();
 
   function findStyleById(styleId: number): Style {
     return (
@@ -102,7 +104,7 @@ export default function Wishlist() {
                   boxShadow: "lg",
                   bg: "green.700",
                 }}
-                // onClick={() => history.push(`/profile/${customer?.first_name}`)}
+                onClick={() => history.push(`/product/${style.id}`)}
               >
                 Shop Item
               </Button>
