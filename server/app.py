@@ -235,13 +235,19 @@ class ColorNames(Resource):
 api.add_resource(ColorNames, "/color-names")
 
 
-# class Wishlists(Resource):
-#     def get(self):
-#         wishlists = [wishlist.to_dict() for wishlist in Wishlist.query.all()]
-#         return make_response(wishlists, 200)
+class WishlistItems(Resource):
+    def post(self):
+        data = request.get_json()
+        try:
+            new_wish = WishlistItem(**data)
+        except:
+            abort(422, errors=["Invalid Wishlist item"])
+        db.session.add(new_wish)
+        db.session.commit()
+        return make_response(new_wish.to_dict(), 201)
 
 
-# api.add_resource(Wishlists, "/wishlists")
+api.add_resource(WishlistItems, "/wishlist_items")
 
 
 class WishlistItemById(Resource):

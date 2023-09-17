@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { useHistory } from "react-router-dom";
 
-interface Customer {
+export interface Customer {
   id?: number;
   // username?: string;
   first_name?: string;
@@ -14,7 +14,9 @@ interface Customer {
 }
 
 interface WishlistItem {
+  id: number;
   style_id: number;
+  customer_id: number;
 }
 
 export interface CustomerContextType {

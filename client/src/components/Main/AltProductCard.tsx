@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Flex,
   Circle,
@@ -13,6 +13,7 @@ import {
 import { ColorContext } from "../../context/ColorProvider";
 import { useHistory } from "react-router-dom";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
+import { useCustomer } from "../../context/CustomerProvider";
 
 interface ProductCardProps {
   id: number;
@@ -30,24 +31,74 @@ export default function AltProductCard({
   id,
 }: ProductCardProps) {
   const { colors } = useContext(ColorContext);
+  const { customer, setCustomer } = useCustomer();
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [selectedColorId, setSelectedColorId] = useState<number | undefined>(
     undefined
   );
-  const [heartFill, setHeartFill] = useState(true);
+  const [heartFill, setHeartFill] = useState(false);
 
   const history = useHistory();
+
+  useEffect(() => {
+    if (customer && customer.wishlist_items) {
+      const isInWishlist = customer.wishlist_items.some(
+        (item) => item.style_id === id
+      );
+      setHeartFill(isInWishlist);
+    }
+  }, [customer, id]);
 
   const colorDetail = colors.map((color) => ({
     color: color.color,
     id: color.id,
   }));
 
+  function handleDeleteItem(deletedItemId: number): void {
+    setCustomer({
+      ...customer,
+      wishlist_items: customer!.wishlist_items?.filter(
+        (item) => item.id !== deletedItemId
+      ),
+    });
+  }
+
   function handleHeartClick() {
+    if (!heartFill) {
+      const wishlistItemAdd = {
+        customer_id: customer?.id,
+        style_id: id,
+      };
+      fetch("/wishlist_items", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(wishlistItemAdd),
+      }).then((res) => res.json());
+      // .then((wishlistItemAdd) => {
+      // setCustomer((prevCustomer: Customer | null) => ({
+      //   ...prevCustomer,
+      //   wishlist_items: [
+      //     ...(prevCustomer?.wishlist_items ?? []),
+      //     wishlistItemAdd,
+      //   ],
+      // }));
+    } else {
+      const wishlistItemToDelete = customer?.wishlist_items?.find(
+        (item) => item.style_id === id
+      );
+      if (wishlistItemToDelete) {
+        fetch(`/wishlist_items/${wishlistItemToDelete.id}`, {
+          method: "DELETE",
+        }).then(() => handleDeleteItem(wishlistItemToDelete.id));
+      }
+    }
+
     setHeartFill((heartFill) => !heartFill);
   }
 
-  const heartIcon = heartFill ? <HiOutlineHeart /> : <HiHeart />;
+  const heartIcon = heartFill ? <HiHeart /> : <HiOutlineHeart />;
 
   return (
     <Stack direction="column">
@@ -86,7 +137,7 @@ export default function AltProductCard({
                 color={"gray.800"}
                 fontSize={"1em"}
               >
-                <chakra.a href={"#"} display={"flex"}>
+                <chakra.a display={"flex"}>
                   <Icon
                     as={"svg"}
                     h={7}

@@ -48,7 +48,7 @@ export default function Wishlist() {
   function handleDeleteItem(deletedItemId: number): void {
     setCustomer({
       ...customer,
-      wishlist_items: customer?.wishlist_items?.filter(
+      wishlist_items: customer!.wishlist_items?.filter(
         (item) => item.style_id !== deletedItemId
       ),
     });

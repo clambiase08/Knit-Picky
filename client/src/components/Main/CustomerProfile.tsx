@@ -35,7 +35,7 @@ interface Customer {
 }
 
 export default function CustomerProfile() {
-  const { customer } = useCustomer() as Customer;
+  const { customer } = useCustomer() as unknown as Customer;
   const { orderItems } = useContext(OrderItemContext);
   const { orders } = useContext(OrderContext);
   // console.log(orderItems);
