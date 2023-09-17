@@ -13,7 +13,11 @@ import {
 import { ColorContext } from "../../context/ColorProvider";
 import { useHistory } from "react-router-dom";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
-import { useCustomer } from "../../context/CustomerProvider";
+import {
+  useCustomer,
+  Customer,
+  WishlistItem,
+} from "../../context/CustomerProvider";
 
 interface ProductCardProps {
   id: number;
@@ -75,15 +79,20 @@ export default function AltProductCard({
           "Content-Type": "application/json",
         },
         body: JSON.stringify(wishlistItemAdd),
-      }).then((res) => res.json());
-      // .then((wishlistItemAdd) => {
-      // setCustomer((prevCustomer: Customer | null) => ({
-      //   ...prevCustomer,
-      //   wishlist_items: [
-      //     ...(prevCustomer?.wishlist_items ?? []),
-      //     wishlistItemAdd,
-      //   ],
-      // }));
+      })
+        .then((res) => res.json())
+        .then((newWishlistItem: WishlistItem) => {
+          if (customer) {
+            const updatedCustomer: Customer = {
+              ...customer,
+              wishlist_items: [
+                ...(customer.wishlist_items || []),
+                newWishlistItem,
+              ],
+            };
+            setCustomer(updatedCustomer);
+          }
+        });
     } else {
       const wishlistItemToDelete = customer?.wishlist_items?.find(
         (item) => item.style_id === id

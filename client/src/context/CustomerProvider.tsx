@@ -13,7 +13,7 @@ export interface Customer {
   wishlist_items?: WishlistItem[];
 }
 
-interface WishlistItem {
+export interface WishlistItem {
   id: number;
   style_id: number;
   customer_id: number;

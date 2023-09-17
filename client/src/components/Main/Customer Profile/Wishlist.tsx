@@ -49,15 +49,23 @@ export default function Wishlist() {
     setCustomer({
       ...customer,
       wishlist_items: customer!.wishlist_items?.filter(
-        (item) => item.style_id !== deletedItemId
+        (item) => item.id !== deletedItemId
       ),
     });
   }
 
   function handleDelete(itemId: number): void {
-    fetch(`/wishlist_items/${itemId}`, {
-      method: "DELETE",
-    }).then(() => handleDeleteItem(itemId));
+    const wishlistItemToDelete = customer?.wishlist_items?.find(
+      (item) => item.style_id === itemId
+    );
+    if (wishlistItemToDelete) {
+      fetch(`/wishlist_items/${wishlistItemToDelete.id}`, {
+        method: "DELETE",
+      }).then(() => handleDeleteItem(wishlistItemToDelete.id));
+      // fetch(`/wishlist_items/${itemId}`, {
+      //   method: "DELETE",
+      // }).then(() => handleDeleteItem(itemId));
+    }
   }
 
   const wishlistItems = (customer?.wishlist_items || []).map((item) => {
