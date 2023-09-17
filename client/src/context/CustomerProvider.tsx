@@ -10,6 +10,7 @@ interface Customer {
   password: string;
   shipping_address?: string;
   billing_address?: string;
+  wishlist_items?: [];
 }
 
 interface CustomerContextType {

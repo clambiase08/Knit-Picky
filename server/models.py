@@ -75,7 +75,7 @@ class Order(db.Model, SerializerMixin, TimestampMixin):
 class OrderItem(db.Model, SerializerMixin):
     __tablename__ = "orderitems"
     serialize_rules = (
-        "-order.customer",
+        "-order.orderitems",
         "-style.orderitems",
     )
 
@@ -107,7 +107,7 @@ class Style(db.Model, SerializerMixin):
 
     orderitems = db.relationship("OrderItem", backref="style", cascade="delete")
     skus = db.relationship("Sku", backref="style", cascade="delete")
-    wishlist_items = db.relationship("WishlistItem", backref="style", cascade="delete")
+    # wishlist_items = db.relationship("WishlistItem", backref="style", cascade="delete")
 
 
 class Category(db.Model, SerializerMixin):
@@ -138,20 +138,15 @@ class Color(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     color = db.Column(db.String, nullable=False)
 
-    # skus = db.relationship("Sku", backref="color", cascade="delete")
-
 
 class WishlistItem(db.Model, SerializerMixin):
     __tablename__ = "wishlist_items"
     serialize_rules = (
-        "-styles.wishlist",
-        "-customer.wishlist",
+        "-style.wishlist_items",
+        "-customer.wishlist_items",
         "-styles.orderitems",
     )
 
     id = db.Column(db.Integer, primary_key=True)
     customer_id = db.Column(db.Integer, db.ForeignKey("customers.id"))
     style_id = db.Column(db.Integer, db.ForeignKey("styles.id"))
-
-    # styles = db.relationship("Style", backref="wishlist", cascade="delete")
-    # customer = db.relationship("Customer", backref="wishlist", uselist=False)

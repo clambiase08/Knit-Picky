@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useCustomer } from "../../../context/CustomerProvider";
 import {
   Flex,
@@ -13,43 +13,52 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
-
-interface Style {
-  id: number;
-  style_name: string;
-  skus: { image: string }[];
-  price: number;
-}
-
-interface Wishlist {
-  customer_id: number;
-  id: number;
-  styles: Style[];
-}
+import { StyleContext } from "../../../context/StyleProvider";
 
 interface Customer {
   customer: {
     id: number;
-    wishlist: Wishlist;
+    wishlist_items: WishlistItem[];
   };
-  setCustomer: (customer: Customer) => void;
+}
+
+interface WishlistItem {
+  style_id: number;
+}
+
+interface Style {
+  id: number;
+  price: number;
+  style_name: string;
+  skus: Skus[];
+}
+
+interface Skus {
+  image: string;
 }
 
 export default function Wishlist() {
-  const { customer, setCustomer } = useCustomer() as unknown as Customer;
+  const { customer } = useCustomer() as Customer;
+  const { styles } = useContext(StyleContext);
 
-  function handleDelete(styleId: number) {
-    const newWishlist = customer.wishlist.styles.filter(
-      (style) => style.id === styleId
+  function findStyleById(styleId: number): Style {
+    return (
+      styles.find((style) => style.id === styleId) || {
+        id: -1,
+        price: 0,
+        style_name: "",
+        skus: [{ image: "" }],
+      }
     );
-    const updatedCustomer: Customer = {
-      ...customer,
-      wishlist: { ...customer.wishlist, styles: newWishlist },
-    };
-    setCustomer(updatedCustomer);
   }
 
-  const wishlistItems = customer.wishlist?.styles.map((style) => {
+  const wishlistItems = customer?.wishlist_items.map((item) => {
+    const style: Style = findStyleById(item.style_id);
+
+    if (style.id === -1) {
+      return null;
+    }
+
     return (
       <>
         <GridItem colSpan={1}>
@@ -103,7 +112,7 @@ export default function Wishlist() {
                   boxShadow: "lg",
                   border: "green.700",
                 }}
-                onClick={() => handleDelete(style.id)}
+                // onClick={() => handleDelete(style.id)}
               />
             </HStack>
           </Flex>
