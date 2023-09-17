@@ -55,7 +55,7 @@ const CustomerProvider = ({ children }: CustomerProviderProps) => {
       })
       .then((customer) => {
         setCustomer(customer);
-        // console.log(customer);
+        console.log(customer);
       })
       .catch((error) => {
         console.error(error);

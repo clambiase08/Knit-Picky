@@ -69,7 +69,7 @@ export default function Cart() {
   const { orders, setOrders } = useContext(OrderContext);
   const history = useHistory();
   // console.log(orderItems);
-  // console.log(customer);
+  console.log(customer);
 
   useEffect(() => {
     fetch("/order_items")
@@ -84,8 +84,8 @@ export default function Cart() {
 
   const userOrderItems = orderItems.filter(
     (orderItem) =>
-      orderItem.order.customer_id === customer.id &&
-      orderItem.order.status === "created"
+      orderItem.order?.customer_id === customer.id &&
+      orderItem.order?.status === "created"
   );
   // console.log(userOrderItems);
 

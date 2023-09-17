@@ -62,9 +62,6 @@ export default function Wishlist() {
       fetch(`/wishlist_items/${wishlistItemToDelete.id}`, {
         method: "DELETE",
       }).then(() => handleDeleteItem(wishlistItemToDelete.id));
-      // fetch(`/wishlist_items/${itemId}`, {
-      //   method: "DELETE",
-      // }).then(() => handleDeleteItem(itemId));
     }
   }
 
