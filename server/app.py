@@ -173,27 +173,38 @@ api.add_resource(OrderById, "/orders/<int:id>")
 
 
 class OrderItemById(Resource):
-    def delete(self, id):
-        order_item = OrderItem.query.filter_by(id=id).first()
+    def delete(self, order_id, item_id):
+        order = Order.query.filter_by(id=order_id).first()
+        if not order:
+            return make_response({"error": "Order not found"}, 404)
+
+        order_item = OrderItem.query.filter_by(id=item_id).first()
         if not order_item:
             return make_response({"error": "Order item not found"}, 404)
+
         db.session.delete(order_item)
         db.session.commit()
         return make_response({}, 204)
 
-    def patch(self, id):
+    def patch(self, order_id, item_id):
         data = request.get_json()
-        order_item = OrderItem.query.filter_by(id=id).first()
+        order = Order.query.filter_by(id=order_id).first()
+        if not order:
+            return make_response({"error": "Order not found"}, 404)
+
+        order_item = OrderItem.query.filter_by(id=item_id).first()
         if not order_item:
             return make_response({"error": "Order item not found"}, 404)
+
         for key in data:
             setattr(order_item, key, data[key])
+
         db.session.add(order_item)
         db.session.commit()
         return make_response(order_item.to_dict(), 202)
 
 
-api.add_resource(OrderItemById, "/order_items/<int:id>")
+api.add_resource(OrderItemById, "/orders/<int:order_id>/orderitems/<int:item_id>")
 
 
 class OrderItems(Resource):

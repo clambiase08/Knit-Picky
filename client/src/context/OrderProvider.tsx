@@ -1,10 +1,22 @@
 import React, { useState, ReactNode, useEffect } from "react";
 
-interface Order {
+export interface Order {
   id: number;
   customer_id: number;
   status: string;
-  orderitems: [];
+  orderitems: OrderItem[];
+}
+
+export interface OrderItem {
+  id: number;
+  quantity: number;
+  subtotal: number;
+  order_id: number;
+  style_id: number;
+  sku_id: number;
+  style: {
+    price: number;
+  };
 }
 
 interface OrderContextProps {

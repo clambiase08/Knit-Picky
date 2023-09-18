@@ -20,11 +20,10 @@ import {
   NumberIncrementStepper,
   NumberInputStepper,
 } from "@chakra-ui/react";
-import { OrderItemContext } from "../../context/OrderItemProvider";
 import { useCustomer } from "../../context/CustomerProvider";
 import { StyleContext } from "../../context/StyleProvider";
 import { ColorContext } from "../../context/ColorProvider";
-import { OrderContext } from "../../context/OrderProvider";
+import { OrderContext, Order, OrderItem } from "../../context/OrderProvider";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 
 interface Customer {
@@ -40,29 +39,7 @@ interface Customer {
   };
 }
 
-interface OrderItem {
-  id: number;
-  order: {
-    customer_id: number;
-    status: string;
-  };
-  order_id: number;
-  quantity: number;
-  sku_id: number;
-  style_id: number;
-  subtotal: number;
-  style: {
-    category_id: number;
-    description: string;
-    id: number;
-    price: number;
-    stock_quantity: number;
-    style_name: string;
-  };
-}
-
 export default function Cart() {
-  const { orderItems, setOrderItems } = useContext(OrderItemContext);
   const { customer } = useCustomer() as Customer;
   const { styles } = useContext(StyleContext);
   const { colors } = useContext(ColorContext);
@@ -71,31 +48,23 @@ export default function Cart() {
   // console.log(orderItems);
   console.log(customer);
 
-  useEffect(() => {
-    fetch("/order_items")
-      .then((res) => res.json())
-      .then((data) => {
-        setOrderItems(data);
-      })
-      .catch((err) => {
-        console.error("Error fetching order items", err);
-      });
-  }, [setOrderItems]);
-
-  const userOrderItems = orderItems.filter(
-    (orderItem) =>
-      orderItem.order?.customer_id === customer.id &&
-      orderItem.order?.status === "created"
+  const userOrders = orders.filter(
+    (order) => order.customer_id === customer.id && order.status === "created"
   );
   // console.log(userOrderItems);
 
+  const userOrderItems = userOrders.flatMap((order) => order.orderitems);
+
   useEffect(() => {
-    const updatedTotalSubtotal = userOrderItems.reduce(
+    const updatedUserOrderItems = userOrders.flatMap(
+      (order) => order.orderitems
+    );
+    const updatedTotalSubtotal = updatedUserOrderItems.reduce(
       (sum, item) => sum + item.subtotal,
       0
     );
     setTotalSubtotal(updatedTotalSubtotal);
-  }, [userOrderItems]);
+  }, [userOrders]);
 
   const initialTotalSubtotal = userOrderItems.reduce(
     (sum, item) => sum + item.subtotal,
@@ -111,21 +80,40 @@ export default function Cart() {
   const taxes = totalSubtotal * 0.11;
   const totalAmount = totalSubtotal + shippingTotal + taxes;
 
-  function handleDeleteItem(deletedItem: OrderItem): void {
-    setOrderItems(orderItems.filter((item) => item.id !== deletedItem.id));
+  function handleDeleteItem(deletedItem: { id: number }) {
+    const updatedOrders: Order[] = [...orders];
+    updatedOrders.forEach((order) => {
+      order.orderitems = order.orderitems.filter(
+        (item) => item.id !== deletedItem.id
+      );
+    });
+    setOrders(updatedOrders);
   }
 
-  function handleDeleteClick(item: OrderItem): void {
-    fetch(`/order_items/${item.id}`, {
+  function handleDeleteClick(item: { id: number }) {
+    const orderId = userOrders[0]?.id;
+    fetch(`/orders/${orderId}/orderitems/${item.id}`, {
       method: "DELETE",
     }).then(() => handleDeleteItem(item));
   }
+
   const handleQtyChange = (itemToUpdate: OrderItem, newQuantity: number) => {
+    const updatedOrders: Order[] = [...orders];
+    updatedOrders.forEach((order) => {
+      order.orderitems = order.orderitems.map((item) =>
+        item.id === itemToUpdate.id ? { ...item, quantity: newQuantity } : item
+      );
+    });
+    setOrders(updatedOrders);
+
     const updatedItem = {
       quantity: newQuantity,
       subtotal: newQuantity * itemToUpdate.style.price,
     };
-    fetch(`/order_items/${itemToUpdate.id}`, {
+
+    const orderId = userOrders[0]?.id;
+
+    fetch(`/orders/${orderId}/orderitems/${itemToUpdate.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -133,20 +121,35 @@ export default function Cart() {
       body: JSON.stringify(updatedItem),
     })
       .then((res) => res.json())
-      .then((updatedItem) => {
-        setOrderItems((prevOrderItems) =>
-          prevOrderItems.map((item) =>
-            item.id === updatedItem.id ? updatedItem : item
-          )
-        );
-      })
-      .then(() => {
-        // Recalculate the total subtotals and update the state
-        const updatedTotalSubtotal = userOrderItems.reduce(
-          (sum, item) => sum + item.subtotal,
+      .then((updatedItemFromServer) => {
+        const updatedTotalSubtotal = userOrders.reduce(
+          (sum, order) =>
+            sum +
+            order.orderitems.reduce(
+              (subSum, item) => subSum + item.subtotal,
+              0
+            ),
           0
         );
         setTotalSubtotal(updatedTotalSubtotal);
+
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.id === orderId
+              ? {
+                  ...order,
+                  orderitems: order.orderitems.map((item) =>
+                    item.id === itemToUpdate.id
+                      ? { ...item, ...updatedItemFromServer }
+                      : item
+                  ),
+                }
+              : order
+          )
+        );
+      })
+      .catch((error) => {
+        console.error("Error updating order item:", error);
       });
   };
 
