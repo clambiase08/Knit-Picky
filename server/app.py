@@ -208,21 +208,11 @@ api.add_resource(OrderItemById, "/orders/<int:order_id>/orderitems/<int:item_id>
 
 
 class OrderItems(Resource):
-    def get(self):
-        order_items = [
-            o_i.to_dict(
-                rules=(
-                    "-order.orderitems",
-                    "-style.category",
-                    "-style.skus",
-                )
-            )
-            for o_i in OrderItem.query.all()
-        ]
-        return make_response(order_items, 200)
-
-    def post(self):
+    def post(self, order_id):
         data = request.get_json()
+        order = Order.query.filter_by(id=order_id).first()
+        if not order:
+            return make_response({"error": "Order not found"}, 404)
         try:
             new_item = OrderItem(**data)
         except:
@@ -232,7 +222,7 @@ class OrderItems(Resource):
         return make_response(new_item.to_dict(), 201)
 
 
-api.add_resource(OrderItems, "/order_items")
+api.add_resource(OrderItems, "/orders/<int:order_id>/orderitems")
 
 
 class ColorNames(Resource):

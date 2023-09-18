@@ -4,7 +4,7 @@ import { StyleContext } from "../../context/StyleProvider";
 import { ColorContext } from "../../context/ColorProvider";
 import { OrderContext } from "../../context/OrderProvider";
 import { useCustomer } from "../../context/CustomerProvider";
-import { OrderItemContext } from "../../context/OrderItemProvider";
+// import { OrderItemContext } from "../../context/OrderItemProvider";
 import { useHistory } from "react-router-dom";
 import {
   Box,
@@ -51,7 +51,7 @@ export default function ProductDetailPage() {
   const { styles } = useContext(StyleContext);
   const { colors } = useContext(ColorContext);
   const { orders, setOrders } = useContext(OrderContext);
-  const { setOrderItems } = useContext(OrderItemContext);
+  // const { setOrderItems } = useContext(OrderItemContext);
   const { customer } = useCustomer() as Customer;
   const history = useHistory();
   const [selectedColorId, setSelectedColorId] = useState<number | undefined>(
@@ -110,7 +110,8 @@ export default function ProductDetailPage() {
         style_id: styleValue.id,
         sku_id: selectedSkuId,
       };
-      fetch("/order_items", {
+      const orderId = order?.id;
+      fetch(`/orders/${orderId}/orderitems`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -120,7 +121,6 @@ export default function ProductDetailPage() {
         .then((res) => res.json())
         .then((addedItem) => {
           // console.log(addedItem);
-          setOrderItems((prevOrderItems) => [...prevOrderItems, addedItem]);
           setOrders(
             (prevOrders) =>
               prevOrders.map((o) =>
