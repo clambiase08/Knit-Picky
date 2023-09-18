@@ -61,3 +61,8 @@ export interface ProductCardProps {
   color_ids: number[];
   images: string[];
 }
+
+export interface Color {
+  id: number;
+  color: string;
+}

@@ -1,9 +1,5 @@
 import React, { useEffect, useState, ReactNode } from "react";
-
-interface Color {
-  id: number;
-  color: string;
-}
+import { Color } from "../components/types";
 
 interface ColorContextProps {
   colors: Color[];

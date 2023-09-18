@@ -1,26 +1,6 @@
 import React, { useState, ReactNode, useEffect } from "react";
 import { Order } from "../components/types";
 
-// export interface Order {
-//   id: number;
-//   customer_id: number;
-//   status: string;
-//   orderitems: OrderItem[];
-// }
-
-// export interface OrderItem {
-//   id: number;
-//   quantity: number;
-//   subtotal: number;
-//   order_id: number;
-//   style_id: number;
-//   sku_id: number;
-//   style: {
-//     style_name: string;
-//     price: number;
-//   };
-// }
-
 interface OrderContextProps {
   orders: Order[];
   setOrders: React.Dispatch<React.SetStateAction<Order[]>>;

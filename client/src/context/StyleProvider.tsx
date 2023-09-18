@@ -1,24 +1,6 @@
 import React, { useState, ReactNode, useEffect } from "react";
 import { Style } from "../components/types";
 
-// interface Style {
-//   id: number;
-//   style_name: string;
-//   description?: string;
-//   price: number;
-//   stock_quantity?: number;
-//   category_id?: number;
-//   skus: Skus[];
-// }
-
-// interface Skus {
-//   color_id: number;
-//   id: number;
-//   image: string;
-//   sku: string;
-//   style_id: number;
-// }
-
 interface StylesContextProps {
   styles: Style[];
   setStyles: React.Dispatch<React.SetStateAction<Style[]>>;

@@ -2,24 +2,6 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import { useHistory } from "react-router-dom";
 import { Customer } from "../components/types";
 
-// export interface Customer {
-//   id?: number;
-//   // username?: string;
-//   first_name?: string;
-//   last_name?: string;
-//   email?: string;
-//   password?: string;
-//   shipping_address?: string;
-//   billing_address?: string;
-//   wishlist_items?: WishlistItem[];
-// }
-
-// export interface WishlistItem {
-//   id: number;
-//   style_id: number;
-//   customer_id: number;
-// }
-
 export interface CustomerContextType {
   customer: Customer | null;
   setCustomer: (customer: Customer) => void;
