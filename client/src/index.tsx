@@ -6,7 +6,6 @@ import { createRoot } from "react-dom/client";
 import CustomerProvider from "./context/CustomerProvider";
 import StyleProvider from "./context/StyleProvider";
 import ColorProvider from "./context/ColorProvider";
-import OrderItemProvider from "./context/OrderItemProvider";
 import OrderProvider from "./context/OrderProvider";
 import BestSellerProvider from "./context/BestSellerProvider";
 
@@ -20,9 +19,7 @@ root.render(
           <StyleProvider>
             <BestSellerProvider>
               <ColorProvider>
-                <OrderItemProvider>
-                  <App />
-                </OrderItemProvider>
+                <App />
               </ColorProvider>
             </BestSellerProvider>
           </StyleProvider>
