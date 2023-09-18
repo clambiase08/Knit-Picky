@@ -28,7 +28,7 @@ The following features are planned for future development on Knit Picky:
 
 To install:
 
-- CD into `server` and run `pipenv install; pipenv shell`. Then run `python app.py` to start the server.
+- Run `pipenv install; pipenv shell`. Then CD into `server` and run `python app.py` to start the server.
 - In another terminal window, CD into `client` and run `npm start` to start the web app in the browser.
 
 ## Usage
