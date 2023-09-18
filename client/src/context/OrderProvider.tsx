@@ -15,6 +15,7 @@ export interface OrderItem {
   style_id: number;
   sku_id: number;
   style: {
+    style_name: string;
     price: number;
   };
 }

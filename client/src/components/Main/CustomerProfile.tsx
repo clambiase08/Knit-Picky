@@ -16,7 +16,6 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useCustomer } from "../../context/CustomerProvider";
-import { OrderItemContext } from "../../context/OrderItemProvider";
 import { OrderContext } from "../../context/OrderProvider";
 import Wishlist from "./Customer Profile/Wishlist";
 
@@ -36,17 +35,17 @@ interface Customer {
 
 export default function CustomerProfile() {
   const { customer } = useCustomer() as unknown as Customer;
-  const { orderItems } = useContext(OrderItemContext);
   const { orders } = useContext(OrderContext);
-  // console.log(orderItems);
 
   const userOrders = orders.filter(
     (order) => order.customer_id === customer.id && order.status !== "created"
   );
   // console.log(userOrders);
 
+  const userOrderItems = userOrders.flatMap((order) => order.orderitems);
+
   const orderAccordians = userOrders.map((order) => {
-    const currentOrderItems = orderItems.filter(
+    const currentOrderItems = userOrderItems.filter(
       (orderItem) => orderItem.order_id === order.id
     );
     const totalSubtotal = currentOrderItems.reduce(
