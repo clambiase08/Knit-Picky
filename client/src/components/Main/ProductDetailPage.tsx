@@ -20,37 +20,18 @@ import {
   Circle,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
+import { Order } from "../types";
 
 type RouteParams = {
   id: string;
 };
-
-interface Customer {
-  customer: {
-    id?: number;
-    // username?: string;
-    first_name?: string;
-    last_name?: string;
-    email: string;
-    password: string;
-    shipping_address?: string;
-    billing_address?: string;
-  };
-}
-
-interface Order {
-  id: number;
-  customer_id: number;
-  status: string;
-  orderitems: [];
-}
 
 export default function ProductDetailPage() {
   const { id } = useParams<RouteParams>();
   const { styles } = useContext(StyleContext);
   const { colors } = useContext(ColorContext);
   const { orders, setOrders } = useContext(OrderContext);
-  const { customer } = useCustomer() as Customer;
+  const { customer } = useCustomer();
   const history = useHistory();
   const [selectedColorId, setSelectedColorId] = useState<number | undefined>(
     undefined
@@ -149,7 +130,6 @@ export default function ProductDetailPage() {
             fit={"cover"}
             align={"center"}
             w={"80%"}
-            // h={{ base: "100%", sm: "400px", lg: "500px" }}
           />
         </Flex>
         <Stack spacing={{ base: 6, md: 10 }}>
@@ -217,31 +197,6 @@ export default function ProductDetailPage() {
               </Flex>
             </Box>
           </Stack>
-          {/* 
-          <Button
-            w={"full"}
-            mt={6}
-            size={"lg"}
-            py={"7"}
-            bg={"green.800"}
-            color={"white"}
-            textTransform={"uppercase"}
-            _hover={{
-              transform: "translateY(2px)",
-              boxShadow: "lg",
-              bg: "green.700",
-            }}
-            onClick={() => {
-              if (customer) {
-                handleAddToCart();
-                history.push("/cart");
-              } else {
-                history.push("/signup");
-              }
-            }}
-          >
-            Add to cart
-          </Button> */}
           {customer && (
             <Button
               w={"full"}

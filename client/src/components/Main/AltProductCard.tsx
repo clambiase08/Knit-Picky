@@ -13,19 +13,8 @@ import {
 import { ColorContext } from "../../context/ColorProvider";
 import { useHistory } from "react-router-dom";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
-import {
-  useCustomer,
-  Customer,
-  WishlistItem,
-} from "../../context/CustomerProvider";
-
-interface ProductCardProps {
-  id: number;
-  style_name: string;
-  price: number;
-  color_ids: number[];
-  images: string[];
-}
+import { useCustomer } from "../../context/CustomerProvider";
+import { Customer, WishlistItem, ProductCardProps } from "../types";
 
 export default function AltProductCard({
   style_name,

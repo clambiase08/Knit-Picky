@@ -18,17 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import { StyleContext } from "../../../context/StyleProvider";
-
-interface Style {
-  id: number;
-  price: number;
-  style_name: string;
-  skus: Skus[];
-}
-
-interface Skus {
-  image: string;
-}
+import { Style } from "../../types";
 
 export default function Wishlist() {
   const { customer, setCustomer } = useCustomer() as CustomerContextType;
@@ -41,7 +31,15 @@ export default function Wishlist() {
         id: -1,
         price: 0,
         style_name: "",
-        skus: [{ image: "" }],
+        skus: [
+          {
+            color_id: 0,
+            id: 0,
+            image: "",
+            sku: "",
+            style_id: -1,
+          },
+        ],
       }
     );
   }

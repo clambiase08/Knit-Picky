@@ -23,24 +23,12 @@ import {
 import { useCustomer } from "../../context/CustomerProvider";
 import { StyleContext } from "../../context/StyleProvider";
 import { ColorContext } from "../../context/ColorProvider";
-import { OrderContext, Order, OrderItem } from "../../context/OrderProvider";
+import { OrderContext } from "../../context/OrderProvider";
 import { SmallCloseIcon } from "@chakra-ui/icons";
-
-interface Customer {
-  customer: {
-    id?: number;
-    // username?: string;
-    first_name?: string;
-    last_name?: string;
-    email: string;
-    password: string;
-    shipping_address?: string;
-    billing_address?: string;
-  };
-}
+import { Order, OrderItem } from "../types";
 
 export default function Cart() {
-  const { customer } = useCustomer() as Customer;
+  const { customer } = useCustomer();
   const { styles } = useContext(StyleContext);
   const { colors } = useContext(ColorContext);
   const { orders, setOrders } = useContext(OrderContext);
@@ -49,7 +37,7 @@ export default function Cart() {
   console.log(customer);
 
   const userOrders = orders.filter(
-    (order) => order.customer_id === customer.id && order.status === "created"
+    (order) => order.customer_id === customer?.id && order.status === "created"
   );
   // console.log(userOrderItems);
 
@@ -178,7 +166,10 @@ export default function Cart() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status: "created", customer_id: customer.id }),
+          body: JSON.stringify({
+            status: "created",
+            customer_id: customer?.id,
+          }),
         })
           .then((res) => res.json())
           .then((data) => {

@@ -8,7 +8,6 @@ import Accessories from "../Main/Categories/Accessories";
 import ProductDetailPage from "../Main/ProductDetailPage";
 import CustomerProfile from "../Main/CustomerProfile";
 import Cart from "../Main/Cart";
-import Checkout from "../Main/Checkout";
 import OrderConfirmation from "../Main/OrderConfirmation";
 
 export default function Main() {
@@ -37,9 +36,6 @@ export default function Main() {
       </Route>
       <Route path="/cart">
         <Cart />
-      </Route>
-      <Route path="/cart/checkout">
-        <Checkout />
       </Route>
       <Route path="/order-confirmed">
         <OrderConfirmation />

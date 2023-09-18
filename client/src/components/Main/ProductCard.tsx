@@ -12,14 +12,7 @@ import {
   Circle,
   Flex,
 } from "@chakra-ui/react";
-
-interface ProductCardProps {
-  id: number;
-  style_name: string;
-  price: number;
-  color_ids: number[];
-  images: string[];
-}
+import { ProductCardProps } from "../types";
 
 export default function ProductCard({
   style_name,

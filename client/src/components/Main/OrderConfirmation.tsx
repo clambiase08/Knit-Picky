@@ -46,7 +46,6 @@ export default function OrderConfirmation() {
               py={"7"}
               bg={"green.800"}
               color={"white"}
-              // textTransform={"uppercase"}
               _hover={{
                 transform: "translateY(2px)",
                 boxShadow: "lg",
@@ -63,7 +62,6 @@ export default function OrderConfirmation() {
               py={"7"}
               bg={"green.800"}
               color={"white"}
-              // textTransform={"uppercase"}
               _hover={{
                 transform: "translateY(2px)",
                 boxShadow: "lg",

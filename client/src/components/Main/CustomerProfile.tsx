@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import {
   Stack,
   Flex,
-  // Button,
   Text,
   VStack,
   useBreakpointValue,
@@ -19,26 +18,12 @@ import { useCustomer } from "../../context/CustomerProvider";
 import { OrderContext } from "../../context/OrderProvider";
 import Wishlist from "./Customer Profile/Wishlist";
 
-interface Customer {
-  customer: {
-    id?: number;
-    // username?: string;
-    first_name?: string;
-    last_name?: string;
-    email: string;
-    password: string;
-    shipping_address?: string;
-    billing_address?: string;
-    wishlist_items?: [];
-  };
-}
-
 export default function CustomerProfile() {
-  const { customer } = useCustomer() as unknown as Customer;
+  const { customer } = useCustomer();
   const { orders } = useContext(OrderContext);
 
   const userOrders = orders.filter(
-    (order) => order.customer_id === customer.id && order.status !== "created"
+    (order) => order.customer_id === customer?.id && order.status !== "created"
   );
   // console.log(userOrders);
 
@@ -117,7 +102,7 @@ export default function CustomerProfile() {
               lineHeight={1.2}
               fontSize={useBreakpointValue({ base: "3xl", md: "4xl" })}
             >
-              Welcome, {customer.first_name}
+              Welcome, {customer?.first_name}
             </Text>
             <Stack direction={"row"}>
               <Text
