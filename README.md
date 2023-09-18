@@ -6,6 +6,8 @@ Knit Picky is an ecommerce web app that allows users (as customers) to shop thro
 
 ---
 
+## [Demo](https://drive.google.com/file/d/1aTy57bfPN9vueKcygzGyCtZQID4QJBdS/view?usp=sharing)
+
 ## Future Ideas
 
 The following features are planned for future development on Knit Picky:
