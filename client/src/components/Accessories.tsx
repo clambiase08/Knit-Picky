@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { StyleContext } from "../context/StyleProvider";
-// import ProductCard from "../ProductCard";
 import AltProductCard from "./AltProductCard";
 import { SimpleGrid, Box } from "@chakra-ui/react";
 

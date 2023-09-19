@@ -22,7 +22,6 @@ class Customer(db.Model, SerializerMixin):
     )
 
     id = db.Column(db.Integer, primary_key=True)
-    # username = db.Column(db.String, nullable=False)
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)
     email = db.Column(db.String, nullable=False)
@@ -60,10 +59,7 @@ class Customer(db.Model, SerializerMixin):
 
 class Order(db.Model, SerializerMixin, TimestampMixin):
     __tablename__ = "orders"
-    serialize_rules = (
-        "-orderitems.order",
-        # "-orderitems.style",
-    )
+    serialize_rules = ("-orderitems.order",)
 
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String, nullable=False)
@@ -95,7 +91,6 @@ class Style(db.Model, SerializerMixin):
         "-skus.style",
         "-wishlist_items.style",
         "-category.styles",
-        # added to remove nested styles on customer. Check if something isn't rendering
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -107,7 +102,6 @@ class Style(db.Model, SerializerMixin):
 
     orderitems = db.relationship("OrderItem", backref="style", cascade="delete")
     skus = db.relationship("Sku", backref="style", cascade="delete")
-    # wishlist_items = db.relationship("WishlistItem", backref="style", cascade="delete")
 
 
 class Category(db.Model, SerializerMixin):

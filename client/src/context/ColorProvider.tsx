@@ -28,7 +28,6 @@ export default function ColorProvider({ children }: ColorProviderProps) {
       })
       .then((color) => {
         setColors(color);
-        // console.log(colors);
       });
   }, []);
 

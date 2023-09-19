@@ -28,7 +28,6 @@ export default function StyleProvider({ children }: StyleProviderProps) {
       })
       .then((styles) => {
         setBestsellers(styles);
-        // console.log(styles);
       });
   }, []);
 

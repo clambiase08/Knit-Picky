@@ -30,9 +30,6 @@ export default function OrderConfirmation() {
         </GridItem>
         <GridItem colSpan={4}>
           <Heading size="lg">Thank you for your order!</Heading>
-          {/* <Text mt={2} color="gray.600">
-            Order number is: TEST
-          </Text> */}
           <Text mt={2} color="gray.600">
             You can track your order in "My orders"
           </Text>

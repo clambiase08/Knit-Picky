@@ -37,26 +37,21 @@ export default function ProductDetailPage() {
     undefined
   );
 
-  // console.log(styles);
-
   const order = customer
     ? orders.find(
         (order) =>
           order.customer_id === customer.id && order.status === "created"
       )
     : null;
-  // console.log(order);
 
   const style = styles.find((style) => style.id === parseInt(id));
   const defaultImage = style?.skus[0]?.image || "";
-  // console.log(defaultImage);
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     defaultImage
   );
   const [selectedSkuId, setSelectedSkuId] = useState<number | null>(null);
 
   useEffect(() => {
-    // Update selectedImage after the component mounts
     setSelectedImage(defaultImage);
   }, [defaultImage]);
 
@@ -70,7 +65,6 @@ export default function ProductDetailPage() {
   const images = style.skus.map((sku) => sku.image);
 
   const colorIds = style.skus.map((sku) => sku.color_id);
-  // console.log(images);
 
   const colorDetail = colors.map((color) => ({
     color: color.color,
@@ -99,7 +93,6 @@ export default function ProductDetailPage() {
       })
         .then((res) => res.json())
         .then((addedItem) => {
-          // console.log(addedItem);
           setOrders(
             (prevOrders) =>
               prevOrders.map((o) =>

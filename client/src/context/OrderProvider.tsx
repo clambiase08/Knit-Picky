@@ -28,7 +28,6 @@ export default function OrderProvider({ children }: OrderProviderProps) {
       })
       .then((order) => {
         setOrders(order);
-        // console.log(orderItems);
       });
   }, []);
 

@@ -38,14 +38,12 @@ const CustomerProvider = ({ children }: CustomerProviderProps) => {
       })
       .then((customer) => {
         setCustomer(customer);
-        console.log(customer);
       })
       .catch((error) => {
         console.error(error);
       });
 
   const handleLogin = async (values: Customer, authType: string) => {
-    // Determine the endpoint based on authType
     const endpoint = authType === "signup" ? "/signup" : "/login";
 
     const response = await fetch(`${endpoint}`, {

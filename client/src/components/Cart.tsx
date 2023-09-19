@@ -33,13 +33,11 @@ export default function Cart() {
   const { colors } = useContext(ColorContext);
   const { orders, setOrders } = useContext(OrderContext);
   const history = useHistory();
-  // console.log(orderItems);
   console.log(customer);
 
   const userOrders = orders.filter(
     (order) => order.customer_id === customer?.id && order.status === "created"
   );
-  // console.log(userOrderItems);
 
   const userOrderItems = userOrders.flatMap((order) => order.orderitems);
 
@@ -142,7 +140,6 @@ export default function Cart() {
   };
 
   function handleCheckout() {
-    // Assuming userOrderItems contains a single order with all items
     const orderId = userOrderItems[0].order_id;
 
     fetch(`/orders/${orderId}`, {
@@ -154,7 +151,6 @@ export default function Cart() {
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
         setOrders(orders.map((order) => (order.id === orderId ? data : order)));
       })
       .catch((error) => {
@@ -173,7 +169,6 @@ export default function Cart() {
         })
           .then((res) => res.json())
           .then((data) => {
-            // console.log(data);
             setOrders((prevOrders) => [...prevOrders, data]);
           })
           .catch((error) => {

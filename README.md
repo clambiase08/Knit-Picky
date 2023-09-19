@@ -20,11 +20,11 @@ The following features are planned for future development on Knit Picky:
 
 ## Visuals
 
-![Homepage](image.png)
-![Homepage](image-1.png)
-![Shop All](image-2.png)
-![PDP](image-3.png)
-![Cart](image-4.png)
+![Homepage](/client/public/assets/image.png)
+![Homepage](/client/public/assets/image-1.png)
+![Shop All](/client/public/assets/image-2.png)
+![PDP](/client/public/assets/image-3.png)
+![Cart](/client/public/assets/image-4.png)
 
 ## Installation
 

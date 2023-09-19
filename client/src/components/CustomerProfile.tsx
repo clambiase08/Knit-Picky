@@ -25,7 +25,6 @@ export default function CustomerProfile() {
   const userOrders = orders.filter(
     (order) => order.customer_id === customer?.id && order.status !== "created"
   );
-  // console.log(userOrders);
 
   const userOrderItems = userOrders.flatMap((order) => order.orderitems);
 
@@ -57,16 +56,7 @@ export default function CustomerProfile() {
           {currentOrderItems.map((orderItem) => {
             return (
               <Box as="span" flex="flex-start" key={orderItem.id}>
-                <HStack justifyContent="flex-start">
-                  {/* <AspectRatio ratio={3 / 4} w={"120px"}>
-                        <Image
-                          boxSize="120px"
-                          objectFit="cover"
-                          borderRadius="lg"
-                          src={sku.image}
-                        ></Image>
-                      </AspectRatio> */}
-                </HStack>
+                <HStack justifyContent="flex-start"></HStack>
                 <HStack justifyContent="flex-start">
                   <Heading size="sm">{orderItem.style.style_name}</Heading>
                   <Text color="gray.600">Qty: {orderItem.quantity}</Text>

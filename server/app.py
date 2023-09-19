@@ -6,8 +6,6 @@
 from flask import request, make_response, session, abort
 from flask_restful import Resource
 from models import *
-from werkzeug.exceptions import Unauthorized
-import re
 
 # Local imports
 from config import app, db, api
@@ -38,12 +36,7 @@ class Signup(Resource):
             customer_id=new_customer.id,
         )
 
-        # wishlist = Wishlist(
-        #     customer_id=new_customer.id,
-        # )
-
         db.session.add(order)
-        # db.session.add(wishlist)
         db.session.commit()
 
         return new_customer.to_dict()
@@ -99,7 +92,6 @@ class Styles(Resource):
                 rules=(
                     "-orderitems",
                     "-category.styles",
-                    # "-category.styles.orderitems",
                 )
             )
             for style in Style.query.all()
