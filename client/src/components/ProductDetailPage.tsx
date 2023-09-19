@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { StyleContext } from "../../context/StyleProvider";
-import { ColorContext } from "../../context/ColorProvider";
-import { OrderContext } from "../../context/OrderProvider";
-import { useCustomer } from "../../context/CustomerProvider";
+import { StyleContext } from "../context/StyleProvider";
+import { ColorContext } from "../context/ColorProvider";
+import { OrderContext } from "../context/OrderProvider";
+import { useCustomer } from "../context/CustomerProvider";
 import { useHistory } from "react-router-dom";
 import {
   Box,
@@ -20,7 +20,7 @@ import {
   Circle,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
-import { Order } from "../types";
+import { Order } from "../types/types";
 
 type RouteParams = {
   id: string;

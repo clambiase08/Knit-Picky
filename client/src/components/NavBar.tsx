@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useHistory } from "react-router-dom";
-import { useCustomer } from "../../context/CustomerProvider";
+import { useCustomer } from "../context/CustomerProvider";
 import {
   Box,
   Flex,

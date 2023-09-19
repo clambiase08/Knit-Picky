@@ -1,9 +1,6 @@
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import {
-  useCustomer,
-  CustomerContextType,
-} from "../../../context/CustomerProvider";
+import { useCustomer, CustomerContextType } from "../context/CustomerProvider";
 import {
   Flex,
   Image,
@@ -17,8 +14,8 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
-import { StyleContext } from "../../../context/StyleProvider";
-import { Style } from "../../types";
+import { StyleContext } from "../context/StyleProvider";
+import { Style } from "../types/types";
 
 export default function Wishlist() {
   const { customer, setCustomer } = useCustomer() as CustomerContextType;

@@ -1,14 +1,14 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import Home from "../Main/Home";
-import ShopAll from "../Main/Categories/ShopAll";
-import BestSellers from "../Main/Categories/BestSellers";
-import Yarns from "../Main/Categories/Yarns";
-import Accessories from "../Main/Categories/Accessories";
-import ProductDetailPage from "../Main/ProductDetailPage";
-import CustomerProfile from "../Main/CustomerProfile";
-import Cart from "../Main/Cart";
-import OrderConfirmation from "../Main/OrderConfirmation";
+import Home from "./Home";
+import ShopAll from "./ShopAll";
+import BestSellers from "./BestSellers";
+import Yarns from "./Yarns";
+import Accessories from "./Accessories";
+import ProductDetailPage from "./ProductDetailPage";
+import CustomerProfile from "./CustomerProfile";
+import Cart from "./Cart";
+import OrderConfirmation from "./OrderConfirmation";
 
 export default function Main() {
   return (

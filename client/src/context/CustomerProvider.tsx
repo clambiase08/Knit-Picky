@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { useHistory } from "react-router-dom";
-import { Customer } from "../components/types";
+import { Customer } from "../types/types";
 
 export interface CustomerContextType {
   customer: Customer | null;

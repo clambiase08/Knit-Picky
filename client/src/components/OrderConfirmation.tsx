@@ -11,7 +11,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { GiScooter } from "react-icons/gi";
-import { useCustomer } from "../../context/CustomerProvider";
+import { useCustomer } from "../context/CustomerProvider";
 
 export default function OrderConfirmation() {
   const history = useHistory();

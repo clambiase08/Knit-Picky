@@ -11,7 +11,7 @@ import {
   Circle,
   Icon,
 } from "@chakra-ui/react";
-import { ColorContext } from "../../../context/ColorProvider";
+import { ColorContext } from "../context/ColorProvider";
 import { AiOutlineDollar } from "react-icons/ai";
 
 export default function FilterSidebar({

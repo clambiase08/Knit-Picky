@@ -10,11 +10,11 @@ import {
   Icon,
   chakra,
 } from "@chakra-ui/react";
-import { ColorContext } from "../../context/ColorProvider";
+import { ColorContext } from "../context/ColorProvider";
 import { useHistory } from "react-router-dom";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
-import { useCustomer } from "../../context/CustomerProvider";
-import { Customer, WishlistItem, ProductCardProps } from "../types";
+import { useCustomer } from "../context/CustomerProvider";
+import { Customer, WishlistItem, ProductCardProps } from "../types/types";
 
 export default function AltProductCard({
   style_name,

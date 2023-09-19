@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
-import { StyleContext } from "../../../context/StyleProvider";
+import { StyleContext } from "../context/StyleProvider";
 // import ProductCard from "../ProductCard";
 import { Flex, SimpleGrid, HStack } from "@chakra-ui/react";
 import FilterSidebar from "./FilterSidebar";
-import AltProductCard from "../AltProductCard";
+import AltProductCard from "./AltProductCard";
 
 export default function ShopAll() {
   const { styles } = useContext(StyleContext);

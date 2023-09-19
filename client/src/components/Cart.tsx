@@ -20,12 +20,12 @@ import {
   NumberIncrementStepper,
   NumberInputStepper,
 } from "@chakra-ui/react";
-import { useCustomer } from "../../context/CustomerProvider";
-import { StyleContext } from "../../context/StyleProvider";
-import { ColorContext } from "../../context/ColorProvider";
-import { OrderContext } from "../../context/OrderProvider";
+import { useCustomer } from "../context/CustomerProvider";
+import { StyleContext } from "../context/StyleProvider";
+import { ColorContext } from "../context/ColorProvider";
+import { OrderContext } from "../context/OrderProvider";
 import { SmallCloseIcon } from "@chakra-ui/icons";
-import { Order, OrderItem } from "../types";
+import { Order, OrderItem } from "../types/types";
 
 export default function Cart() {
   const { customer } = useCustomer();

@@ -1,5 +1,5 @@
 import React, { useState, ReactNode, useEffect } from "react";
-import { Order } from "../components/types";
+import { Order } from "../types/types";
 
 interface OrderContextProps {
   orders: Order[];

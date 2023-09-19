@@ -1,5 +1,5 @@
 import React, { useState, ReactNode, useEffect } from "react";
-import { Style } from "../components/types";
+import { Style } from "../types/types";
 
 interface StylesContextProps {
   styles: Style[];

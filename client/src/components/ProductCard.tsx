@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { ColorContext } from "../../context/ColorProvider";
+import { ColorContext } from "../context/ColorProvider";
 import { useHistory } from "react-router-dom";
 import {
   Box,
@@ -12,7 +12,7 @@ import {
   Circle,
   Flex,
 } from "@chakra-ui/react";
-import { ProductCardProps } from "../types";
+import { ProductCardProps } from "../types/types";
 
 export default function ProductCard({
   style_name,

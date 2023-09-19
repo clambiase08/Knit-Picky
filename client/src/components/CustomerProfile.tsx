@@ -14,9 +14,9 @@ import {
   HStack,
   Heading,
 } from "@chakra-ui/react";
-import { useCustomer } from "../../context/CustomerProvider";
-import { OrderContext } from "../../context/OrderProvider";
-import Wishlist from "./Customer Profile/Wishlist";
+import { useCustomer } from "../context/CustomerProvider";
+import { OrderContext } from "../context/OrderProvider";
+import Wishlist from "./Wishlist";
 
 export default function CustomerProfile() {
   const { customer } = useCustomer();
