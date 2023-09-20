@@ -65,7 +65,7 @@ To install:
 ### Customer Profile/ Wishlist
 
 - If you click on your user profile icon, you will be taken to your account with a list of your prior orders and favorited products.
-- In order to add products to your wishlist, you can click on the heart icon on the product card, or the "add to wishlist" button on the PDP.
+- In order to add products to your wishlist, you can click on the heart icon on the product card.
 - Once in your wishlist, you can click on the product to be taken to the PDP or click on the cart icon to add to your cart.
 
 ## Support
