@@ -66,16 +66,6 @@ export default function Cart() {
   const taxes = totalSubtotal * 0.11;
   const totalAmount = totalSubtotal + shippingTotal + taxes;
 
-  // function handleDeleteItem(deletedItem: { id: number }) {
-  //   const updatedOrders: Order[] = [...orders];
-  //   updatedOrders.forEach((order) => {
-  //     order.orderitems = order.orderitems.filter(
-  //       (item) => item.id !== deletedItem.id
-  //     );
-  //   });
-  //   setOrders(updatedOrders);
-  // }
-
   function handleDeleteClick(item: { id: number }) {
     const orderId = userOrders[0]?.id;
     fetch(`/orders/${orderId}/orderitems/${item.id}`, {

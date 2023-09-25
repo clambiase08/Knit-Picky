@@ -1,5 +1,6 @@
 import React, { useState, ReactNode, useEffect } from "react";
 import { Order } from "../types/types";
+import { fetchOrders } from "../api/orders";
 
 interface OrderContextProps {
   orders: Order[];
@@ -23,16 +24,9 @@ export default function OrderProvider({ children }: OrderProviderProps) {
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-    fetch("/orders")
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error("Couldn't find orders");
-      })
-      .then((order) => {
-        setOrders(order);
-      });
+    fetchOrders().then((order) => {
+      setOrders(order);
+    });
   }, []);
 
   const handleDeleteItem = (deletedItem: { id: number }) => {

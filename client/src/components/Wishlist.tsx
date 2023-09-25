@@ -40,14 +40,6 @@ export default function Wishlist() {
       }
     );
   }
-  // function handleDeleteItem(deletedItemId: number): void {
-  //   setCustomer({
-  //     ...customer,
-  //     wishlist_items: customer!.wishlist_items?.filter(
-  //       (item) => item.id !== deletedItemId
-  //     ),
-  //   });
-  // }
 
   function handleDelete(itemId: number): void {
     const wishlistItemToDelete = customer?.wishlist_items?.find(
