@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { useHistory } from "react-router-dom";
-import { Customer } from "../types/types";
+import { Customer, WishlistItem } from "../types/types";
 import { getCustomer, fetchLogout, fetchLogin } from "../api/customers";
 
 export interface CustomerContextType {
@@ -10,6 +10,7 @@ export interface CustomerContextType {
   handleLogin: (values: Customer, authType: string) => void;
   handleLogout: () => void;
   handleDeleteItem: (deletedItemId: number) => void;
+  handleAddToWishlist: (newWishlistItem: WishlistItem) => void;
 }
 
 interface CustomerProviderProps {
@@ -59,6 +60,16 @@ const CustomerProvider = ({ children }: CustomerProviderProps) => {
     });
   };
 
+  const handleAddToWishlist = (newWishlistItem: WishlistItem) => {
+    if (customer) {
+      const updatedCustomer: Customer = {
+        ...customer,
+        wishlist_items: [...(customer.wishlist_items || []), newWishlistItem],
+      };
+      setCustomer(updatedCustomer);
+    }
+  };
+
   const contextValue = {
     customer,
     setCustomer,
@@ -66,6 +77,7 @@ const CustomerProvider = ({ children }: CustomerProviderProps) => {
     handleLogin,
     handleLogout,
     handleDeleteItem,
+    handleAddToWishlist,
   };
 
   return (

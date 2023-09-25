@@ -14,7 +14,7 @@ import { ColorContext } from "../context/ColorProvider";
 import { useHistory } from "react-router-dom";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
 import { useCustomer } from "../context/CustomerProvider";
-import { Customer, WishlistItem, ProductCardProps } from "../types/types";
+import { WishlistItem, ProductCardProps } from "../types/types";
 import { addWishlistItem, deleteWishlistItem } from "../api/wishlist";
 
 export default function AltProductCard({
@@ -25,7 +25,7 @@ export default function AltProductCard({
   id,
 }: ProductCardProps) {
   const { colors } = useContext(ColorContext);
-  const { customer, setCustomer, handleDeleteItem } = useCustomer();
+  const { customer, handleDeleteItem, handleAddToWishlist } = useCustomer();
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [selectedColorId, setSelectedColorId] = useState<number | undefined>(
     undefined
@@ -55,16 +55,7 @@ export default function AltProductCard({
         style_id: id,
       };
       addWishlistItem(wishlistItemAdd).then((newWishlistItem: WishlistItem) => {
-        if (customer) {
-          const updatedCustomer: Customer = {
-            ...customer,
-            wishlist_items: [
-              ...(customer.wishlist_items || []),
-              newWishlistItem,
-            ],
-          };
-          setCustomer(updatedCustomer);
-        }
+        handleAddToWishlist(newWishlistItem);
       });
     } else {
       const wishlistItemToDelete = customer?.wishlist_items?.find(
