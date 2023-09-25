@@ -26,6 +26,12 @@ import { ColorContext } from "../context/ColorProvider";
 import { OrderContext } from "../context/OrderProvider";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import { Order, OrderItem } from "../types/types";
+import {
+  updateOrderItems,
+  deleteOrderItem,
+  updateOrderStatus,
+  handleCreateOrder,
+} from "../api/orders";
 
 export default function Cart() {
   const { customer } = useCustomer();
@@ -33,7 +39,6 @@ export default function Cart() {
   const { colors } = useContext(ColorContext);
   const { orders, setOrders, handleDeleteItem } = useContext(OrderContext);
   const history = useHistory();
-  console.log(customer);
 
   const userOrders = orders.filter(
     (order) => order.customer_id === customer?.id && order.status === "created"
@@ -68,9 +73,8 @@ export default function Cart() {
 
   function handleDeleteClick(item: { id: number }) {
     const orderId = userOrders[0]?.id;
-    fetch(`/orders/${orderId}/orderitems/${item.id}`, {
-      method: "DELETE",
-    }).then(() => handleDeleteItem(item));
+    const itemId = item.id;
+    deleteOrderItem(orderId, itemId).then(() => handleDeleteItem(item));
   }
 
   const handleQtyChange = (itemToUpdate: OrderItem, newQuantity: number) => {
@@ -88,15 +92,9 @@ export default function Cart() {
     };
 
     const orderId = userOrders[0]?.id;
+    const itemId = itemToUpdate.id;
 
-    fetch(`/orders/${orderId}/orderitems/${itemToUpdate.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedItem),
-    })
-      .then((res) => res.json())
+    updateOrderItems(updatedItem, orderId, itemId)
       .then((updatedItemFromServer) => {
         const updatedTotalSubtotal = userOrders.reduce(
           (sum, order) =>
@@ -132,39 +130,22 @@ export default function Cart() {
   function handleCheckout() {
     const orderId = userOrderItems[0].order_id;
 
-    fetch(`/orders/${orderId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ status: "paid" }),
-    })
-      .then((res) => res.json())
+    updateOrderStatus(orderId)
       .then((data) => {
         setOrders(orders.map((order) => (order.id === orderId ? data : order)));
       })
       .catch((error) => {
         console.error("Error updating order status:", error);
       })
-      .then(() => {
-        fetch("/orders", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            status: "created",
-            customer_id: customer?.id,
-          }),
-        })
-          .then((res) => res.json())
+      .then(() =>
+        handleCreateOrder(customer)
           .then((data) => {
             setOrders((prevOrders) => [...prevOrders, data]);
           })
           .catch((error) => {
             console.error("Error creating new order:", error);
-          });
-      });
+          })
+      );
   }
 
   return (
