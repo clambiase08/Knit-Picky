@@ -1,5 +1,6 @@
 import React, { useEffect, useState, ReactNode } from "react";
 import { Color } from "../types/types";
+import { getColors } from "../api/colors";
 
 interface ColorContextProps {
   colors: Color[];
@@ -19,16 +20,9 @@ export default function ColorProvider({ children }: ColorProviderProps) {
   const [colors, setColors] = useState<Color[]>([]);
 
   useEffect(() => {
-    fetch("/colors")
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error("Response not OK");
-      })
-      .then((color) => {
-        setColors(color);
-      });
+    getColors().then((color) => {
+      setColors(color);
+    });
   }, []);
 
   const contextValue = {

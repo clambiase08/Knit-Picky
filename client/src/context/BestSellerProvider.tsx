@@ -1,5 +1,6 @@
 import React, { useState, ReactNode, useEffect } from "react";
 import { Style } from "../types/types";
+import { getBestsellers } from "../api/bestsellers";
 
 interface BestSellersContextProps {
   bestsellers: Style[];
@@ -19,16 +20,9 @@ export default function StyleProvider({ children }: StyleProviderProps) {
   const [bestsellers, setBestsellers] = useState<Style[]>([]);
 
   useEffect(() => {
-    fetch("/bestsellers")
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error("Response not OK");
-      })
-      .then((styles) => {
-        setBestsellers(styles);
-      });
+    getBestsellers().then((styles) => {
+      setBestsellers(styles);
+    });
   }, []);
 
   const contextValue = {

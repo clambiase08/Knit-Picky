@@ -1,5 +1,6 @@
 import React, { useState, ReactNode, useEffect } from "react";
 import { Style } from "../types/types";
+import { getStyles } from "../api/styles";
 
 interface StylesContextProps {
   styles: Style[];
@@ -19,16 +20,9 @@ export default function StyleProvider({ children }: StyleProviderProps) {
   const [styles, setStyles] = useState<Style[]>([]);
 
   useEffect(() => {
-    fetch("/styles")
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error("Response not OK");
-      })
-      .then((styles) => {
-        setStyles(styles);
-      });
+    getStyles().then((styles) => {
+      setStyles(styles);
+    });
   }, []);
 
   const contextValue = {
