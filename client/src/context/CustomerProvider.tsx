@@ -8,6 +8,7 @@ export interface CustomerContextType {
   fetchCustomer: () => void;
   handleLogin: (values: Customer, authType: string) => void;
   handleLogout: () => void;
+  handleDeleteItem: (deletedItemId: number) => void;
 }
 
 interface CustomerProviderProps {
@@ -71,12 +72,22 @@ const CustomerProvider = ({ children }: CustomerProviderProps) => {
     });
   };
 
+  const handleDeleteItem = (deletedItemId: number): void => {
+    setCustomer({
+      ...customer,
+      wishlist_items: customer!.wishlist_items?.filter(
+        (item) => item.id !== deletedItemId
+      ),
+    });
+  };
+
   const contextValue = {
     customer,
     setCustomer,
     fetchCustomer,
     handleLogin,
     handleLogout,
+    handleDeleteItem,
   };
 
   return (

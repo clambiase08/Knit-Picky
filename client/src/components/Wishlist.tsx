@@ -18,7 +18,7 @@ import { StyleContext } from "../context/StyleProvider";
 import { Style } from "../types/types";
 
 export default function Wishlist() {
-  const { customer, setCustomer } = useCustomer() as CustomerContextType;
+  const { customer, handleDeleteItem } = useCustomer() as CustomerContextType;
   const { styles } = useContext(StyleContext);
   const history = useHistory();
 
@@ -40,14 +40,14 @@ export default function Wishlist() {
       }
     );
   }
-  function handleDeleteItem(deletedItemId: number): void {
-    setCustomer({
-      ...customer,
-      wishlist_items: customer!.wishlist_items?.filter(
-        (item) => item.id !== deletedItemId
-      ),
-    });
-  }
+  // function handleDeleteItem(deletedItemId: number): void {
+  //   setCustomer({
+  //     ...customer,
+  //     wishlist_items: customer!.wishlist_items?.filter(
+  //       (item) => item.id !== deletedItemId
+  //     ),
+  //   });
+  // }
 
   function handleDelete(itemId: number): void {
     const wishlistItemToDelete = customer?.wishlist_items?.find(
