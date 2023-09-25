@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
 import { useCustomer } from "../context/CustomerProvider";
 import { Customer, WishlistItem, ProductCardProps } from "../types/types";
+import { addWishlistItem, deleteWishlistItem } from "../api/wishlist";
 
 export default function AltProductCard({
   style_name,
@@ -24,7 +25,7 @@ export default function AltProductCard({
   id,
 }: ProductCardProps) {
   const { colors } = useContext(ColorContext);
-  const { customer, setCustomer } = useCustomer();
+  const { customer, setCustomer, handleDeleteItem } = useCustomer();
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [selectedColorId, setSelectedColorId] = useState<number | undefined>(
     undefined
@@ -47,49 +48,32 @@ export default function AltProductCard({
     id: color.id,
   }));
 
-  function handleDeleteItem(deletedItemId: number): void {
-    setCustomer({
-      ...customer,
-      wishlist_items: customer!.wishlist_items?.filter(
-        (item) => item.id !== deletedItemId
-      ),
-    });
-  }
-
   function handleHeartClick() {
     if (!heartFill) {
       const wishlistItemAdd = {
         customer_id: customer?.id,
         style_id: id,
       };
-      fetch("/wishlist_items", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(wishlistItemAdd),
-      })
-        .then((res) => res.json())
-        .then((newWishlistItem: WishlistItem) => {
-          if (customer) {
-            const updatedCustomer: Customer = {
-              ...customer,
-              wishlist_items: [
-                ...(customer.wishlist_items || []),
-                newWishlistItem,
-              ],
-            };
-            setCustomer(updatedCustomer);
-          }
-        });
+      addWishlistItem(wishlistItemAdd).then((newWishlistItem: WishlistItem) => {
+        if (customer) {
+          const updatedCustomer: Customer = {
+            ...customer,
+            wishlist_items: [
+              ...(customer.wishlist_items || []),
+              newWishlistItem,
+            ],
+          };
+          setCustomer(updatedCustomer);
+        }
+      });
     } else {
       const wishlistItemToDelete = customer?.wishlist_items?.find(
         (item) => item.style_id === id
       );
       if (wishlistItemToDelete) {
-        fetch(`/wishlist_items/${wishlistItemToDelete.id}`, {
-          method: "DELETE",
-        }).then(() => handleDeleteItem(wishlistItemToDelete.id));
+        deleteWishlistItem(wishlistItemToDelete.id).then(() =>
+          handleDeleteItem(wishlistItemToDelete.id)
+        );
       }
     }
 
