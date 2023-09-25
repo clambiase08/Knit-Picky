@@ -25,7 +25,7 @@ import { StyleContext } from "../context/StyleProvider";
 import { ColorContext } from "../context/ColorProvider";
 import { OrderContext } from "../context/OrderProvider";
 import { SmallCloseIcon } from "@chakra-ui/icons";
-import { Order, OrderItem } from "../types/types";
+import { OrderItem } from "../types/types";
 import {
   updateOrderItems,
   deleteOrderItem,
@@ -37,7 +37,14 @@ export default function Cart() {
   const { customer } = useCustomer();
   const { styles } = useContext(StyleContext);
   const { colors } = useContext(ColorContext);
-  const { orders, setOrders, handleDeleteItem } = useContext(OrderContext);
+  const {
+    orders,
+    handleDeleteItem,
+    handleUpdateQty,
+    handleUpdateOrderItems,
+    handleUpdateOrderStatus,
+    handleAddOrder,
+  } = useContext(OrderContext);
   const history = useHistory();
 
   const userOrders = orders.filter(
@@ -78,13 +85,7 @@ export default function Cart() {
   }
 
   const handleQtyChange = (itemToUpdate: OrderItem, newQuantity: number) => {
-    const updatedOrders: Order[] = [...orders];
-    updatedOrders.forEach((order) => {
-      order.orderitems = order.orderitems.map((item) =>
-        item.id === itemToUpdate.id ? { ...item, quantity: newQuantity } : item
-      );
-    });
-    setOrders(updatedOrders);
+    handleUpdateQty(itemToUpdate, newQuantity);
 
     const updatedItem = {
       quantity: newQuantity,
@@ -107,20 +108,7 @@ export default function Cart() {
         );
         setTotalSubtotal(updatedTotalSubtotal);
 
-        setOrders((prevOrders) =>
-          prevOrders.map((order) =>
-            order.id === orderId
-              ? {
-                  ...order,
-                  orderitems: order.orderitems.map((item) =>
-                    item.id === itemToUpdate.id
-                      ? { ...item, ...updatedItemFromServer }
-                      : item
-                  ),
-                }
-              : order
-          )
-        );
+        handleUpdateOrderItems(itemToUpdate, updatedItemFromServer, orderId);
       })
       .catch((error) => {
         console.error("Error updating order item:", error);
@@ -132,7 +120,7 @@ export default function Cart() {
 
     updateOrderStatus(orderId)
       .then((data) => {
-        setOrders(orders.map((order) => (order.id === orderId ? data : order)));
+        handleUpdateOrderStatus(orders, orderId, data);
       })
       .catch((error) => {
         console.error("Error updating order status:", error);
@@ -140,7 +128,7 @@ export default function Cart() {
       .then(() =>
         handleCreateOrder(customer)
           .then((data) => {
-            setOrders((prevOrders) => [...prevOrders, data]);
+            handleAddOrder(data);
           })
           .catch((error) => {
             console.error("Error creating new order:", error);
