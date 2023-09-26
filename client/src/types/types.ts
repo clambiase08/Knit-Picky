@@ -6,13 +6,13 @@ export interface Order {
 }
 
 export interface OrderItem {
-  id: number;
+  id?: number;
   quantity: number;
   subtotal: number;
-  order_id: number;
+  order_id: number | undefined;
   style_id: number;
   sku_id: number;
-  style: {
+  style?: {
     style_name: string;
     price: number;
   };
