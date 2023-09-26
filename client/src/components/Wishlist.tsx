@@ -16,6 +16,7 @@ import {
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import { StyleContext } from "../context/StyleProvider";
 import { Style } from "../types/types";
+import { deleteWishlistItem } from "../api/wishlist";
 
 export default function Wishlist() {
   const { customer, handleDeleteItem } = useCustomer() as CustomerContextType;
@@ -46,9 +47,10 @@ export default function Wishlist() {
       (item) => item.style_id === itemId
     );
     if (wishlistItemToDelete) {
-      fetch(`/wishlist_items/${wishlistItemToDelete.id}`, {
-        method: "DELETE",
-      }).then(() => handleDeleteItem(wishlistItemToDelete.id));
+      const wishlistItemId = wishlistItemToDelete.id;
+      deleteWishlistItem(wishlistItemId).then(() =>
+        handleDeleteItem(wishlistItemToDelete.id)
+      );
     }
   }
 
