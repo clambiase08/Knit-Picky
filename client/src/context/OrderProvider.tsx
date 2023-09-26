@@ -18,6 +18,7 @@ interface OrderContextProps {
     data: Order
   ) => void;
   handleAddOrder: (data: Order) => void;
+  handleAddToOrder: (addedItem: OrderItem, order: Order) => void;
 }
 
 export const OrderContext = React.createContext<OrderContextProps>({
@@ -30,6 +31,7 @@ export const OrderContext = React.createContext<OrderContextProps>({
   handleUpdateOrderItems: function (): void {},
   handleUpdateOrderStatus: function (): void {},
   handleAddOrder: function (): void {},
+  handleAddToOrder: function (): void {},
 });
 
 interface OrderProviderProps {
@@ -98,6 +100,17 @@ export default function OrderProvider({ children }: OrderProviderProps) {
     setOrders((prevOrders) => [...prevOrders, data]);
   };
 
+  const handleAddToOrder = (addedItem: OrderItem, order: Order) => {
+    setOrders(
+      (prevOrders) =>
+        prevOrders.map((o) =>
+          o.id === order?.id
+            ? { ...o, orderitems: [...o.orderitems, addedItem] }
+            : o
+        ) as Order[]
+    );
+  };
+
   const contextValue = {
     orders,
     setOrders,
@@ -106,6 +119,7 @@ export default function OrderProvider({ children }: OrderProviderProps) {
     handleUpdateOrderItems,
     handleUpdateOrderStatus,
     handleAddOrder,
+    handleAddToOrder,
   };
 
   return (

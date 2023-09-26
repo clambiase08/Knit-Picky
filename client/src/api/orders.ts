@@ -1,4 +1,4 @@
-import { Customer } from "../types/types";
+import { Customer, OrderItem } from "../types/types";
 
 export const fetchOrders = async () => {
   const response = await fetch("/orders");
@@ -71,4 +71,22 @@ export const handleCreateOrder = async (customer: Customer | null) => {
   }
   const data = await response.json();
   return data;
+};
+
+export const handleAddOrderItem = async (
+  orderId: number | undefined,
+  itemToAdd: OrderItem
+) => {
+  const response = await fetch(`/orders/${orderId}/orderitems`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(itemToAdd),
+  });
+  if (!response.ok) {
+    throw new Error("Couldn't add order item");
+  }
+  const addedItem = await response.json();
+  return addedItem;
 };

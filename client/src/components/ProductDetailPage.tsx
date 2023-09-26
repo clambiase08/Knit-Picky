@@ -20,7 +20,7 @@ import {
   Circle,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
-import { Order } from "../types/types";
+import { handleAddOrderItem } from "../api/orders";
 
 type RouteParams = {
   id: string;
@@ -30,7 +30,7 @@ export default function ProductDetailPage() {
   const { id } = useParams<RouteParams>();
   const { styles } = useContext(StyleContext);
   const { colors } = useContext(ColorContext);
-  const { orders, setOrders } = useContext(OrderContext);
+  const { orders, handleAddToOrder } = useContext(OrderContext);
   const { customer } = useCustomer();
   const history = useHistory();
   const [selectedColorId, setSelectedColorId] = useState<number | undefined>(
@@ -84,23 +84,13 @@ export default function ProductDetailPage() {
         sku_id: selectedSkuId,
       };
       const orderId = order?.id;
-      fetch(`/orders/${orderId}/orderitems`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(itemToAdd),
-      })
-        .then((res) => res.json())
+      handleAddOrderItem(orderId, itemToAdd)
         .then((addedItem) => {
-          setOrders(
-            (prevOrders) =>
-              prevOrders.map((o) =>
-                o.id === order?.id
-                  ? { ...o, orderitems: [...o.orderitems, addedItem] }
-                  : o
-              ) as Order[]
-          );
+          if (order) {
+            handleAddToOrder(addedItem, order);
+          } else {
+            console.log("Order is null or undefined");
+          }
         })
         .catch((err) => {
           console.error("Error adding item to cart", err);
