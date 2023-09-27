@@ -78,22 +78,24 @@ export default function Cart() {
   const taxes = totalSubtotal * 0.11;
   const totalAmount = totalSubtotal + shippingTotal + taxes;
 
-  function handleDeleteClick(item: { id: number }) {
+  function handleDeleteClick(item: OrderItem) {
     const orderId = userOrders[0]?.id;
-    const itemId = item.id;
+    const itemId = item?.id ?? 0;
     deleteOrderItem(orderId, itemId).then(() => handleDeleteItem(item));
   }
 
   const handleQtyChange = (itemToUpdate: OrderItem, newQuantity: number) => {
     handleUpdateQty(itemToUpdate, newQuantity);
 
+    const price = itemToUpdate.style?.price ?? 0;
+
     const updatedItem = {
       quantity: newQuantity,
-      subtotal: newQuantity * itemToUpdate.style.price,
+      subtotal: newQuantity * price,
     };
 
     const orderId = userOrders[0]?.id;
-    const itemId = itemToUpdate.id;
+    const itemId = itemToUpdate?.id ?? 0;
 
     updateOrderItems(updatedItem, orderId, itemId)
       .then((updatedItemFromServer) => {
@@ -116,12 +118,10 @@ export default function Cart() {
   };
 
   function handleCheckout() {
-    const orderId = userOrderItems[0].order_id;
+    const orderId = userOrderItems[0]?.order_id ?? 0;
 
     updateOrderStatus(orderId)
-      .then((data) => {
-        handleUpdateOrderStatus(orders, orderId, data);
-      })
+      .then((data) => handleUpdateOrderStatus(orders, orderId, data))
       .catch((error) => {
         console.error("Error updating order status:", error);
       })

@@ -58,7 +58,7 @@ export default function CustomerProfile() {
               <Box as="span" flex="flex-start" key={orderItem.id}>
                 <HStack justifyContent="flex-start"></HStack>
                 <HStack justifyContent="flex-start">
-                  <Heading size="sm">{orderItem.style.style_name}</Heading>
+                  <Heading size="sm">{orderItem.style?.style_name}</Heading>
                   <Text color="gray.600">Qty: {orderItem.quantity}</Text>
                 </HStack>
               </Box>

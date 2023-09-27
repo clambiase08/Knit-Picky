@@ -3,15 +3,85 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, make_response, session, abort
+from flask import jsonify, request, make_response, session, abort
 from flask_restful import Resource
 from models import *
+import stripe
+import json
 
 # Local imports
 from config import app, db, api
 
 # Add your model imports
 from models import *
+
+# This is your test secret API key.
+stripe.api_key = "sk_test_51Nuhq2LA3zgRC9JM5RJNU5ksD2Jr4kIyEeGuRh9bSAD8J7LRwqCXP25JXllAMmcmY5C2YGggCqGjXUiOwI4U79V400lzCtKLEB"
+
+
+def calculate_tax(items, currency):
+    tax_calculation = stripe.tax.Calculation.create(
+        currency=currency,
+        customer_details={
+            "address": {
+                "line1": "920 5th Ave",
+                "city": "Seattle",
+                "state": "WA",
+                "postal_code": "98104",
+                "country": "US",
+            },
+            "address_source": "shipping",
+        },
+        line_items=list(map(build_line_item, items)),
+    )
+
+    return tax_calculation
+
+
+def build_line_item(item):
+    return {
+        "amount": item["amount"],  # Amount in cents
+        "reference": item[
+            "id"
+        ],  # Unique reference for the item in the scope of the calculation
+    }
+
+
+# Securely calculate the order amount, including tax
+def calculate_order_amount(items, tax_calculation):
+    # Replace this constant with a calculation of the order's amount
+    # Calculate the order total with any exclusive taxes on the server to prevent
+    # people from directly manipulating the amount on the client
+    order_amount = 1400
+    order_amount += tax_calculation["tax_amount_exclusive"]
+    return order_amount
+
+
+class PaymentIntent(Resource):
+    def post(self):
+        try:
+            data = json.loads(request.data)
+            # Create a Tax Calculation for the items being sold
+            tax_calculation = calculate_tax(data["items"], "usd")
+
+            # Create a PaymentIntent with the order amount and currency
+            intent = stripe.PaymentIntent.create(
+                amount=calculate_order_amount(data["items"], tax_calculation),
+                currency="usd",
+                # In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+                automatic_payment_methods={
+                    "enabled": True,
+                },
+                metadata={"tax_calculation": tax_calculation["id"]},
+            )
+            return jsonify({"clientSecret": intent["client_secret"]})
+        except Exception as e:
+            error_message = str(e), 403
+            print(f"Error creating payment intent: {error_message}")
+            return jsonify(error=f"Failed to create payment intent: {error_message}")
+
+
+api.add_resource(PaymentIntent, "/create-payment-intent")
 
 
 class Signup(Resource):

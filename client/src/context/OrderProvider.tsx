@@ -5,7 +5,7 @@ import { fetchOrders } from "../api/orders";
 interface OrderContextProps {
   orders: Order[];
   setOrders: React.Dispatch<React.SetStateAction<Order[]>>;
-  handleDeleteItem: (deletedItem: { id: number }) => void;
+  handleDeleteItem: (deletedItem: OrderItem) => void;
   handleUpdateQty: (itemToUpdate: OrderItem, newQuantity: number) => void;
   handleUpdateOrderItems: (
     itemToUpdate: OrderItem,
@@ -47,7 +47,7 @@ export default function OrderProvider({ children }: OrderProviderProps) {
     });
   }, []);
 
-  const handleDeleteItem = (deletedItem: { id: number }) => {
+  const handleDeleteItem = (deletedItem: OrderItem) => {
     const updatedOrders: Order[] = [...orders];
     updatedOrders.forEach((order) => {
       order.orderitems = order.orderitems.filter(
