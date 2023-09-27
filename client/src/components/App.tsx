@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 import { useCustomer } from "../context/CustomerProvider";
 import { ChakraProvider } from "@chakra-ui/react";
 import { loadStripe } from "@stripe/stripe-js";
@@ -18,6 +18,8 @@ const stripePromise = loadStripe(
 function App() {
   const { fetchCustomer } = useCustomer();
   const [clientSecret, setClientSecret] = useState("");
+  const location = useLocation();
+  const showCheckoutForm = location.pathname === "/checkout";
 
   useEffect(() => {
     fetchCustomer();
@@ -48,7 +50,7 @@ function App() {
     <ChakraProvider>
       <Main />
       <NavBar />
-      {clientSecret && (
+      {showCheckoutForm && clientSecret && (
         <Elements options={options} stripe={stripePromise}>
           <CheckoutForm />
         </Elements>

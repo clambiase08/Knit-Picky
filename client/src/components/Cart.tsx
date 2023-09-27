@@ -281,7 +281,7 @@ export default function Cart() {
               }}
               onClick={() => {
                 handleCheckout();
-                history.push("/order-confirmed");
+                history.push("/checkout");
               }}
             >
               Checkout
